@@ -7,12 +7,12 @@ import static model.Rune.getListOfRunes;
 public final class RunePath {
 	private final String name;
 	private final List<Rune> keyStones;
-	private final List<List<Rune>> slotRunes;
+	private final List<List<Rune>> slotRuneRows;
 
 	private RunePath(final String name, final List<Rune> keyStones, final List<List<Rune>> slotRunes) {
 		this.name = name;
 		this.keyStones = keyStones;
-		this.slotRunes = slotRunes;
+		this.slotRuneRows = slotRunes;
 	}
 
 	public String getPathName() {
@@ -24,7 +24,7 @@ public final class RunePath {
 	}
 
 	public List<List<Rune>> getSlotRunes() {
-		return slotRunes;
+		return slotRuneRows;
 	}
 
 	public static final RunePath PRECISION = new RunePath("Precision",
