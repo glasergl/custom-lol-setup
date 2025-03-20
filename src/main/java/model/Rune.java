@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public final class Rune {
 	private final String name;
-	private boolean isSelected = false;
 
 	public Rune(final String name) {
 		this.name = name;
@@ -14,14 +13,6 @@ public final class Rune {
 
 	public String getName() {
 		return name;
-	}
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(final boolean shouldBeSelected) {
-		this.isSelected = shouldBeSelected;
 	}
 
 	@Override

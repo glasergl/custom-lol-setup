@@ -8,40 +8,40 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Rune;
+import model.SelectableRune;
 
 public class RuneView {
-	private final Rune rune;
+	private final SelectableRune selectableRune;
 	private final JPanel runeView = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	private final JLabel runeIcon = new JLabel();
+	private final Runnable onClick;
 	private final Image coloredIcon;
 	private final Image grayScaleIcon;
-	private final List<RuneView> excludingRuneViews = new ArrayList<>();
 
-	public RuneView(final Rune rune, final int runeIconSize) {
-		this.rune = rune;
-		final Image image = ImageReading.getImageFromName(rune.getName(), "png");
+	public RuneView(final SelectableRune rune, final int runeIconSize, final Runnable onClick) {
+		this.selectableRune = rune;
+		this.onClick = onClick;
+		final Image image = ImageReading.getImageFromName(rune.getRune().getName(), "png");
 		this.coloredIcon = image.getScaledInstance(runeIconSize, runeIconSize, Image.SCALE_SMOOTH);
 		this.grayScaleIcon = getGrayScale(coloredIcon);
-		setSelected(rune.isSelected());
+		runeIcon.addMouseListener(getRuneSelectionMouseListener());
 		runeView.add(runeIcon);
-	}s
-	
+	}
+
+	public void updateSelectionState() {
+		runeIcon.setIcon(new ImageIcon(selectableRune.isSelected() ? coloredIcon : grayScaleIcon));
+	}
+
 	private MouseListener getRuneSelectionMouseListener() {
 		return new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				rune.setSelected(true);
-				for (final RuneView excludingRuneView : excludingRuneViews) {
-					excludingRuneView.setSelected(false);
-				}
+				onClick.run();
 			}
 
 			@Override
@@ -62,16 +62,8 @@ public class RuneView {
 		};
 	}
 
-	public void addExcludingRuneView(final RuneView runeView) {
-		excludingRuneViews.add(runeView);
-	}
-
 	public JPanel getView() {
 		return runeView;
-	}
-
-	public void setSelected(final boolean shouldBeSelected) {
-		runeIcon.setIcon(new ImageIcon(shouldBeSelected ? coloredIcon : grayScaleIcon));
 	}
 
 	private Image getGrayScale(final Image image) {

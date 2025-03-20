@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 
 public final class SecondPath extends SlotRunes {
-	private final Queue<Rune> selectionHistory = new LinkedList<>();
+	private final Queue<Integer> rowSelectionHistory = new LinkedList<>();
 
 	public SecondPath(final List<List<Rune>> runes) {
 		super(runes);
@@ -14,22 +14,15 @@ public final class SecondPath extends SlotRunes {
 	@Override
 	public void select(final int rowIndex, final int columnIndex) {
 		super.select(rowIndex, columnIndex);
-		final Rune selectedRune = getRune(rowIndex, columnIndex);
-		selectionHistory.add(selectedRune);
-		if (selectionHistory.size() == 3) {
-			final Rune firstSelectedRune = selectionHistory.poll();
-			firstSelectedRune.setSelected(false);
+		if (rowSelectionHistory.contains(rowIndex)) {
+			rowSelectionHistory.remove(rowIndex);
 		}
-	}
-
-	protected Rune getRune(final int rowIndex, final int columnIndex) {
-		if (runes.size() >= rowIndex || rowIndex < 0 || columnIndex < 0) {
-			throw new IllegalArgumentException();
+		rowSelectionHistory.add(rowIndex);
+		if (rowSelectionHistory.size() == 3) {
+			final int firstSelectedRow = rowSelectionHistory.poll();
+			for (final SelectableRune runeToUnselect : runes.get(firstSelectedRow)) {
+				runeToUnselect.setSelected(false);
+			}
 		}
-		final List<Rune> row = runes.get(rowIndex);
-		if (row.size() >= columnIndex) {
-			throw new IllegalArgumentException();
-		}
-		return row.get(columnIndex);
 	}
 }

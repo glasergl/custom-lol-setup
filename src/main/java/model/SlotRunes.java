@@ -1,26 +1,34 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SlotRunes {
-	protected final List<List<Rune>> runes;
+	protected final List<List<SelectableRune>> runes;
 
 	public SlotRunes(final List<List<Rune>> runes) {
-		this.runes = runes;
+		this.runes = new ArrayList<>(runes.size());
+		for (final List<Rune> row : runes) {
+			this.runes.add(RunePage.createSelectableRunes(row));
+		}
 	}
 
 	public void select(final int rowIndex, final int columnIndex) {
-		if (runes.size() >= rowIndex || rowIndex < 0 || columnIndex < 0) {
+		if (rowIndex >= runes.size() || rowIndex < 0 || columnIndex < 0) {
 			throw new IllegalArgumentException();
 		}
-		final List<Rune> row = runes.get(rowIndex);
-		if (row.size() >= columnIndex) {
+		final List<SelectableRune> row = runes.get(rowIndex);
+		if (columnIndex >= row.size()) {
 			throw new IllegalArgumentException();
 		}
-		for (final Rune rune : row) {
+		for (final SelectableRune rune : row) {
 			rune.setSelected(false);
 		}
-		final Rune runeToSelect = row.get(columnIndex);
+		final SelectableRune runeToSelect = row.get(columnIndex);
 		runeToSelect.setSelected(true);
+	}
+
+	public final List<List<SelectableRune>> get() {
+		return runes;
 	}
 }
