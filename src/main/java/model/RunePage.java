@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class RunePage {
+	private final RunePath mainRunePath;
+	private final RunePath secondRunePath;
 	private final List<SelectableRune> keyStones;
-	private final SlotRunes slotRunes;
-	private final SecondPath secondPath;
+	private final SelectableSlotRunes slotRunes;
+	private final SelectableSecondPathRunes secondPath;
 
-	public RunePage(final RunePath first, final RunePath second) {
-		this.keyStones = createSelectableRunes(first.getKeyStones());
-		this.slotRunes = new SlotRunes(first.getSlotRunes());
-		this.secondPath = new SecondPath(second.getSlotRunes());
+	public RunePage(final RunePath mainRunePath, final RunePath secondRunePath) {
+		if (mainRunePath.equals(secondRunePath)) {
+			throw new IllegalArgumentException();
+		}
+		this.mainRunePath = mainRunePath;
+		this.secondRunePath = secondRunePath;
+		this.keyStones = createSelectableRunes(mainRunePath.getKeyStones());
+		this.slotRunes = new SelectableSlotRunes(mainRunePath.getSlotRunes());
+		this.secondPath = new SelectableSecondPathRunes(secondRunePath.getSlotRunes());
 	}
 
 	public void selectKeyStone(final int columnIndex) {
@@ -32,15 +39,23 @@ public final class RunePage {
 		secondPath.select(rowIndex, columnIndex);
 	}
 
+	public RunePath getMainRunePath() {
+		return mainRunePath;
+	}
+
+	public RunePath getSecondRunePath() {
+		return secondRunePath;
+	}
+
 	public List<SelectableRune> getKeyStones() {
 		return keyStones;
 	}
 
-	public SlotRunes getSlotRunes() {
+	public SelectableSlotRunes getSlotRunes() {
 		return slotRunes;
 	}
 
-	public SecondPath getSecondPath() {
+	public SelectableSecondPathRunes getSecondPath() {
 		return secondPath;
 	}
 

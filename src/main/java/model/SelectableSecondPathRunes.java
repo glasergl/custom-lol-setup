@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public final class SecondPath extends SlotRunes {
+public final class SelectableSecondPathRunes extends SelectableSlotRunes {
 	private final Queue<Integer> rowSelectionHistory = new LinkedList<>();
 
-	public SecondPath(final List<List<Rune>> runes) {
+	public SelectableSecondPathRunes(final List<List<Rune>> runes) {
 		super(runes);
 	}
 

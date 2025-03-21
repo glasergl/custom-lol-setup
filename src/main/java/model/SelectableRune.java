@@ -20,4 +20,8 @@ public final class SelectableRune {
 	public void setSelected(final boolean shouldBeSelected) {
 		this.isSelected = shouldBeSelected;
 	}
+
+	public String getName() {
+		return rune.getName();
+	}
 }

@@ -3,10 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlotRunes {
+public class SelectableSlotRunes {
 	protected final List<List<SelectableRune>> runes;
 
-	public SlotRunes(final List<List<Rune>> runes) {
+	public SelectableSlotRunes(final List<List<Rune>> runes) {
 		this.runes = new ArrayList<>(runes.size());
 		for (final List<Rune> row : runes) {
 			this.runes.add(RunePage.createSelectableRunes(row));

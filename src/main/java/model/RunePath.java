@@ -15,7 +15,16 @@ public final class RunePath {
 		this.slotRuneRows = slotRunes;
 	}
 
-	public String getPathName() {
+	@Override
+	public boolean equals(final Object other) {
+		if (!(other instanceof RunePath)) {
+			return false;
+		}
+		final RunePath otherRunePath = (RunePath) other;
+		return name.equals(otherRunePath.name);
+	}
+
+	public String getName() {
 		return name;
 	}
 

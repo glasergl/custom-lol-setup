@@ -2,6 +2,8 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import model.SelectableRune;
 public final class RunePageView {
 	private final RunePage runePage;
 	private final JPanel view;
-	private List<RuneView> runeViews;
+	private List<GraySelectionElement> runeViews;
 
 	public RunePageView(final RunePage runePage) {
 		this.runePage = runePage;
@@ -24,8 +26,8 @@ public final class RunePageView {
 		final JPanel mainRunePath = new JPanel(new BorderLayout(0, 0));
 		mainRunePath.add(createKeyStoneView(), BorderLayout.NORTH);
 		mainRunePath.add(createSlotRuneView(true), BorderLayout.CENTER);
-		view.add(wrapInEmptyJPanel(mainRunePath), BorderLayout.CENTER);
-		view.add(wrapInEmptyJPanel(createSlotRuneView(false)), BorderLayout.EAST);
+		view.add(wrapInEmptyJPanel(mainRunePath, new FlowLayout(FlowLayout.RIGHT)), BorderLayout.CENTER);
+		view.add(wrapInEmptyJPanel(createSlotRuneView(false), new FlowLayout(FlowLayout.LEFT)), BorderLayout.EAST);
 		updateRuneViews();
 	}
 
@@ -33,7 +35,10 @@ public final class RunePageView {
 		final JPanel keyStonesView = new JPanel();
 		int keyStoneIndex = 0;
 		for (final SelectableRune keyStone : runePage.getKeyStones()) {
-			final RuneView runeView = new RuneView(keyStone, 60, new SelectKeyStone(keyStoneIndex));
+			final Image image = ImageReading.getImageFromName(keyStone.getRune().getName(), "png", 60, 60);
+			final GraySelectionElement runeView = new GraySelectionElement(image, () -> {
+				return keyStone.isSelected();
+			}, new SelectKeyStone(keyStoneIndex));
 			keyStonesView.add(runeView.getView());
 			keyStoneIndex++;
 			runeViews.add(runeView);
@@ -50,8 +55,11 @@ public final class RunePageView {
 			final List<SelectableRune> row = slotRunes.get(rowIndex);
 			final JPanel rowView = new JPanel();
 			for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
-				final RuneView runeView = new RuneView(row.get(columnIndex), 35,
-						new SelectSlotRune(rowIndex, columnIndex, firstPath));
+				final SelectableRune rune = row.get(columnIndex);
+				final Image image = ImageReading.getImageFromName(rune.getName(), "png", 35, 35);
+				final GraySelectionElement runeView = new GraySelectionElement(image, () -> {
+					return rune.isSelected();
+				}, new SelectSlotRune(rowIndex, columnIndex, firstPath));
 				rowView.add(runeView.getView());
 				runeViews.add(runeView);
 			}
@@ -65,13 +73,13 @@ public final class RunePageView {
 	}
 
 	private void updateRuneViews() {
-		for (final RuneView runeView : runeViews) {
+		for (final GraySelectionElement runeView : runeViews) {
 			runeView.updateSelectionState();
 		}
 	}
 
-	private JPanel wrapInEmptyJPanel(final JComponent jComponent) {
-		final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+	private JPanel wrapInEmptyJPanel(final JComponent jComponent, final LayoutManager layout) {
+		final JPanel jPanel = new JPanel(layout);
 		jPanel.add(jComponent);
 		return jPanel;
 	}
