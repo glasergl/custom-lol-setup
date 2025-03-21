@@ -14,6 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Element which switches between two states. When selected displays the given
+ * image, else the image converted to gray.
+ */
 public final class GraySelectionElement {
 	private final JPanel runeView = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	private final JLabel runeIcon = new JLabel();

@@ -4,6 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * Special kind of selectable slot runes where only 2 runes in total can be
+ * selected.
+ */
 public final class SelectableSecondPathRunes extends SelectableSlotRunes {
 	private final Queue<Integer> rowSelectionHistory = new LinkedList<>();
 

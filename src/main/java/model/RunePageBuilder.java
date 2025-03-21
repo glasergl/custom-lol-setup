@@ -2,21 +2,26 @@ package model;
 
 import java.util.List;
 
+/**
+ * Introduces the functionality to change rune paths of a rune page while
+ * ensuring no invalid combination is created. Changing a rune path requires a
+ * new rune page instance.
+ */
 public final class RunePageBuilder {
 	private final List<RunePath> runePaths;
 	private RunePage runePage;
 
-	public RunePageBuilder(final List<RunePath> runePaths, final RunePath initialMainRunePath,
+	public RunePageBuilder(final List<RunePath> allRunePaths, final RunePath initialMainRunePath,
 			final RunePath initialSecondRunePath) {
 		if (initialMainRunePath.equals(initialSecondRunePath)) {
 			throw new IllegalArgumentException();
 		}
-		this.runePaths = runePaths;
+		this.runePaths = allRunePaths;
 		this.runePage = new RunePage(initialMainRunePath, initialSecondRunePath);
 	}
 
-	public RunePageBuilder(final List<RunePath> runePaths) {
-		this(runePaths, runePaths.get(0), runePaths.get(1));
+	public RunePageBuilder(final List<RunePath> allRunePaths) {
+		this(allRunePaths, allRunePaths.get(0), allRunePaths.get(1));
 	}
 
 	public void changeMainPath(final RunePath nextMainRunePath) {
@@ -25,9 +30,8 @@ public final class RunePageBuilder {
 		}
 		final RunePath oldSecondRunePath = runePage.getSecondRunePath();
 		if (!nextMainRunePath.equals(oldSecondRunePath)) {
-			final SelectableSecondPathRunes slotRunesOfOldSecondPath = runePage.getSecondPath();
+			final List<List<SelectableRune>> previoslySelectedRunes = runePage.getSecondPath().get();
 			runePage = new RunePage(nextMainRunePath, oldSecondRunePath);
-			final List<List<SelectableRune>> previoslySelectedRunes = slotRunesOfOldSecondPath.get();
 			for (int rowIndex = 0; rowIndex < previoslySelectedRunes.size(); rowIndex++) {
 				final List<SelectableRune> row = previoslySelectedRunes.get(rowIndex);
 				for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
@@ -45,18 +49,27 @@ public final class RunePageBuilder {
 
 	public void changeSecondPath(final RunePath nextSecondRunePath) {
 		final RunePath oldMainRunePath = runePage.getMainRunePath();
-		if (nextSecondRunePath.equals(oldMainRunePath)) {
-			throw new IllegalArgumentException();
+		if (nextSecondRunePath.equals(runePage.getSecondRunePath()) || nextSecondRunePath.equals(oldMainRunePath)) {
+			return;
 		}
+		final List<List<SelectableRune>> previouslySelectedSlotRunesOfOldMainPath = runePage.getSlotRunes().get();
+		final List<SelectableRune> previouslySelectedKeyStones = runePage.getKeyStones();
 		runePage = new RunePage(oldMainRunePath, nextSecondRunePath);
-	}
-
-	public List<RunePath> getRunePaths() {
-		return runePaths;
-	}
-
-	public RunePage getRunePage() {
-		return runePage;
+		for (int rowIndex = 0; rowIndex < previouslySelectedSlotRunesOfOldMainPath.size(); rowIndex++) {
+			final List<SelectableRune> row = previouslySelectedSlotRunesOfOldMainPath.get(rowIndex);
+			for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
+				final SelectableRune rune = row.get(columnIndex);
+				if (rune.isSelected()) {
+					runePage.selectSlotRune(rowIndex, columnIndex);
+				}
+			}
+		}
+		for (int keyStoneIndex = 0; keyStoneIndex < previouslySelectedKeyStones.size(); keyStoneIndex++) {
+			final SelectableRune keyStone = previouslySelectedKeyStones.get(keyStoneIndex);
+			if (keyStone.isSelected()) {
+				runePage.selectKeyStone(keyStoneIndex);
+			}
+		}
 	}
 
 	private RunePath getFirstRunePathApartFrom(final RunePath excludedRunePath) {
@@ -66,5 +79,13 @@ public final class RunePageBuilder {
 			}
 		}
 		throw new IllegalStateException("Unable to retrieve other rune path than " + excludedRunePath.getName());
+	}
+
+	public List<RunePath> getRunePaths() {
+		return runePaths;
+	}
+
+	public RunePage getRunePage() {
+		return runePage;
 	}
 }

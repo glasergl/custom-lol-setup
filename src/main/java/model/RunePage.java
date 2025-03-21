@@ -1,8 +1,12 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains all components of a mutable runepage with methods to select runes.
+ * The methods ensure no invalid runepage is reflected. After instantiation, the
+ * rune paths cannot be changed anymore (selections can be changed, of course).
+ */
 public final class RunePage {
 	private final RunePath mainRunePath;
 	private final RunePath secondRunePath;
@@ -16,7 +20,7 @@ public final class RunePage {
 		}
 		this.mainRunePath = mainRunePath;
 		this.secondRunePath = secondRunePath;
-		this.keyStones = createSelectableRunes(mainRunePath.getKeyStones());
+		this.keyStones = SelectableRune.createSelectableRunes(mainRunePath.getKeyStones());
 		this.slotRunes = new SelectableSlotRunes(mainRunePath.getSlotRunes());
 		this.secondPath = new SelectableSecondPathRunes(secondRunePath.getSlotRunes());
 	}
@@ -57,13 +61,5 @@ public final class RunePage {
 
 	public SelectableSecondPathRunes getSecondPath() {
 		return secondPath;
-	}
-
-	public static List<SelectableRune> createSelectableRunes(final List<Rune> runes) {
-		final List<SelectableRune> selectableRunes = new ArrayList<>(runes.size());
-		for (final Rune rune : runes) {
-			selectableRunes.add(new SelectableRune(rune, false));
-		}
-		return selectableRunes;
 	}
 }

@@ -1,5 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Wrapper of a rune to make it selectable. An instance of a rune should only be
+ * created once per rune, but instances of this class can be created as often as
+ * desired, i.e., for multiple rune pages containing the same runes.
+ */
 public final class SelectableRune {
 	private final Rune rune;
 	private boolean isSelected;
@@ -7,10 +15,6 @@ public final class SelectableRune {
 	public SelectableRune(final Rune rune, final boolean initiallySelected) {
 		this.rune = rune;
 		this.isSelected = initiallySelected;
-	}
-
-	public Rune getRune() {
-		return rune;
 	}
 
 	public boolean isSelected() {
@@ -23,5 +27,13 @@ public final class SelectableRune {
 
 	public String getName() {
 		return rune.getName();
+	}
+
+	public static List<SelectableRune> createSelectableRunes(final List<Rune> runes) {
+		final List<SelectableRune> selectableRunes = new ArrayList<>(runes.size());
+		for (final Rune rune : runes) {
+			selectableRunes.add(new SelectableRune(rune, false));
+		}
+		return selectableRunes;
 	}
 }

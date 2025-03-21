@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Immutable class that represents a rune by name.
+ */
 public final class Rune {
 	private final String name;
 

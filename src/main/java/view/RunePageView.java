@@ -14,6 +14,11 @@ import javax.swing.JPanel;
 import model.RunePage;
 import model.SelectableRune;
 
+/**
+ * Creates a JPanel of a single rune page which updates itself based user clicks
+ * on runes. An instance of this corresponds 1 to 1 to a rune page. After
+ * instantiation, the rune paths cannot be changed anymore.
+ */
 public final class RunePageView {
 	private final RunePage runePage;
 	private final JPanel view;
@@ -35,7 +40,7 @@ public final class RunePageView {
 		final JPanel keyStonesView = new JPanel();
 		int keyStoneIndex = 0;
 		for (final SelectableRune keyStone : runePage.getKeyStones()) {
-			final Image image = ImageReading.getImageFromName(keyStone.getRune().getName(), "png", 60, 60);
+			final Image image = ImageReading.getImageFromName(keyStone.getName(), "png", 60, 60);
 			final GraySelectionElement runeView = new GraySelectionElement(image, () -> {
 				return keyStone.isSelected();
 			}, new SelectKeyStone(keyStoneIndex));

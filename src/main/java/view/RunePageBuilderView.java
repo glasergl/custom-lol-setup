@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import model.RunePageBuilder;
 import model.RunePath;
 
+/**
+ * Manages the paths of rune pages, i.e., creates new rune pages and
+ * corresponding rune page views for changing rune paths.
+ */
 public final class RunePageBuilderView {
 	private final RunePageBuilder runePageBuilder;
 	private final JPanel view = new JPanel(new BorderLayout(0, 0));

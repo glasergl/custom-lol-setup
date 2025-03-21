@@ -4,6 +4,9 @@ import java.util.List;
 
 import static model.Rune.getListOfRunes;
 
+/**
+ * Immutable representation of a rune path with its keystones and slot runes.
+ */
 public final class RunePath {
 	private final String name;
 	private final List<Rune> keyStones;
