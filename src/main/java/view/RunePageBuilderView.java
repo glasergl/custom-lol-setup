@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import model.RunePageBuilder;
@@ -19,15 +20,15 @@ import model.RunePath;
  */
 public final class RunePageBuilderView {
 	private final RunePageBuilder runePageBuilder;
-	private final JPanel view = new JPanel(new BorderLayout(0, 0));
+	private final JPanel view = new JPanel();
 	private final List<GraySelectionElement> runePathSelectionElements = new ArrayList<>();
 	private RunePageView runePageView;
 
 	public RunePageBuilderView(final RunePageBuilder runePageBuilder) {
 		this.runePageBuilder = runePageBuilder;
 		this.runePageView = new RunePageView(runePageBuilder.getRunePage());
-		final JPanel runePathSelectors = new JPanel();
 
+		final JPanel runePathSelectors = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		runePathSelectors.add(createMainRunePathSelection(runePath -> {
 			runePageBuilder.changeMainPath(runePath);
 		}, (runePath) -> {
@@ -38,8 +39,9 @@ public final class RunePageBuilderView {
 		}, (runePath) -> {
 			return runePageBuilder.getRunePage().getSecondRunePath().equals(runePath);
 		}, 30));
-		view.add(runePathSelectors, BorderLayout.NORTH);
-		view.add(runePageView.getView(), BorderLayout.CENTER);
+		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
+		view.add(runePathSelectors);
+		view.add(runePageView.getView());
 	}
 
 	private JPanel createMainRunePathSelection(final Consumer<RunePath> executePathChange,

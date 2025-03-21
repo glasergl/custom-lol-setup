@@ -7,13 +7,13 @@ import java.util.List;
  * Class to represent the non-keystone runes of a rune path where only a single
  * rune per row can be selected concurrently.
  */
-public class SelectableSlotRunes {
+public class SelectableRunes {
 	protected final List<List<SelectableRune>> runes;
 
-	public SelectableSlotRunes(final List<List<Rune>> runes) {
+	public SelectableRunes(final List<List<Rune>> runes) {
 		this.runes = new ArrayList<>(runes.size());
 		for (final List<Rune> row : runes) {
-			this.runes.add(SelectableRune.createSelectableRunes(row));
+			this.runes.add(createSelectableRunes(row));
 		}
 	}
 
@@ -30,6 +30,14 @@ public class SelectableSlotRunes {
 		}
 		final SelectableRune runeToSelect = row.get(columnIndex);
 		runeToSelect.setSelected(true);
+	}
+
+	private List<SelectableRune> createSelectableRunes(final List<Rune> runes) {
+		final List<SelectableRune> selectableRunes = new ArrayList<>(runes.size());
+		for (final Rune rune : runes) {
+			selectableRunes.add(new SelectableRune(rune, false));
+		}
+		return selectableRunes;
 	}
 
 	public final List<List<SelectableRune>> get() {
