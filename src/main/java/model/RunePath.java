@@ -68,4 +68,6 @@ public final class RunePath {
 			List.of(getListOfRunes("Hextech Flashtraption", "Magical Footwear", "Cash Back"),
 					getListOfRunes("Triple Tonic", "Time Warp Tonic", "Biscuit Delivery"),
 					getListOfRunes("Cosmic Insight", "Approach Velocity", "Jack of All Trades")));
+
+	public static final List<RunePath> ALL = List.of(PRECISION, DOMINATION, SORCERY, RESOLVE, INSPIRATION);
 }

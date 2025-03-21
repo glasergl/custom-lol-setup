@@ -14,12 +14,16 @@ public final class SelectableRune {
 		this.isSelected = initiallySelected;
 	}
 
+	public void setSelected(final boolean shouldBeSelected) {
+		this.isSelected = shouldBeSelected;
+	}
+
 	public boolean isSelected() {
 		return isSelected;
 	}
 
-	public void setSelected(final boolean shouldBeSelected) {
-		this.isSelected = shouldBeSelected;
+	public Rune getRune() {
+		return rune;
 	}
 
 	public String getName() {

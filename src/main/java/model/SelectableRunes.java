@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to represent the non-keystone runes of a rune path where only a single
- * rune per row can be selected concurrently.
+ * Class to represent runes of a rune path where only a single rune per row can
+ * be selected concurrently.
  */
 public class SelectableRunes {
 	protected final List<List<SelectableRune>> runes;

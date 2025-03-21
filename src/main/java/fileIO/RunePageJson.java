@@ -65,8 +65,9 @@ public class RunePageJson {
 		final JSONObject secondPathJson = runePageJson.getJSONObject("secondPath");
 		final JSONArray shardsJson = runePageJson.getJSONArray("shards");
 
-		final RunePage runePage = new RunePage(getRunePath(mainPathJson.getString("name")),
-				getRunePath(secondPathJson.getString("name")));
+		final RunePage runePage = new RunePage(runePageJson.getString("uuid"), runePageJson.getString("title"),
+				runePageJson.getString("group"), getRunePath(mainPathJson.getString("name")),
+				getRunePath(secondPathJson.getString("name")), RunePath.ALL);
 		for (final JSONArray selection : List.of(mainPathJson.getJSONArray("selection"),
 				secondPathJson.getJSONArray("selection"), shardsJson)) {
 			selectRunes(selection, runePage);

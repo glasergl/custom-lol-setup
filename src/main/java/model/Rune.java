@@ -32,6 +32,11 @@ public final class Rune {
 		return name.equals(otherRune.name);
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	public static List<Rune> getListOfRunes(final String... runeNames) {
 		final List<Rune> runes = new ArrayList<>(runeNames.length);
 		for (final String runeName : runeNames) {
