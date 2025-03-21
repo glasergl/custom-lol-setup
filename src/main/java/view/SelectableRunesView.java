@@ -3,7 +3,9 @@ package view;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -12,6 +14,8 @@ import model.SelectableRune;
 import model.SelectableRunes;
 
 public class SelectableRunesView {
+	private static final Map<String, Image> IMAGE_STORAGE = new HashMap<>();
+
 	private final JPanel view = new JPanel();
 	private final List<GraySelectionElement> runeViews = new ArrayList<>();
 
@@ -30,7 +34,9 @@ public class SelectableRunesView {
 			final JPanel rowView = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
 				final SelectableRune rune = row.get(columnIndex);
-				final Image runeIcon = ImageReading.getImageFromName(rune.getName(), "png", iconSize, iconSize);
+				final Image runeIcon = IMAGE_STORAGE.containsKey(rune.getName()) ? IMAGE_STORAGE.get(rune.getName())
+						: ImageReading.getImageFromName(rune.getName(), "png", iconSize, iconSize);
+				IMAGE_STORAGE.put(rune.getName(), runeIcon);
 				final GraySelectionElement runeView = new GraySelectionElement(runeIcon, () -> {
 					return rune.isSelected();
 				}, new SelectRune(rowIndex, columnIndex, selectableRunes));
