@@ -20,6 +20,8 @@ public final class RunePage {
 					getListOfRunes("Adaptive Force", "Movement Speed", "Scaling Bonus Health"),
 					getListOfRunes("Bonus Health", "Tenacity and Slow Resist", "Scaling Bonus Health")));
 
+	private String title = "";
+
 	public RunePage(final RunePath mainRunePath, final RunePath secondRunePath) {
 		if (mainRunePath.equals(secondRunePath)) {
 			throw new IllegalArgumentException();
@@ -47,6 +49,10 @@ public final class RunePage {
 		shards.select(rowIndex, columnIndex);
 	}
 
+	public void setTitle(final String title) {
+		this.title = title;
+	}
+
 	public RunePath getMainRunePath() {
 		return mainRunePath;
 	}
@@ -69,5 +75,9 @@ public final class RunePage {
 
 	public SelectableRunes getShards() {
 		return shards;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 }
