@@ -59,8 +59,7 @@ public class RunePageJson {
 		return json;
 	}
 
-	public static RunePage getFromJson(final String runePageAsJsonString) {
-		final JSONObject runePageJson = new JSONObject(runePageAsJsonString);
+	public static RunePage getFromJson(final JSONObject runePageJson) {
 		final JSONObject mainPathJson = runePageJson.getJSONObject("mainPath");
 		final JSONObject secondPathJson = runePageJson.getJSONObject("secondPath");
 		final JSONArray shardsJson = runePageJson.getJSONArray("shards");
