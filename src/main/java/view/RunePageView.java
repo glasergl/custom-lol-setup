@@ -23,7 +23,11 @@ public final class RunePageView {
 		mainRunePath.add(new SelectableRunesView(runePage.getSlotRunes(), 35).getView());
 		view.setLayout(new BoxLayout(view, BoxLayout.X_AXIS));
 		view.add(mainRunePath);
-		view.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(), 35).getView());
+		final JPanel secondRunePathAndShards = new JPanel();
+		secondRunePathAndShards.setLayout(new BoxLayout(secondRunePathAndShards, BoxLayout.Y_AXIS));
+		secondRunePathAndShards.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(), 35).getView());
+		secondRunePathAndShards.add(new SelectableRunesView(runePage.getShards(), 25).getView());
+		view.add(secondRunePathAndShards);
 	}
 
 	public RunePage getRunePage() {
