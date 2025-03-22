@@ -1,7 +1,5 @@
 package model;
 
-import static model.Rune.getListOfRunes;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -12,10 +10,7 @@ import java.util.UUID;
 public final class RunePage {
 	private final String uuid;
 	private final List<RunePath> allRunePaths;
-	private final SelectableRunes selectableShards = new SelectableRunes(
-			List.of(getListOfRunes("Adaptive Force", "Attack Speed", "Ability Haste"),
-					getListOfRunes("Adaptive Force", "Movement Speed", "Scaling Bonus Health"),
-					getListOfRunes("Bonus Health", "Tenacity and Slow Resist", "Scaling Bonus Health")));
+	private final SelectableRunes selectableShards = new SelectableRunes(Shards.ALL);
 
 	private String title;
 	private String group;

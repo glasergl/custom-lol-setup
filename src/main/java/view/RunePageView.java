@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -8,6 +7,7 @@ import java.util.function.Function;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import fileIO.Images;
 import model.RunePage;
 import model.RunePath;
 
@@ -36,39 +36,47 @@ public final class RunePageView {
 		final JPanel mainRunePath = new JPanel();
 		mainRunePath.setLayout(new BoxLayout(mainRunePath, BoxLayout.Y_AXIS));
 		final JPanel mainRunePathSelection = getRunePathSelectionView(runePathToCreateSelectorFor -> {
-			final Image image = ImageReading.getImageFromName(runePathToCreateSelectorFor.getName(), "png", 50, 50);
-			final GraySelectionElement runePathSelection = new GraySelectionElement(image, () -> {
-				return runePathToCreateSelectorFor.equals(runePage.getMainRunePath());
-			}, () -> {
-				runePage.selectMainPath(runePathToCreateSelectorFor);
-				updateRunePathSelectors();
-			});
+			final GraySelectionElement runePathSelection = new GraySelectionElement(
+					Images.MAIN_RUNE_PATH_IMAGES.get(runePathToCreateSelectorFor.getName()),
+					Images.MAIN_RUNE_PATH_GRAY_IMAGES.get(runePathToCreateSelectorFor.getName()), () -> {
+						return runePathToCreateSelectorFor.equals(runePage.getMainRunePath());
+					}, () -> {
+						runePage.selectMainPath(runePathToCreateSelectorFor);
+						updateRunePathSelectors();
+					});
 			runePathSelectors.add(runePathSelection);
 			return runePathSelection;
 		});
 		mainRunePath.add(mainRunePathSelection);
-		mainRunePath.add(new SelectableRunesView(runePage.getKeyStones(), 65).getView());
-		mainRunePath.add(new SelectableRunesView(runePage.getSlotRunes(), 35).getView());
+		mainRunePath.add(
+				new SelectableRunesView(runePage.getKeyStones(), Images.KEY_STONE_IMAGES, Images.KEY_STONE_GRAY_IMAGES)
+						.getView());
+		mainRunePath.add(
+				new SelectableRunesView(runePage.getSlotRunes(), Images.SLOT_RUNE_IMAGES, Images.SLOT_RUNE_GRAY_IMAGES)
+						.getView());
 		return mainRunePath;
 	}
 
 	private JPanel getSecondRunePathAndShardsView() {
 		final JPanel secondRunePathAndShards = new JPanel();
 		secondRunePathAndShards.setLayout(new BoxLayout(secondRunePathAndShards, BoxLayout.Y_AXIS));
-		final JPanel secondRunePathSelection = getRunePathSelectionView(runePath -> {
-			final Image image = ImageReading.getImageFromName(runePath.getName(), "png", 30, 30);
-			final GraySelectionElement runePathSelection = new GraySelectionElement(image, () -> {
-				return runePath.equals(runePage.getSecondRunePath());
-			}, () -> {
-				runePage.selectSecondPath(runePath);
-				updateRunePathSelectors();
-			});
+		final JPanel secondRunePathSelection = getRunePathSelectionView(runePathToCreateSelectorFor -> {
+			final GraySelectionElement runePathSelection = new GraySelectionElement(
+					Images.SECOND_RUNE_PATH_IMAGES.get(runePathToCreateSelectorFor.getName()),
+					Images.SECOND_RUNE_PATH_GRAY_IMAGES.get(runePathToCreateSelectorFor.getName()), () -> {
+						return runePathToCreateSelectorFor.equals(runePage.getSecondRunePath());
+					}, () -> {
+						runePage.selectSecondPath(runePathToCreateSelectorFor);
+						updateRunePathSelectors();
+					});
 			runePathSelectors.add(runePathSelection);
 			return runePathSelection;
 		});
 		secondRunePathAndShards.add(secondRunePathSelection);
-		secondRunePathAndShards.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(), 35).getView());
-		secondRunePathAndShards.add(new SelectableRunesView(runePage.getShards(), 25).getView());
+		secondRunePathAndShards.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(), Images.SLOT_RUNE_IMAGES,
+				Images.SLOT_RUNE_GRAY_IMAGES).getView());
+		secondRunePathAndShards.add(
+				new SelectableRunesView(runePage.getShards(), Images.SHARD_IMAGES, Images.SHARD_GRAY_IMAGES).getView());
 		return secondRunePathAndShards;
 	}
 

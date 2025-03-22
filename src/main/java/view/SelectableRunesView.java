@@ -3,7 +3,6 @@ package view;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,18 +13,18 @@ import model.SelectableRune;
 import model.SelectableRunes;
 
 public class SelectableRunesView {
-	private static final Map<String, Image> IMAGE_STORAGE = new HashMap<>();
-
 	private final JPanel view = new JPanel();
 	private final List<GraySelectionElement> runeViews = new ArrayList<>();
 
-	public SelectableRunesView(final SelectableRunes selectableRunes, final int iconSize) {
+	public SelectableRunesView(final SelectableRunes selectableRunes, final Map<String, Image> images,
+			final Map<String, Image> grayImages) {
 		view.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		view.add(createRuneIcons(selectableRunes, iconSize));
+		view.add(createRuneIcons(selectableRunes, images, grayImages));
 		updateSelectionStates();
 	}
 
-	private JPanel createRuneIcons(final SelectableRunes selectableRunes, final int iconSize) {
+	private JPanel createRuneIcons(final SelectableRunes selectableRunes, final Map<String, Image> images,
+			final Map<String, Image> grayImages) {
 		final JPanel runeIcons = new JPanel();
 		runeIcons.setLayout(new BoxLayout(runeIcons, BoxLayout.Y_AXIS));
 		final List<List<SelectableRune>> rows = selectableRunes.get();
@@ -34,12 +33,10 @@ public class SelectableRunesView {
 			final JPanel rowView = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
 				final SelectableRune rune = row.get(columnIndex);
-				final Image runeIcon = IMAGE_STORAGE.containsKey(rune.getName()) ? IMAGE_STORAGE.get(rune.getName())
-						: ImageReading.getImageFromName(rune.getName(), "png", iconSize, iconSize);
-				IMAGE_STORAGE.put(rune.getName(), runeIcon);
-				final GraySelectionElement runeView = new GraySelectionElement(runeIcon, () -> {
-					return rune.isSelected();
-				}, new SelectRune(rowIndex, columnIndex, selectableRunes));
+				final GraySelectionElement runeView = new GraySelectionElement(images.get(rune.getName()),
+						grayImages.get(rune.getName()), () -> {
+							return rune.isSelected();
+						}, new SelectRune(rowIndex, columnIndex, selectableRunes));
 				runeViews.add(runeView);
 				rowView.add(runeView.getView());
 			}

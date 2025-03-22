@@ -1,13 +1,9 @@
 package view;
 
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.color.ColorSpace;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.util.function.Supplier;
 
 import javax.swing.ImageIcon;
@@ -15,36 +11,35 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Element which switches between two states. When selected displays the given
- * image, else the image converted to gray.
+ * Element which switches between two states, selected and unselected.
  */
 public final class GraySelectionElement {
 	private final JPanel runeView = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	private final JLabel runeIcon = new JLabel();
 	private final Supplier<Boolean> shouldBeSelectedCheck;
-	private final Runnable onClick;
-	private final Image coloredIcon;
-	private final Image grayScaleIcon;
+	private final Runnable onClickAction;
+	private final Image selectedImage;
+	private final Image unselectedImage;
 
-	public GraySelectionElement(final Image image, final Supplier<Boolean> shouldBeSelectedCheck,
-			final Runnable onClick) {
+	public GraySelectionElement(final Image selectedImage, final Image unselectedImage,
+			final Supplier<Boolean> shouldBeSelectedCheck, final Runnable onClickAction) {
 		this.shouldBeSelectedCheck = shouldBeSelectedCheck;
-		this.onClick = onClick;
-		this.coloredIcon = image;
-		this.grayScaleIcon = getGrayScale(coloredIcon);
-		runeIcon.addMouseListener(getRuneSelectionMouseListener());
+		this.onClickAction = onClickAction;
+		this.selectedImage = selectedImage;
+		this.unselectedImage = unselectedImage;
+		runeIcon.addMouseListener(getClickActionMouseListener());
 		runeView.add(runeIcon);
 	}
 
 	public void updateSelectionState() {
-		runeIcon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? coloredIcon : grayScaleIcon));
+		runeIcon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? selectedImage : unselectedImage));
 	}
 
-	private MouseListener getRuneSelectionMouseListener() {
+	private MouseListener getClickActionMouseListener() {
 		return new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				onClick.run();
+				onClickAction.run();
 			}
 
 			@Override
@@ -67,16 +62,5 @@ public final class GraySelectionElement {
 
 	public JPanel getView() {
 		return runeView;
-	}
-
-	private Image getGrayScale(final Image image) {
-		final BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-				BufferedImage.TYPE_BYTE_GRAY);
-		final Graphics2D painter = bufferedImage.createGraphics();
-		painter.drawImage(image, 0, 0, runeView.getBackground(), null);
-		painter.dispose();
-		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-		ColorConvertOp op = new ColorConvertOp(cs, null);
-		return op.filter(bufferedImage, null);
 	}
 }
