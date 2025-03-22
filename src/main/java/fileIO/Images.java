@@ -21,9 +21,9 @@ import model.Shards;
  * Loads all images at once to not have lags in the UI.
  */
 public class Images {
-	private static final int MAIN_RUNE_PATH_ICON_SIZE = 65;
-	private static final int SECOND_RUNE_PATH_ICON_SIZE = 45;
-	private static final int KEY_STONE_ICON_SIZE = 50;
+	private static final int MAIN_RUNE_PATH_ICON_SIZE = 55;
+	private static final int SECOND_RUNE_PATH_ICON_SIZE = 40;
+	private static final int KEY_STONE_ICON_SIZE = 60;
 	private static final int SLOT_RUNE_ICON_SIZE = 35;
 	private static final int SHARD_ICON_SIZE = 25;
 
