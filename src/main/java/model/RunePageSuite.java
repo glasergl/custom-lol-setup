@@ -1,15 +1,18 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public final class RunePageSuite {
-	private final Map<String, List<RunePage>> runePagesByGroupName = new HashMap<>();
+	private final Map<String, List<RunePage>> runePagesByGroupName;
 	private Optional<RunePage> current = Optional.empty();
+
+	public RunePageSuite(final Map<String, List<RunePage>> runePagesByGroupName) {
+		this.runePagesByGroupName = runePagesByGroupName;
+	}
 
 	public void addEmptyRunePage(final String groupName) {
 		final RunePage emptyRunePage = new RunePage("New Rune Page", RunePath.PRECISION, RunePath.SORCERY,

@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,30 +16,39 @@ import model.RunePage;
 
 public class RunePageImportExport {
 	private static final Path OUTPUT_FILE_PATH = Path.of("runes.json");
+	private static final String RUNE_GROUP_JSON_KEY = "runeGroups";
 
-	public static List<RunePage> getRunePages() throws IOException {
+	public static Map<String, List<RunePage>> getRunePages() throws IOException {
 		if (!Files.exists(OUTPUT_FILE_PATH)) {
-			Files.writeString(OUTPUT_FILE_PATH, "{\"runes\":{}}", StandardOpenOption.CREATE_NEW,
-					StandardOpenOption.WRITE);
+			Files.writeString(OUTPUT_FILE_PATH, String.format("{\"%s\":{}}", RUNE_GROUP_JSON_KEY),
+					StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
 		}
 		final String fileContent = Files.readString(OUTPUT_FILE_PATH);
 		final JSONObject runesJson = new JSONObject(fileContent);
-		final JSONArray runePagesJson = runesJson.getJSONArray("runePages");
-		final List<RunePage> runePages = new ArrayList<>();
-		for (int i = 0; i < runePagesJson.length(); i++) {
-			final JSONObject runePageJson = runePagesJson.getJSONObject(i);
-			runePages.add(RunePageJson.getFromJson(runePageJson));
+		final JSONObject runeGroupsJson = runesJson.getJSONObject("runeGroups");
+		final Map<String, List<RunePage>> runePagesByGroup = new HashMap<>();
+		for (final String key : runeGroupsJson.keySet()) {
+			final JSONArray runePagesOfGroupJson = runeGroupsJson.getJSONArray(key);
+			final List<RunePage> runePagesOfGroup = new ArrayList<>();
+			for (int i = 0; i < runePagesOfGroupJson.length(); i++) {
+				final JSONObject runePageJson = runePagesOfGroupJson.getJSONObject(i);
+				runePagesOfGroup.add(RunePageJson.getFromJson(runePageJson));
+			}
 		}
-		return runePages;
+		return runePagesByGroup;
 	}
 
-	public static void storeRunePages(final List<RunePage> runePages) throws IOException {
-		final JSONArray runePagesSerialization = new JSONArray();
-		for (final RunePage runePage : runePages) {
-			runePagesSerialization.put(RunePageJson.getJson(runePage));
+	public static void storeRunePages(final Map<String, List<RunePage>> runePagesByGroup) throws IOException {
+		final JSONObject runeGroupsJson = new JSONObject();
+		for (final String runeGroupName : runePagesByGroup.keySet()) {
+			final JSONArray runeGroupJson = new JSONArray();
+			for (final RunePage runePage : runePagesByGroup.get(runeGroupName)) {
+				runeGroupJson.put(RunePageJson.getJson(runePage));
+			}
+			runeGroupsJson.put(runeGroupName, runeGroupJson);
 		}
-		final JSONObject runePageSerialization = new JSONObject();
-		runePageSerialization.put("runePages", runePagesSerialization);
-		Files.writeString(OUTPUT_FILE_PATH, runePageSerialization.toString(), StandardOpenOption.WRITE);
+		final JSONObject runesJson = new JSONObject();
+		runesJson.put(RUNE_GROUP_JSON_KEY, runeGroupsJson);
+		Files.writeString(OUTPUT_FILE_PATH, runesJson.toString(), StandardOpenOption.WRITE);
 	}
 }
