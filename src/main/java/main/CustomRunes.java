@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
 
@@ -9,16 +8,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
-import model.RunePage;
-import model.RunePath;
-import view.RunePageView;
+import model.RunePageSuite;
+import view.RunePageSuiteView;
 
 public class CustomRunes {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
-			UIManager.put("Panel.background", new Color(34, 34, 34));
 			final JFrame frame = new JFrame("Custom Runes");
 			try {
 				frame.setIconImage(ImageIO.read(CustomRunes.class.getResource("/GatheringStorm.png"))
@@ -27,12 +23,14 @@ public class CustomRunes {
 				e.printStackTrace();
 			}
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			final RunePage runePage = new RunePage("title", RunePath.SORCERY, RunePath.DOMINATION, RunePath.ALL);
+			final RunePageSuite runePageSuite = new RunePageSuite();
+			final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
 			final JPanel p = new JPanel();
-			p.add(new RunePageView(runePage).getView());
+			p.add(runePageSuiteView.getView());
 			frame.add(p, BorderLayout.CENTER);
-			frame.setSize(1200, 800);
-			frame.setResizable(false);
+//			frame.setSize(1200, 800);
+//			frame.setResizable(false);
+			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		});

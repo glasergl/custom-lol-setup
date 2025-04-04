@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
 import fileIO.Images;
@@ -30,7 +32,7 @@ public final class RunePageView {
 	public RunePageView(final RunePage runePage) {
 		this.runePage = runePage;
 		this.allRunePaths = runePage.getAllRunePaths();
-		view.setLayout(new BorderLayout(0, 0));
+		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 		updateRunePathSelectors();
 	}
 
@@ -104,9 +106,10 @@ public final class RunePageView {
 	private void updateRunePathSelectors() {
 		runePathSelectors.clear();
 		view.removeAll();
+		view.add(new JTextField(runePage.getTitle()));
 		final JPanel runePathSelectionViews = getBothRunePathSelectionViews();
 		runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
-		view.add(runePathSelectionViews, BorderLayout.NORTH);
+		view.add(runePathSelectionViews);
 		final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		final JPanel mainRunesView = getMainRunePathView();
 		final JPanel secondRunePathAndShardsView = getSecondRunePathAndShardsView();
@@ -114,7 +117,7 @@ public final class RunePageView {
 		secondRunePathAndShardsView.setAlignmentY(JComponent.TOP_ALIGNMENT);
 		runesView.add(mainRunesView);
 		runesView.add(secondRunePathAndShardsView);
-		view.add(runesView, BorderLayout.CENTER);
+		view.add(runesView);
 		for (final GraySelectionElement runePath : runePathSelectors) {
 			runePath.updateSelectionState();
 		}

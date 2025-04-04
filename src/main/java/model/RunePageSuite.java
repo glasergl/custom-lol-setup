@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public final class RunePageSuite {
 	private final Map<String, List<RunePage>> runePagesByGroupName = new HashMap<>();
@@ -46,5 +47,13 @@ public final class RunePageSuite {
 	public void deleteRunePage(final String groupName, final int i) {
 		final List<RunePage> runePagesOfGroup = runePagesByGroupName.get(groupName);
 		runePagesOfGroup.remove(i);
+	}
+
+	public Map<String, List<RunePage>> getRunePagesByGroupName() {
+		return runePagesByGroupName;
+	}
+
+	public Set<String> getGroupNames() {
+		return runePagesByGroupName.keySet();
 	}
 }
