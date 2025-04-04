@@ -1,31 +1,27 @@
 package model;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Contains all components of a mutable runepage with methods to select runes.
  * The methods ensure no invalid runepage is reflected.
  */
 public final class RunePage {
-	private final String uuid;
 	private final List<RunePath> allRunePaths;
 	private final SelectableRunes selectableShards = new SelectableRunes(Shards.ALL);
 
 	private String title;
-	private String group;
 	private RunePath mainRunePath;
 	private RunePath secondRunePath;
 	private SelectableRunes selectableKeyStones;
 	private SelectableRunes selectableSlotRunes;
 	private SelectableSecondPathRunes selectableSecondPathSlotRunes;
 
-	public RunePage(final String uuid, final String title, final String group, final RunePath mainRunePath,
-			final RunePath secondRunePath, final List<RunePath> allRunePaths) {
+	public RunePage(final String title, final RunePath mainRunePath, final RunePath secondRunePath,
+			final List<RunePath> allRunePaths) {
 		if (mainRunePath.equals(secondRunePath)) {
 			throw new IllegalArgumentException();
 		}
-		this.uuid = uuid;
 		this.allRunePaths = allRunePaths;
 		this.mainRunePath = mainRunePath;
 		this.secondRunePath = secondRunePath;
@@ -33,12 +29,6 @@ public final class RunePage {
 		this.selectableSlotRunes = new SelectableRunes(mainRunePath.getSlotRunes());
 		this.selectableSecondPathSlotRunes = new SelectableSecondPathRunes(secondRunePath.getSlotRunes());
 		setTitle(title);
-		setGroup(group);
-	}
-
-	public RunePage(final String title, final String group, final RunePath mainRunePath, final RunePath secondRunePath,
-			final List<RunePath> allRunePaths) {
-		this(UUID.randomUUID().toString(), title, group, mainRunePath, secondRunePath, allRunePaths);
 	}
 
 	public void selectKeyStone(final int columnIndex) {
@@ -86,13 +76,6 @@ public final class RunePage {
 		this.title = title;
 	}
 
-	public void setGroup(final String group) {
-		if (group.isEmpty()) {
-			throw new IllegalArgumentException();
-		}
-		this.group = group;
-	}
-
 	public RunePath getMainRunePath() {
 		return mainRunePath;
 	}
@@ -123,14 +106,6 @@ public final class RunePage {
 
 	public String getTitle() {
 		return title;
-	}
-
-	public String getGroup() {
-		return group;
-	}
-
-	public String getUuid() {
-		return uuid;
 	}
 
 	private RunePath getFirstRunePathExcept(final RunePath excludedRunePath) {

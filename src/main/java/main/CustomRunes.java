@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -28,8 +27,7 @@ public class CustomRunes {
 				e.printStackTrace();
 			}
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			final RunePage runePage = new RunePage("title", "default", RunePath.SORCERY, RunePath.DOMINATION, List.of(
-					RunePath.PRECISION, RunePath.DOMINATION, RunePath.SORCERY, RunePath.RESOLVE, RunePath.INSPIRATION));
+			final RunePage runePage = new RunePage("title", RunePath.SORCERY, RunePath.DOMINATION, RunePath.ALL);
 			final JPanel p = new JPanel();
 			p.add(new RunePageView(runePage).getView());
 			frame.add(p, BorderLayout.CENTER);

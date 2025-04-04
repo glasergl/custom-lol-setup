@@ -17,7 +17,7 @@ public class RunePageImportExport {
 
 	public static List<RunePage> getRunePages() throws IOException {
 		if (!Files.exists(OUTPUT_FILE_PATH)) {
-			Files.writeString(OUTPUT_FILE_PATH, "{\"runePages\":[]}", StandardOpenOption.CREATE_NEW,
+			Files.writeString(OUTPUT_FILE_PATH, "{\"runes\":{}}", StandardOpenOption.CREATE_NEW,
 					StandardOpenOption.WRITE);
 		}
 		final String fileContent = Files.readString(OUTPUT_FILE_PATH);
