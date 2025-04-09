@@ -106,7 +106,8 @@ public final class RunePageView {
 	private void updateRunePathSelectors() {
 		runePathSelectors.clear();
 		view.removeAll();
-		view.add(new JTextField(runePage.getTitle()));
+		final JTextField runePageTitleTextField = new JTextField(runePage.getTitle());
+		view.add(runePageTitleTextField);
 		final JPanel runePathSelectionViews = getBothRunePathSelectionViews();
 		runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
 		view.add(runePathSelectionViews);

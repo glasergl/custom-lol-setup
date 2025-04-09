@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
@@ -16,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import model.RunePage;
 import model.RunePageSuite;
@@ -24,19 +27,22 @@ public class RunePageSuiteView {
 	private final RunePageSuite runePageSuite;
 	private final JPanel view = new JPanel();
 
-	private String currentGroupName = "";
-
 	public RunePageSuiteView(final RunePageSuite runePageSuite) {
 		this.runePageSuite = runePageSuite;
 		view.setLayout(new BorderLayout());
+		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
 		update();
 	}
 
 	private void update() {
-		final RunePage currentRunePage = runePageSuite.getCurrentRunePage();
-		final RunePageView runePageView = new RunePageView(currentRunePage);
 		view.removeAll();
-		view.add(runePageView.getView(), BorderLayout.CENTER);
+		final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
+		if (currentRunePage.isPresent()) {
+			final RunePageView runePageView = new RunePageView(currentRunePage.get());
+			final JPanel runePageViewWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+			runePageViewWrapper.add(runePageView.getView());
+			view.add(runePageViewWrapper, BorderLayout.CENTER);
+		}
 		view.add(getRunePageGroupController(), BorderLayout.WEST);
 		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
 		view.revalidate();
@@ -52,7 +58,30 @@ public class RunePageSuiteView {
 		final JPanel controllerView = new JPanel();
 		controllerView.setLayout(new BoxLayout(controllerView, BoxLayout.Y_AXIS));
 		for (final String groupName : sortedGroupNames) {
-			controllerView.add(new JLabel(groupName));
+			final JLabel groupNameLabel = new JLabel(groupName);
+			groupNameLabel.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					runePageSuite.selectGroup(groupName);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+				}
+			});
+			controllerView.add(groupNameLabel);
 			final List<RunePage> runePages = runePagesByGroupName.get(groupName);
 			for (int i = 0; i < runePages.size(); i++) {
 				final RunePage runePage = runePages.get(i);
@@ -62,7 +91,6 @@ public class RunePageSuiteView {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						runePageSuite.selectRunePage(groupName, runePageIndex);
-						currentGroupName = groupName;
 						update();
 					}
 
@@ -95,11 +123,31 @@ public class RunePageSuiteView {
 		final JLabel groupNameLabel = new JLabel("Group Name:");
 		final JTextField groupNameTextField = new JTextField(20);
 		final JButton addGroupNameButton = new JButton("Add Group");
+		addGroupNameButton.setEnabled(false);
 		addGroupNameButton.addActionListener(click -> {
 			final String groupNameEnteredByUser = groupNameTextField.getText();
-			runePageSuite.addGroup(groupNameEnteredByUser);
-			currentGroupName = groupNameEnteredByUser;
+			runePageSuite.addGroupIfNotExistsAndSelect(groupNameEnteredByUser);
 			update();
+		});
+		groupNameTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				deactivateButtonIfTextIsEmpty();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				deactivateButtonIfTextIsEmpty();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				deactivateButtonIfTextIsEmpty();
+			}
+
+			private void deactivateButtonIfTextIsEmpty() {
+				addGroupNameButton.setEnabled(!groupNameTextField.getText().isEmpty());
+			}
 		});
 		final JPanel groupNamePanel = new JPanel(new BorderLayout());
 		groupNamePanel.add(groupNameLabel, BorderLayout.WEST);
@@ -108,7 +156,7 @@ public class RunePageSuiteView {
 
 		final JButton addEmptyRunePageButton = new JButton("Add Empty Rune Page");
 		addEmptyRunePageButton.addActionListener(click -> {
-			runePageSuite.addEmptyRunePage(currentGroupName);
+			runePageSuite.addEmptyRunePage();
 			update();
 		});
 

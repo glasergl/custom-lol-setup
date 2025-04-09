@@ -2,16 +2,20 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import fileIO.Images;
 import fileIO.RunePageImportExport;
 import model.RunePage;
 import model.RunePageSuite;
@@ -19,6 +23,7 @@ import view.RunePageSuiteView;
 
 public class CustomRunes {
 	public static void main(String[] args) {
+		System.out.println(Images.KEY_STONE_GRAY_IMAGES); // force images to be fetched at the start
 		final Map<String, List<RunePage>> runePagesByGroup;
 		try {
 			runePagesByGroup = RunePageImportExport.getRunePages();
@@ -36,17 +41,33 @@ public class CustomRunes {
 						.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 			} catch (IOException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Unabel to read image from jar", "Jar Error",
+				JOptionPane.showMessageDialog(null, "Unable to read image from jar", "Jar Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			final RunePageSuite runePageSuite = new RunePageSuite(runePagesByGroup);
 			final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
+
+			final JButton saveButton = new JButton("Save");
+			saveButton.addActionListener(click -> {
+				try {
+					RunePageImportExport.storeRunePages(runePageSuite.getRunePagesByGroupName());
+				} catch (final IOException e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(frame,
+							String.format("Unable to save rune pages as a file: %s", e.getMessage()), "File Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			});
+
 			final Container frameContentPane = frame.getContentPane();
 			frameContentPane.setLayout(new BorderLayout());
 			frameContentPane.add(runePageSuiteView.getView(), BorderLayout.CENTER);
-			frame.pack();
+			final JPanel saveButtonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			saveButtonWrapper.add(saveButton);
+			frameContentPane.add(saveButtonWrapper, BorderLayout.NORTH);
+			frame.setSize(1200, 700);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		});
