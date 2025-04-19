@@ -7,7 +7,6 @@ import java.util.List;
  * The methods ensure no invalid runepage is reflected.
  */
 public final class RunePage {
-	private final List<RunePath> allRunePaths;
 	private final SelectableRunes selectableShards = new SelectableRunes(Shards.ALL);
 
 	private String title;
@@ -17,12 +16,10 @@ public final class RunePage {
 	private SelectableRunes selectableSlotRunes;
 	private SelectableSecondPathRunes selectableSecondPathSlotRunes;
 
-	public RunePage(final String title, final RunePath mainRunePath, final RunePath secondRunePath,
-			final List<RunePath> allRunePaths) {
+	public RunePage(final String title, final RunePath mainRunePath, final RunePath secondRunePath) {
 		if (mainRunePath.equals(secondRunePath)) {
 			throw new IllegalArgumentException();
 		}
-		this.allRunePaths = allRunePaths;
 		this.mainRunePath = mainRunePath;
 		this.secondRunePath = secondRunePath;
 		this.selectableKeyStones = new SelectableRunes(List.of(mainRunePath.getKeyStones()));
@@ -100,16 +97,12 @@ public final class RunePage {
 		return selectableShards;
 	}
 
-	public List<RunePath> getAllRunePaths() {
-		return allRunePaths;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	private RunePath getFirstRunePathExcept(final RunePath excludedRunePath) {
-		for (final RunePath runePath : allRunePaths) {
+		for (final RunePath runePath : RunePath.ALL) {
 			if (!runePath.equals(excludedRunePath)) {
 				return runePath;
 			}

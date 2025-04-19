@@ -4,7 +4,7 @@ import static model.Rune.getListOfRunes;
 
 import java.util.List;
 
-public class Shards {
+public final class Shards {
 	public static final List<List<Rune>> ALL = List.of(
 			getListOfRunes("Adaptive Force", "Attack Speed", "Ability Haste"),
 			getListOfRunes("Adaptive Force", "Movement Speed", "Scaling Bonus Health"),

@@ -32,7 +32,7 @@ public final class RunePageSuite {
 		}
 		if (!runePagesByGroupName.containsKey(groupName)) {
 			runePagesByGroupName.put(groupName, new ArrayList<>());
-			selectedRunePageIndex = Optional.empty();			
+			selectedRunePageIndex = Optional.empty();
 		}
 		selectGroup(groupName);
 	}
@@ -62,7 +62,7 @@ public final class RunePageSuite {
 			addEmptyRunePage();
 		} else {
 			final RunePage emptyRunePage = new RunePage(DEFAULT_EMPTY_RUNE_PAGE_TITLE, RunePath.PRECISION,
-					RunePath.SORCERY, RunePath.ALL);
+					RunePath.SORCERY);
 			final List<RunePage> runePagesOfGroup = runePagesByGroupName.get(selectedGroupName.get());
 			runePagesOfGroup.add(emptyRunePage);
 			selectedRunePageIndex = Optional.of(runePagesOfGroup.size() - 1);

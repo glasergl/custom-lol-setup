@@ -25,13 +25,11 @@ import model.RunePath;
  */
 public final class RunePageView {
 	private final RunePage runePage;
-	private final List<RunePath> allRunePaths;
 	private final JPanel view = new JPanel();
 	private final List<GraySelectionElement> runePathSelectors = new ArrayList<>();
 
 	public RunePageView(final RunePage runePage) {
 		this.runePage = runePage;
-		this.allRunePaths = runePage.getAllRunePaths();
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 		updateRunePathSelectors();
 	}
@@ -96,7 +94,7 @@ public final class RunePageView {
 	private JPanel getSingleRunePathSelectionView(
 			final Function<RunePath, GraySelectionElement> selectionElementCreator) {
 		final JPanel mainRunePathSelection = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		for (final RunePath runePath : allRunePaths) {
+		for (final RunePath runePath : RunePath.ALL) {
 			final GraySelectionElement runePathSelection = selectionElementCreator.apply(runePath);
 			mainRunePathSelection.add(runePathSelection.getView());
 		}

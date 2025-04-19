@@ -34,6 +34,7 @@ public class RunePageImportExport {
 				final JSONObject runePageJson = runePagesOfGroupJson.getJSONObject(i);
 				runePagesOfGroup.add(RunePageJson.getFromJson(runePageJson));
 			}
+			runePagesByGroup.put(key, runePagesOfGroup);
 		}
 		return runePagesByGroup;
 	}
@@ -49,6 +50,7 @@ public class RunePageImportExport {
 		}
 		final JSONObject runesJson = new JSONObject();
 		runesJson.put(RUNE_GROUP_JSON_KEY, runeGroupsJson);
-		Files.writeString(OUTPUT_FILE_PATH, runesJson.toString(), StandardOpenOption.WRITE);
+		Files.delete(OUTPUT_FILE_PATH);
+		Files.writeString(OUTPUT_FILE_PATH, runesJson.toString(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
 	}
 }
