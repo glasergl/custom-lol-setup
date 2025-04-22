@@ -95,6 +95,12 @@ public final class RunePageSuite {
 		}
 	}
 
+	public void deleteSelectedRunePage() {
+		if (selectedRunePageIndex.isPresent()) {
+			deleteRunePage(selectedGroupName.get(), selectedRunePageIndex.get());
+		}
+	}
+
 	public Optional<String> getSelectedGroupName() {
 		return selectedGroupName;
 	}

@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -171,9 +172,42 @@ public class RunePageSuiteView {
 			update();
 		});
 
+		final JButton deleteCurrentGroup = new JButton("Delete Current Group");
+		deleteCurrentGroup.addActionListener(click -> {
+			final Optional<String> currentGroupName = runePageSuite.getSelectedGroupName();
+			if (currentGroupName.isPresent()) {
+				final int response = JOptionPane.showConfirmDialog(view,
+						String.format("Are you sure you want to delete the group '%s'?", currentGroupName.get()),
+						"Deleting Group", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					runePageSuite.deleteGroup(currentGroupName.get());
+				}
+			}
+			update();
+		});
+
+		final JButton deleteCurrentRunePage = new JButton("Delete Current Rune Page");
+		deleteCurrentRunePage.addActionListener(click -> {
+			final Optional<String> currenGroupName = runePageSuite.getSelectedGroupName();
+			final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
+			if (currentRunePage.isPresent()) {
+				final RunePage runePageToDelete = currentRunePage.get();
+				final int response = JOptionPane.showConfirmDialog(view,
+						String.format("Are you sure you want to delete rune page '%s' of group '%s'?",
+								runePageToDelete.getTitle(), currenGroupName.get()),
+						"Deleting Rune Page", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					runePageSuite.deleteSelectedRunePage();
+				}
+			}
+			update();
+		});
+
 		final JPanel adderController = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		adderController.add(groupNamePanel);
 		adderController.add(addEmptyRunePageButton);
+		adderController.add(deleteCurrentGroup);
+		adderController.add(deleteCurrentRunePage);
 		return adderController;
 	}
 

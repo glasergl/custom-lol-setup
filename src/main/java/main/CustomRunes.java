@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,7 @@ import view.RunePageSuiteView;
 public final class CustomRunes {
 	public static void main(String[] args) {
 		Images.loadImages();
+		Locale.setDefault(Locale.ENGLISH);
 		final Map<String, List<RunePage>> runePagesByGroup;
 		try {
 			runePagesByGroup = RunePageImportExport.getRunePages();
