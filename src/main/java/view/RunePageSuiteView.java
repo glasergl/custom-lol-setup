@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -86,6 +87,11 @@ public class RunePageSuiteView {
 			for (int i = 0; i < runePages.size(); i++) {
 				final RunePage runePage = runePages.get(i);
 				final JLabel runePageTitle = new JLabel(runePage.getTitle());
+				final Optional<RunePage> selectedRunePage = runePageSuite.getSelectedRunePage();
+				if(selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
+					runePageTitle.setOpaque(true);
+					runePageTitle.setBackground(Color.YELLOW);
+				}
 				final int runePageIndex = i;
 				runePageTitle.addMouseListener(new MouseListener() {
 					@Override
