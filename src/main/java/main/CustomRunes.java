@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -51,20 +53,51 @@ public final class CustomRunes {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			frame.addWindowListener(new WindowListener() {
+				@Override
+				public void windowOpened(WindowEvent e) {
+				}
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+					final int response = JOptionPane.showConfirmDialog(frame, "Save before closing? Any non-saved rune pages might be lost.", "Save?",
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+					if (response == JOptionPane.YES_OPTION) {
+						saveRunePages(runePageSuite, frame);
+						frame.dispose();
+					} else if (response == JOptionPane.NO_OPTION) {
+						frame.dispose();
+					}
+				}
+
+				@Override
+				public void windowClosed(WindowEvent e) {
+				}
+
+				@Override
+				public void windowIconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowActivated(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+				}
+			});
+
 			final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
 
 			final JButton saveButton = new JButton("Save");
 			saveButton.addActionListener(click -> {
-				try {
-					RunePageImportExport.storeRunePages(runePageSuite.getRunePagesByGroupName());
-					runePageSuiteView.update();
-				} catch (final IOException e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(frame,
-							String.format("Unable to save rune pages as a file, because '%s'", e.getMessage()),
-							"File Error", JOptionPane.ERROR_MESSAGE);
-				}
+				saveRunePages(runePageSuite, frame);
+				runePageSuiteView.update();
 			});
 
 			final Container frameContentPane = frame.getContentPane();
@@ -78,4 +111,16 @@ public final class CustomRunes {
 			frame.setVisible(true);
 		});
 	}
+
+	private static void saveRunePages(final RunePageSuite runePageSuite, final JFrame frame) {
+		try {
+			RunePageImportExport.storeRunePages(runePageSuite.getRunePagesByGroupName());
+		} catch (final IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame,
+					String.format("Unable to save rune pages as a file, because '%s'", e.getMessage()), "File Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 }
