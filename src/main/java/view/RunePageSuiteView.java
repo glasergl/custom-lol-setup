@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -44,7 +45,11 @@ public class RunePageSuiteView {
 			runePageViewWrapper.add(runePageView.getView());
 			view.add(runePageViewWrapper, BorderLayout.CENTER);
 		}
-		view.add(getRunePageGroupController(), BorderLayout.WEST);
+		final JPanel groupController = getRunePageGroupController();
+		final JScrollPane scrollableGroupController = new JScrollPane(groupController,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		groupController.setBorder(new EmptyBorder(5, 5, 5, 5));
+		view.add(scrollableGroupController, BorderLayout.WEST);
 		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
 		view.revalidate();
 		view.repaint();
@@ -88,7 +93,7 @@ public class RunePageSuiteView {
 				final RunePage runePage = runePages.get(i);
 				final JLabel runePageTitle = new JLabel(runePage.getTitle());
 				final Optional<RunePage> selectedRunePage = runePageSuite.getSelectedRunePage();
-				if(selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
+				if (selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
 					runePageTitle.setOpaque(true);
 					runePageTitle.setBackground(Color.YELLOW);
 				}
@@ -155,7 +160,7 @@ public class RunePageSuiteView {
 				addGroupNameButton.setEnabled(!groupNameTextField.getText().isEmpty());
 			}
 		});
-		final JPanel groupNamePanel = new JPanel(new BorderLayout());
+		final JPanel groupNamePanel = new JPanel(new BorderLayout(5, 5));
 		groupNamePanel.add(groupNameLabel, BorderLayout.WEST);
 		groupNamePanel.add(groupNameTextField, BorderLayout.CENTER);
 		groupNamePanel.add(addGroupNameButton, BorderLayout.SOUTH);

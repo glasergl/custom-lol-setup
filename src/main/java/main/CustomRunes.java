@@ -3,7 +3,6 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import fileIO.Images;
 import fileIO.RunePageImportExport;
@@ -41,7 +39,6 @@ public final class CustomRunes {
 	private static void createMainFrame(final Map<String, List<RunePage>> runePagesByGroup) {
 		final RunePageSuite runePageSuite = new RunePageSuite(runePagesByGroup);
 		SwingUtilities.invokeLater(() -> {
-			UIManager.put("Button.font", new Font(Font.SANS_SERIF, Font.ITALIC, 20));
 			final JFrame frame = new JFrame("Custom Runes");
 			try {
 				frame.setIconImage(ImageIO.read(CustomRunes.class.getResource("/GatheringStorm.png"))
