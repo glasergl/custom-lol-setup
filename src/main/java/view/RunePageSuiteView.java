@@ -34,7 +34,7 @@ public class RunePageSuiteView {
 		update();
 	}
 
-	private void update() {
+	public void update() {
 		view.removeAll();
 		final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
 		if (currentRunePage.isPresent()) {

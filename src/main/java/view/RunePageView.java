@@ -12,6 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import fileIO.Images;
 import model.RunePage;
@@ -104,8 +106,7 @@ public final class RunePageView {
 	private void updateRunePathSelectors() {
 		runePathSelectors.clear();
 		view.removeAll();
-		final JTextField runePageTitleTextField = new JTextField(runePage.getTitle());
-		view.add(runePageTitleTextField);
+		addRunePageTitleTextFieldToView();
 		final JPanel runePathSelectionViews = getBothRunePathSelectionViews();
 		runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
 		view.add(runePathSelectionViews);
@@ -122,6 +123,34 @@ public final class RunePageView {
 		}
 		view.revalidate();
 		view.repaint();
+	}
+
+	private void addRunePageTitleTextFieldToView() {
+		final JTextField runePageTitleTextField = new JTextField(runePage.getTitle());
+		runePageTitleTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateRunePageTitle();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateRunePageTitle();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateRunePageTitle();
+			}
+
+			private void updateRunePageTitle() {
+				final String userInputForRunePageTitle = runePageTitleTextField.getText();
+				if (!userInputForRunePageTitle.isEmpty()) {
+					runePage.setTitle(userInputForRunePageTitle);
+				}
+			}
+		});
+		view.add(runePageTitleTextField);
 	}
 
 	public RunePage getRunePage() {

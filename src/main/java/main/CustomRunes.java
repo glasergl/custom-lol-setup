@@ -53,6 +53,7 @@ public class CustomRunes {
 			saveButton.addActionListener(click -> {
 				try {
 					RunePageImportExport.storeRunePages(runePageSuite.getRunePagesByGroupName());
+					runePageSuiteView.update();
 				} catch (final IOException e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,

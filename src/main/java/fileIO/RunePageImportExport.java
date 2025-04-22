@@ -51,6 +51,6 @@ public class RunePageImportExport {
 		final JSONObject runesJson = new JSONObject();
 		runesJson.put(RUNE_GROUP_JSON_KEY, runeGroupsJson);
 		Files.delete(OUTPUT_FILE_PATH);
-		Files.writeString(OUTPUT_FILE_PATH, runesJson.toString(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+		Files.writeString(OUTPUT_FILE_PATH, runesJson.toString(3), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
 	}
 }
