@@ -37,6 +37,7 @@ public class SelectableRunesView {
 						grayImages.get(rune.getName()), () -> {
 							return rune.isSelected();
 						}, new SelectRune(rowIndex, columnIndex, selectableRunes));
+				runeView.getIconLabel().setToolTipText(rune.getName());
 				runeViews.add(runeView);
 				rowView.add(runeView.getView());
 			}

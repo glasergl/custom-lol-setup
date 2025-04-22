@@ -3,6 +3,7 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import fileIO.Images;
 import fileIO.RunePageImportExport;
@@ -21,32 +23,36 @@ import model.RunePage;
 import model.RunePageSuite;
 import view.RunePageSuiteView;
 
-public class CustomRunes {
+public final class CustomRunes {
 	public static void main(String[] args) {
-		System.out.println(Images.KEY_STONE_GRAY_IMAGES); // force images to be fetched at the start
+		Images.loadImages();
 		final Map<String, List<RunePage>> runePagesByGroup;
 		try {
 			runePagesByGroup = RunePageImportExport.getRunePages();
 		} catch (final IOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Unable to interact with files", "File Error",
+			JOptionPane.showMessageDialog(null, "Unable to read rune pages json file", "File Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		createMainFrame(runePagesByGroup);
+	}
 
+	private static void createMainFrame(final Map<String, List<RunePage>> runePagesByGroup) {
+		final RunePageSuite runePageSuite = new RunePageSuite(runePagesByGroup);
 		SwingUtilities.invokeLater(() -> {
+			UIManager.put("Button.font", new Font(Font.SANS_SERIF, Font.ITALIC, 20));
 			final JFrame frame = new JFrame("Custom Runes");
 			try {
 				frame.setIconImage(ImageIO.read(CustomRunes.class.getResource("/GatheringStorm.png"))
 						.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Unable to read image from jar", "Jar Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			final RunePageSuite runePageSuite = new RunePageSuite(runePagesByGroup);
 			final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
 
 			final JButton saveButton = new JButton("Save");
@@ -57,8 +63,8 @@ public class CustomRunes {
 				} catch (final IOException e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,
-							String.format("Unable to save rune pages as a file: %s", e.getMessage()), "File Error",
-							JOptionPane.ERROR_MESSAGE);
+							String.format("Unable to save rune pages as a file, because '%s'", e.getMessage()),
+							"File Error", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 

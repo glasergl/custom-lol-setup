@@ -46,6 +46,7 @@ public final class RunePageView {
 						runePage.selectMainPath(runePathToCreateSelectorFor);
 						updateRunePathSelectors();
 					});
+			runePathSelection.getIconLabel().setToolTipText(runePathToCreateSelectorFor.getName());
 			runePathSelectors.add(runePathSelection);
 			return runePathSelection;
 		});
@@ -59,6 +60,7 @@ public final class RunePageView {
 						runePage.selectSecondPath(runePathToCreateSelectorFor);
 						updateRunePathSelectors();
 					});
+			runePathSelection.getIconLabel().setToolTipText(runePathToCreateSelectorFor.getName());
 			runePathSelectors.add(runePathSelection);
 			return runePathSelection;
 		});

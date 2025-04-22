@@ -14,8 +14,8 @@ import javax.swing.JPanel;
  * Element which switches between two states, selected and unselected.
  */
 public final class GraySelectionElement {
-	private final JPanel runeView = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-	private final JLabel runeIcon = new JLabel();
+	private final JPanel view = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+	private final JLabel icon = new JLabel();
 	private final Supplier<Boolean> shouldBeSelectedCheck;
 	private final Runnable onClickAction;
 	private final Image selectedImage;
@@ -27,12 +27,16 @@ public final class GraySelectionElement {
 		this.onClickAction = onClickAction;
 		this.selectedImage = selectedImage;
 		this.unselectedImage = unselectedImage;
-		runeIcon.addMouseListener(getClickActionMouseListener());
-		runeView.add(runeIcon);
+		icon.addMouseListener(getClickActionMouseListener());
+		view.add(icon);
 	}
 
 	public void updateSelectionState() {
-		runeIcon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? selectedImage : unselectedImage));
+		icon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? selectedImage : unselectedImage));
+	}
+
+	public JLabel getIconLabel() {
+		return icon;
 	}
 
 	private MouseListener getClickActionMouseListener() {
@@ -61,6 +65,6 @@ public final class GraySelectionElement {
 	}
 
 	public JPanel getView() {
-		return runeView;
+		return view;
 	}
 }

@@ -39,6 +39,13 @@ public class Images {
 	public static final Map<String, Image> SLOT_RUNE_GRAY_IMAGES = getGrayImages(SLOT_RUNE_IMAGES);
 	public static final Map<String, Image> SHARD_GRAY_IMAGES = getGrayImages(SHARD_IMAGES);
 
+	/**
+	 * Method to call to load all images. Doesn't need an implementation as all
+	 * static variables initialize itself directly after declaration.
+	 */
+	public static void loadImages() {
+	}
+
 	private static Map<String, Image> getRunePathImages(final int iconSize) {
 		final Map<String, Image> images = new HashMap<>();
 		for (final RunePath runePath : RunePath.ALL) {
