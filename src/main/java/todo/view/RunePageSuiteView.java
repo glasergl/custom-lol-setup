@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -11,8 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import model.RunePage;
-import model.RunePageSuite;
+import todo.model.RunePage;
+import todo.model.RunePageSuite;
 
 /**
  * Creates view for a rune page suite, i.e., lists of rune pages organized by

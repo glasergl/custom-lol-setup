@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import fileIO.RunePageImportExport;
-import model.RunePageSuite;
+import todo.fileIO.RunePageImportExport;
+import todo.model.RunePageSuite;
 
 /**
  * Generates the main frame for this application.

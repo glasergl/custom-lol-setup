@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,9 +12,9 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import fileIO.Images;
-import model.RunePage;
-import model.RunePath;
+import todo.fileIO.Images;
+import todo.model.RunePage;
+import todo.model.RunePath;
 
 /**
  * Creates view of a single rune page which updates itself based user clicks on

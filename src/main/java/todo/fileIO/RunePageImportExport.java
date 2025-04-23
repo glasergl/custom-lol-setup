@@ -1,4 +1,4 @@
-package fileIO;
+package todo.fileIO;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import model.RunePage;
+import todo.model.RunePage;
 
 public class RunePageImportExport {
 	private static final Path OUTPUT_FILE_PATH = Path.of("runes.json");

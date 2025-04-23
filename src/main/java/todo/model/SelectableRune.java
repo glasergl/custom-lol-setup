@@ -1,4 +1,4 @@
-package model;
+package todo.model;
 
 /**
  * Wrapper of a rune to make it selectable. An instance of a rune should only be

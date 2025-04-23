@@ -1,6 +1,6 @@
-package model;
+package todo.model;
 
-import static model.Rune.getListOfRunes;
+import static todo.model.Rune.getListOfRunes;
 
 import java.util.List;
 

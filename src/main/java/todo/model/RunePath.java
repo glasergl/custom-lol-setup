@@ -1,8 +1,8 @@
-package model;
+package todo.model;
+
+import static todo.model.Rune.getListOfRunes;
 
 import java.util.List;
-
-import static model.Rune.getListOfRunes;
 
 /**
  * Immutable representation of a rune path with its keystones and slot runes.

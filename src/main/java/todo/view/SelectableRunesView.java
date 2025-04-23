@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import model.SelectableRune;
-import model.SelectableRunes;
+import todo.model.SelectableRune;
+import todo.model.SelectableRunes;
 
 /**
  * Creates a view for selectable runes, i.e., a list of lists of selectable

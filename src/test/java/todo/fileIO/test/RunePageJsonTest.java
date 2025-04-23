@@ -1,4 +1,4 @@
-package fileIO.test;
+package todo.fileIO.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-import fileIO.RunePageJson;
-import model.RunePage;
-import model.RunePath;
+import todo.fileIO.RunePageJson;
+import todo.model.RunePage;
+import todo.model.RunePath;
 
 class RunePageJsonTest {
 	@Test

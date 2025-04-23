@@ -1,4 +1,4 @@
-package model;
+package todo.model;
 
 import java.util.LinkedList;
 import java.util.List;

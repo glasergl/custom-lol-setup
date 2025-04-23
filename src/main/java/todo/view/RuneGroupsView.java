@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import model.RunePage;
-import model.RunePageSuite;
+import todo.model.RunePage;
+import todo.model.RunePageSuite;
 
 /**
  * Creates a view to select groups and rune pages by title.

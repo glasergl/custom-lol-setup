@@ -1,4 +1,4 @@
-package view;
+package todo.view;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;

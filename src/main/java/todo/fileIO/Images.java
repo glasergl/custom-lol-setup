@@ -1,4 +1,4 @@
-package fileIO;
+package todo.fileIO;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -13,15 +13,16 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 
-import model.Rune;
-import model.RunePath;
-import model.Shards;
+import todo.model.Rune;
+import todo.model.RunePath;
+import todo.model.Shards;
 
 /**
  * Stores all required image in public static variables. Each image is scaled
  * according to he desired size.
  */
-public final class Images {
+public final class Images { // TODO make object oriented and provide static instance in main, with variable
+							// panel background
 	private static final int MAIN_RUNE_PATH_ICON_SIZE = 55;
 	private static final int SECOND_RUNE_PATH_ICON_SIZE = 40;
 	private static final int KEY_STONE_ICON_SIZE = 60;

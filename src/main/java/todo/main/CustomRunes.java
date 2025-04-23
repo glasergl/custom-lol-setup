@@ -1,4 +1,4 @@
-package main;
+package todo.main;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -10,11 +10,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import fileIO.Images;
-import fileIO.RunePageImportExport;
-import model.RunePage;
-import model.RunePageSuite;
-import view.MainFrameCreation;
+import todo.fileIO.Images;
+import todo.fileIO.RunePageImportExport;
+import todo.model.RunePage;
+import todo.model.RunePageSuite;
+import todo.view.MainFrameCreation;
 
 /**
  * Main class for this application.
