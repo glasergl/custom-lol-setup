@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -46,7 +45,7 @@ public final class MainFrameCreation {
 		final JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(click -> {
 			new SaveRunePages();
-			runePageSuiteView.update();
+			runePageSuiteView.updateView();
 		});
 
 		final Container frameContentPane = jFrame.getContentPane();
@@ -58,7 +57,7 @@ public final class MainFrameCreation {
 	}
 
 	private void setupClosingBehaviour() {
-		jFrame.addWindowListener(new WindowListener() {
+		jFrame.addWindowListener(new EmptyWindowListener() {
 			@Override
 			public void windowClosing(final WindowEvent windowEvent) {
 				final int response = JOptionPane.showConfirmDialog(jFrame,
@@ -70,30 +69,6 @@ public final class MainFrameCreation {
 				} else if (response == JOptionPane.NO_OPTION) {
 					jFrame.dispose();
 				}
-			}
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
 			}
 		});
 	}

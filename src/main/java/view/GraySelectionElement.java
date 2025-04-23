@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
@@ -28,6 +29,7 @@ public final class GraySelectionElement {
 		this.selectedImage = selectedImage;
 		this.unselectedImage = unselectedImage;
 		icon.addMouseListener(getClickActionMouseListener());
+		icon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		view.add(icon);
 	}
 

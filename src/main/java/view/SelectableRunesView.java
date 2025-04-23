@@ -12,15 +12,27 @@ import javax.swing.JPanel;
 import model.SelectableRune;
 import model.SelectableRunes;
 
-public class SelectableRunesView {
+/**
+ * Creates a view for selectable runes, i.e., a list of lists of selectable
+ * runes.
+ */
+public final class SelectableRunesView {
 	private final JPanel view = new JPanel();
 	private final List<GraySelectionElement> runeViews = new ArrayList<>();
 
+	/**
+	 * Creates a view for selectable runes, i.e., a list of lists of selectable
+	 * runes (wrapped in a singel SelectableRunes object).
+	 * 
+	 * @param selectableRunes - to create a view for
+	 * @param images          - mapping from rune name to colored image of the rune
+	 * @param grayImages      - mapping from rune name to gray image of the rune
+	 */
 	public SelectableRunesView(final SelectableRunes selectableRunes, final Map<String, Image> images,
 			final Map<String, Image> grayImages) {
 		view.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		view.add(createRuneIcons(selectableRunes, images, grayImages));
-		updateSelectionStates();
+		updateView();
 	}
 
 	private JPanel createRuneIcons(final SelectableRunes selectableRunes, final Map<String, Image> images,
@@ -46,7 +58,7 @@ public class SelectableRunesView {
 		return runeIcons;
 	}
 
-	private void updateSelectionStates() {
+	private void updateView() {
 		for (final GraySelectionElement runeView : runeViews) {
 			runeView.updateSelectionState();
 		}
@@ -56,6 +68,10 @@ public class SelectableRunesView {
 		return view;
 	}
 
+	/**
+	 * Runnable that selects a rune at some row and column and updates the view
+	 * afterwards.
+	 */
 	private final class SelectRune implements Runnable {
 		private final int rowIndex;
 		private final int columnIndex;
@@ -70,7 +86,7 @@ public class SelectableRunesView {
 		@Override
 		public void run() {
 			runes.select(rowIndex, columnIndex);
-			updateSelectionStates();
+			updateView();
 		}
 	}
 }

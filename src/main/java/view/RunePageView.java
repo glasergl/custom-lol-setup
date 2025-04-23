@@ -3,12 +3,9 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
@@ -20,58 +17,110 @@ import model.RunePage;
 import model.RunePath;
 
 /**
- * Creates a JPanel of a single rune page which updates itself based user clicks
- * on runes. An instance of this corresponds 1 to 1 to a rune page. After
- * instantiation, the rune paths cannot be changed anymore (but the selections,
- * of course).
+ * Creates view of a single rune page which updates itself based user clicks on
+ * runes. An instance of this corresponds to one editable rune page.
  */
 public final class RunePageView {
 	private final RunePage runePage;
 	private final JPanel view = new JPanel();
-	private final List<GraySelectionElement> runePathSelectors = new ArrayList<>();
 
+	/**
+	 * Creates view of a single rune page which updates itself based user clicks on
+	 * runes. An instance of this corresponds to one editable rune page.
+	 * 
+	 * @param runePage - initial visualization, may be an empty rune page, i.e.,
+	 *                 nothing selected
+	 */
 	public RunePageView(final RunePage runePage) {
 		this.runePage = runePage;
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-		updateRunePathSelectors();
+		updateView();
 	}
 
-	private JPanel getBothRunePathSelectionViews() {
-		final JPanel mainRunePathSelection = getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
+	/**
+	 * Creates an entire new view by removing all elements and creating new ones
+	 * based on values of the referenced rune page instance.
+	 */
+	private void updateView() {
+		view.removeAll();
+
+		view.add(getRunePageTitleTextField());
+
+		final JPanel runePathSelectionViews = new JPanel();
+		runePathSelectionViews.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		runePathSelectionViews.add(getMainRunePathSelectionView());
+		runePathSelectionViews.add(getSecondPathSelectionView());
+		runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
+		view.add(runePathSelectionViews);
+
+		final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		final JPanel mainRunesView = getMainRunePathView();
+		final JPanel secondRunePathAndShardsView = getSecondRunePathAndShardsView();
+		runesView.add(mainRunesView);
+		runesView.add(secondRunePathAndShardsView);
+		view.add(runesView);
+
+		view.revalidate();
+		view.repaint();
+	}
+
+	/**
+	 * @return View to select the main rune path.
+	 */
+	private JPanel getMainRunePathSelectionView() {
+		return getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
 			final GraySelectionElement runePathSelection = new GraySelectionElement(
 					Images.MAIN_RUNE_PATH_IMAGES.get(runePathToCreateSelectorFor.getName()),
 					Images.MAIN_RUNE_PATH_GRAY_IMAGES.get(runePathToCreateSelectorFor.getName()), () -> {
 						return runePathToCreateSelectorFor.equals(runePage.getMainRunePath());
 					}, () -> {
 						runePage.selectMainPath(runePathToCreateSelectorFor);
-						updateRunePathSelectors();
+						updateView();
 					});
 			runePathSelection.getIconLabel().setToolTipText(runePathToCreateSelectorFor.getName());
-			runePathSelectors.add(runePathSelection);
+			runePathSelection.updateSelectionState();
 			return runePathSelection;
 		});
+	}
 
-		final JPanel secondRunePathSelection = getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
+	/**
+	 * @return View to select the second rune path.
+	 */
+	private JPanel getSecondPathSelectionView() {
+		return getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
 			final GraySelectionElement runePathSelection = new GraySelectionElement(
 					Images.SECOND_RUNE_PATH_IMAGES.get(runePathToCreateSelectorFor.getName()),
 					Images.SECOND_RUNE_PATH_GRAY_IMAGES.get(runePathToCreateSelectorFor.getName()), () -> {
 						return runePathToCreateSelectorFor.equals(runePage.getSecondRunePath());
 					}, () -> {
 						runePage.selectSecondPath(runePathToCreateSelectorFor);
-						updateRunePathSelectors();
+						updateView();
 					});
 			runePathSelection.getIconLabel().setToolTipText(runePathToCreateSelectorFor.getName());
-			runePathSelectors.add(runePathSelection);
+			runePathSelection.updateSelectionState();
 			return runePathSelection;
 		});
-
-		final JPanel runePathSelectionView = new JPanel();
-		runePathSelectionView.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		runePathSelectionView.add(mainRunePathSelection);
-		runePathSelectionView.add(secondRunePathSelection);
-		return runePathSelectionView;
 	}
 
+	/**
+	 * @param selectionElementCreator
+	 * @return View to select a rune path. The given function will be called for
+	 *         each rune path to get the desired selection element.
+	 */
+	private JPanel getSingleRunePathSelectionView(
+			final Function<RunePath, GraySelectionElement> selectionElementCreator) {
+		final JPanel mainRunePathSelection = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		for (final RunePath runePath : RunePath.ALL) {
+			final GraySelectionElement runePathSelection = selectionElementCreator.apply(runePath);
+			mainRunePathSelection.add(runePathSelection.getView());
+		}
+		return mainRunePathSelection;
+	}
+
+	/**
+	 * @return View to select runes of the main rune path consisting of key stones
+	 *         and slot runes of the main path.
+	 */
 	private JPanel getMainRunePathView() {
 		final JPanel mainRunePath = new JPanel(new BorderLayout(0, 0));
 		mainRunePath.add(
@@ -85,6 +134,11 @@ public final class RunePageView {
 		return mainRunePath;
 	}
 
+	/**
+	 * 
+	 * @return View to select runes of the second rune path (consisting of slot
+	 *         runes of the second rune path), as well as shards.
+	 */
 	private JPanel getSecondRunePathAndShardsView() {
 		final JPanel secondRunePathAndShards = new JPanel(new BorderLayout(0, 0));
 		secondRunePathAndShards.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(), Images.SLOT_RUNE_IMAGES,
@@ -95,39 +149,11 @@ public final class RunePageView {
 		return secondRunePathAndShards;
 	}
 
-	private JPanel getSingleRunePathSelectionView(
-			final Function<RunePath, GraySelectionElement> selectionElementCreator) {
-		final JPanel mainRunePathSelection = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		for (final RunePath runePath : RunePath.ALL) {
-			final GraySelectionElement runePathSelection = selectionElementCreator.apply(runePath);
-			mainRunePathSelection.add(runePathSelection.getView());
-		}
-		return mainRunePathSelection;
-	}
-
-	private void updateRunePathSelectors() {
-		runePathSelectors.clear();
-		view.removeAll();
-		addRunePageTitleTextFieldToView();
-		final JPanel runePathSelectionViews = getBothRunePathSelectionViews();
-		runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
-		view.add(runePathSelectionViews);
-		final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		final JPanel mainRunesView = getMainRunePathView();
-		final JPanel secondRunePathAndShardsView = getSecondRunePathAndShardsView();
-		mainRunesView.setAlignmentY(JComponent.TOP_ALIGNMENT);
-		secondRunePathAndShardsView.setAlignmentY(JComponent.TOP_ALIGNMENT);
-		runesView.add(mainRunesView);
-		runesView.add(secondRunePathAndShardsView);
-		view.add(runesView);
-		for (final GraySelectionElement runePath : runePathSelectors) {
-			runePath.updateSelectionState();
-		}
-		view.revalidate();
-		view.repaint();
-	}
-
-	private void addRunePageTitleTextFieldToView() {
+	/**
+	 * @return Textfield that automatically sets the title of the rune to the
+	 *         contained text everytime it is updated.
+	 */
+	private JTextField getRunePageTitleTextField() {
 		final JTextField runePageTitleTextField = new JTextField(runePage.getTitle());
 		runePageTitleTextField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -152,7 +178,7 @@ public final class RunePageView {
 				}
 			}
 		});
-		view.add(runePageTitleTextField);
+		return runePageTitleTextField;
 	}
 
 	public RunePage getRunePage() {

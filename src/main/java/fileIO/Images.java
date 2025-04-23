@@ -18,9 +18,10 @@ import model.RunePath;
 import model.Shards;
 
 /**
- * Loads all images at once to not have lags in the UI.
+ * Stores all required image in public static variables. Each image is scaled
+ * according to he desired size.
  */
-public class Images {
+public final class Images {
 	private static final int MAIN_RUNE_PATH_ICON_SIZE = 55;
 	private static final int SECOND_RUNE_PATH_ICON_SIZE = 40;
 	private static final int KEY_STONE_ICON_SIZE = 60;

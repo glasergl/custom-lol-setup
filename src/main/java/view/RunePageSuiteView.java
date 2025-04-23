@@ -1,44 +1,47 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import model.RunePage;
 import model.RunePageSuite;
 
-public class RunePageSuiteView {
+/**
+ * Creates view for a rune page suite, i.e., lists of rune pages organized by
+ * group names.
+ */
+public final class RunePageSuiteView {
 	private final RunePageSuite runePageSuite;
 	private final JPanel view = new JPanel();
 
+	/**
+	 * Creates view for a rune page suite, i.e., lists of rune pages organized by
+	 * group names. The view of this instance is able to create, remove and organize
+	 * rune pages, as well as modifying rune pages (using rune page views).
+	 * 
+	 * @param runePageSuite
+	 */
 	public RunePageSuiteView(final RunePageSuite runePageSuite) {
 		this.runePageSuite = runePageSuite;
 		view.setLayout(new BorderLayout());
-		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
-		update();
+		updateView();
 	}
 
-	public void update() {
+	/**
+	 * Creates an entire new view by removing all elements and creating new ones
+	 * based on values of the referenced rune page suite instance.
+	 */
+	public void updateView() {
 		view.removeAll();
+
 		final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
 		if (currentRunePage.isPresent()) {
 			final RunePageView runePageView = new RunePageView(currentRunePage.get());
@@ -46,92 +49,69 @@ public class RunePageSuiteView {
 			runePageViewWrapper.add(runePageView.getView());
 			view.add(runePageViewWrapper, BorderLayout.CENTER);
 		}
-		final JPanel groupController = getRunePageGroupController();
-		final JScrollPane scrollableGroupController = new JScrollPane(groupController,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		groupController.setBorder(new EmptyBorder(5, 5, 5, 5));
-		view.add(scrollableGroupController, BorderLayout.WEST);
+		view.add(new RuneGroupsView(runePageSuite, this).getView(), BorderLayout.WEST);
 		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
+
 		view.revalidate();
 		view.repaint();
 	}
 
-	private JPanel getRunePageGroupController() {
-		final Map<String, List<RunePage>> runePagesByGroupName = runePageSuite.getRunePagesByGroupName();
-		final Set<String> groupNames = runePagesByGroupName.keySet();
-		final List<String> sortedGroupNames = new ArrayList<>(groupNames);
-		Collections.sort(sortedGroupNames);
+	/**
+	 * @return Panel that contains fields to add groups, delete groups, add empty
+	 *         rune pages an delete rune pages.
+	 */
+	private JPanel getRunePageAdderController() {
+		final JPanel groupNamePanel = getGroupNameAdderPanel();
 
-		final JPanel controllerView = new JPanel();
-		controllerView.setLayout(new BoxLayout(controllerView, BoxLayout.Y_AXIS));
-		for (final String groupName : sortedGroupNames) {
-			final JLabel groupNameLabel = new JLabel(groupName);
-			groupNameLabel.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					runePageSuite.selectGroup(groupName);
+		final JButton addEmptyRunePageButton = new JButton("Add Empty Rune Page");
+		addEmptyRunePageButton.addActionListener(click -> {
+			runePageSuite.addEmptyRunePage();
+			updateView();
+		});
+
+		final JButton deleteCurrentGroupButton = new JButton("Delete Current Group");
+		deleteCurrentGroupButton.addActionListener(click -> {
+			final Optional<String> currentGroupName = runePageSuite.getSelectedGroupName();
+			if (currentGroupName.isPresent()) {
+				final int response = JOptionPane.showConfirmDialog(view,
+						String.format("Are you sure you want to delete the group '%s'?", currentGroupName.get()),
+						"Deleting Group", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					runePageSuite.deleteGroup(currentGroupName.get());
 				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-				}
-			});
-			controllerView.add(groupNameLabel);
-			final List<RunePage> runePages = runePagesByGroupName.get(groupName);
-			for (int i = 0; i < runePages.size(); i++) {
-				final RunePage runePage = runePages.get(i);
-				final JLabel runePageTitle = new JLabel(runePage.getTitle());
-				final Optional<RunePage> selectedRunePage = runePageSuite.getSelectedRunePage();
-				if (selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
-					runePageTitle.setOpaque(true);
-					runePageTitle.setBackground(Color.YELLOW);
-				}
-				final int runePageIndex = i;
-				runePageTitle.addMouseListener(new MouseListener() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						runePageSuite.selectRunePage(groupName, runePageIndex);
-						update();
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-					}
-				});
-				if (!groupName.isEmpty()) {
-					runePageTitle.setBorder(new EmptyBorder(0, 20, 0, 0));
-				}
-				controllerView.add(runePageTitle);
 			}
-		}
-		return controllerView;
+			updateView();
+		});
+
+		final JButton deleteCurrentRunePageButton = new JButton("Delete Current Rune Page");
+		deleteCurrentRunePageButton.addActionListener(click -> {
+			final Optional<String> currenGroupName = runePageSuite.getSelectedGroupName();
+			final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
+			if (currentRunePage.isPresent()) {
+				final RunePage runePageToDelete = currentRunePage.get();
+				final int response = JOptionPane.showConfirmDialog(view,
+						String.format("Are you sure you want to delete rune page '%s' of group '%s'?",
+								runePageToDelete.getTitle(), currenGroupName.get()),
+						"Deleting Rune Page", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					runePageSuite.deleteSelectedRunePage();
+				}
+			}
+			updateView();
+		});
+
+		final JPanel adderController = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		adderController.add(groupNamePanel);
+		adderController.add(addEmptyRunePageButton);
+		adderController.add(deleteCurrentGroupButton);
+		adderController.add(deleteCurrentRunePageButton);
+		return adderController;
 	}
 
-	private JPanel getRunePageAdderController() {
+	/**
+	 * @return Generates the UI that allows adding groups.
+	 */
+	private JPanel getGroupNameAdderPanel() {
 		final JLabel groupNameLabel = new JLabel("Group Name:");
 		final JTextField groupNameTextField = new JTextField(20);
 		final JButton addGroupNameButton = new JButton("Add Group");
@@ -139,7 +119,7 @@ public class RunePageSuiteView {
 		addGroupNameButton.addActionListener(click -> {
 			final String groupNameEnteredByUser = groupNameTextField.getText();
 			runePageSuite.addGroupIfNotExistsAndSelect(groupNameEnteredByUser);
-			update();
+			updateView();
 		});
 		groupNameTextField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -165,54 +145,7 @@ public class RunePageSuiteView {
 		groupNamePanel.add(groupNameLabel, BorderLayout.WEST);
 		groupNamePanel.add(groupNameTextField, BorderLayout.CENTER);
 		groupNamePanel.add(addGroupNameButton, BorderLayout.SOUTH);
-
-		final JButton addEmptyRunePageButton = new JButton("Add Empty Rune Page");
-		addEmptyRunePageButton.addActionListener(click -> {
-			runePageSuite.addEmptyRunePage();
-			update();
-		});
-
-		final JButton deleteCurrentGroup = new JButton("Delete Current Group");
-		deleteCurrentGroup.addActionListener(click -> {
-			final Optional<String> currentGroupName = runePageSuite.getSelectedGroupName();
-			if (currentGroupName.isPresent()) {
-				final int response = JOptionPane.showConfirmDialog(view,
-						String.format("Are you sure you want to delete the group '%s'?", currentGroupName.get()),
-						"Deleting Group", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (response == JOptionPane.YES_OPTION) {
-					runePageSuite.deleteGroup(currentGroupName.get());
-				}
-			}
-			update();
-		});
-
-		final JButton deleteCurrentRunePage = new JButton("Delete Current Rune Page");
-		deleteCurrentRunePage.addActionListener(click -> {
-			final Optional<String> currenGroupName = runePageSuite.getSelectedGroupName();
-			final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
-			if (currentRunePage.isPresent()) {
-				final RunePage runePageToDelete = currentRunePage.get();
-				final int response = JOptionPane.showConfirmDialog(view,
-						String.format("Are you sure you want to delete rune page '%s' of group '%s'?",
-								runePageToDelete.getTitle(), currenGroupName.get()),
-						"Deleting Rune Page", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (response == JOptionPane.YES_OPTION) {
-					runePageSuite.deleteSelectedRunePage();
-				}
-			}
-			update();
-		});
-
-		final JPanel adderController = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		adderController.add(groupNamePanel);
-		adderController.add(addEmptyRunePageButton);
-		adderController.add(deleteCurrentGroup);
-		adderController.add(deleteCurrentRunePage);
-		return adderController;
-	}
-
-	public RunePageSuite getRunePageSuite() {
-		return runePageSuite;
+		return groupNamePanel;
 	}
 
 	public JPanel getView() {
