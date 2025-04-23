@@ -1,0 +1,137 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingWorker;
+
+import fileIO.RunePageImportExport;
+import model.RunePageSuite;
+
+/**
+ * Generates the main frame for this application.
+ */
+public final class MainFrameCreation {
+	private final JFrame jFrame;
+	private final String title = "Custom Runes";
+	private final RunePageSuite runePageSuite;
+
+	public MainFrameCreation(final Image icon, final RunePageSuite runePageSuite) {
+		this.jFrame = new JFrame(title);
+		this.runePageSuite = runePageSuite;
+		final Image scaledIcon = icon.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+		jFrame.setIconImage(scaledIcon);
+		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setupClosingBehaviour();
+
+		createAndAddComponents();
+		jFrame.setSize(1200, 700);
+		jFrame.setLocationRelativeTo(null);
+		jFrame.setVisible(true);
+	}
+
+	private void createAndAddComponents() {
+		final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
+		final JButton saveButton = new JButton("Save");
+		saveButton.addActionListener(click -> {
+			new SaveRunePages();
+			runePageSuiteView.update();
+		});
+
+		final Container frameContentPane = jFrame.getContentPane();
+		frameContentPane.setLayout(new BorderLayout());
+		frameContentPane.add(runePageSuiteView.getView(), BorderLayout.CENTER);
+		final JPanel saveButtonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		saveButtonWrapper.add(saveButton);
+		frameContentPane.add(saveButtonWrapper, BorderLayout.NORTH);
+	}
+
+	private void setupClosingBehaviour() {
+		jFrame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowClosing(final WindowEvent windowEvent) {
+				final int response = JOptionPane.showConfirmDialog(jFrame,
+						"Save before closing? Any non-saved rune pages might be lost.", "Save?",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					new SaveRunePages();
+					jFrame.dispose();
+				} else if (response == JOptionPane.NO_OPTION) {
+					jFrame.dispose();
+				}
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+		});
+	}
+
+	private final class SaveRunePages extends SwingWorker<Optional<Exception>, Void> {
+		private SaveRunePages() {
+			execute();
+		}
+
+		@Override
+		public Optional<Exception> doInBackground() throws Exception {
+			try {
+				RunePageImportExport.storeRunePages(runePageSuite.getRunePagesByGroupName());
+				return Optional.empty();
+			} catch (final IOException e) {
+				return Optional.of(e);
+			}
+		}
+
+		@Override
+		public void done() {
+			try {
+				final Optional<Exception> errorDuringSave = get();
+				if (errorDuringSave.isPresent()) {
+					final Exception error = errorDuringSave.get();
+					JOptionPane.showMessageDialog(jFrame, error.getMessage(), error.getClass().getName(),
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (final InterruptedException | ExecutionException e) {
+				/*
+				 * not reachable, because done() is only called after doInBackground is
+				 * finished, i.e., get() of SwingWorker doesn't block
+				 */
+			}
+		}
+	}
+
+	public JFrame getFrame() {
+		return jFrame;
+	}
+}
