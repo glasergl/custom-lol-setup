@@ -11,44 +11,34 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.UIManager;
 
 import todo.model.Rune;
 import todo.model.RunePath;
 import todo.model.Shards;
 
 /**
- * Stores all required image in public static variables. Each image is scaled
- * according to he desired size.
+ * Loads all required images and transforms them to grayscale.
  */
-public final class Images { // TODO make object oriented and provide static instance in main, with variable
-							// panel background
-	private static final int MAIN_RUNE_PATH_ICON_SIZE = 55;
-	private static final int SECOND_RUNE_PATH_ICON_SIZE = 40;
-	private static final int KEY_STONE_ICON_SIZE = 60;
-	private static final int SLOT_RUNE_ICON_SIZE = 35;
-	private static final int SHARD_ICON_SIZE = 25;
+public final class Images {
+	private final int mainRunePathIconSize = 55;
+	private final int secondRunePathIconSize = 40;
+	private final int keyStoneRuneIconSize = 60;
+	private final int slotRuneIconSize = 35;
+	private final int shardIconSize = 28;
 
-	public static final Map<String, Image> MAIN_RUNE_PATH_IMAGES = getRunePathImages(MAIN_RUNE_PATH_ICON_SIZE);
-	public static final Map<String, Image> SECOND_RUNE_PATH_IMAGES = getRunePathImages(SECOND_RUNE_PATH_ICON_SIZE);
-	public static final Map<String, Image> KEY_STONE_IMAGES = getKeyStoneImages();
-	public static final Map<String, Image> SLOT_RUNE_IMAGES = getSlotRuneImages();
-	public static final Map<String, Image> SHARD_IMAGES = getShardImages();
+	private final Map<String, Image> mainRunePathImages = fetchRunePathImages(mainRunePathIconSize);
+	private final Map<String, Image> secondRunePathImages = fetchRunePathImages(secondRunePathIconSize);
+	private final Map<String, Image> keyStoneImages = fetchKeyStoneImages();
+	private final Map<String, Image> slotRuneImages = fetchSlotRuneImages();
+	private final Map<String, Image> shardImages = fetchShardImages();
 
-	public static final Map<String, Image> MAIN_RUNE_PATH_GRAY_IMAGES = getGrayImages(MAIN_RUNE_PATH_IMAGES);
-	public static final Map<String, Image> SECOND_RUNE_PATH_GRAY_IMAGES = getGrayImages(SECOND_RUNE_PATH_IMAGES);
-	public static final Map<String, Image> KEY_STONE_GRAY_IMAGES = getGrayImages(KEY_STONE_IMAGES);
-	public static final Map<String, Image> SLOT_RUNE_GRAY_IMAGES = getGrayImages(SLOT_RUNE_IMAGES);
-	public static final Map<String, Image> SHARD_GRAY_IMAGES = getGrayImages(SHARD_IMAGES);
+	private final Map<String, Image> mainRunePathGrayImages = getGrayImages(mainRunePathImages);
+	private final Map<String, Image> secondRunePathGrayImages = getGrayImages(secondRunePathImages);
+	private final Map<String, Image> keyStoneGrayImages = getGrayImages(keyStoneImages);
+	private final Map<String, Image> slotRuneGrayImages = getGrayImages(slotRuneImages);
+	private final Map<String, Image> shardGrayImages = getGrayImages(shardImages);
 
-	/**
-	 * Method to call to load all images. Doesn't need an implementation as all
-	 * static variables initialize itself directly after declaration.
-	 */
-	public static void loadImages() {
-	}
-
-	private static Map<String, Image> getRunePathImages(final int iconSize) {
+	private Map<String, Image> fetchRunePathImages(final int iconSize) {
 		final Map<String, Image> images = new HashMap<>();
 		for (final RunePath runePath : RunePath.ALL) {
 			images.put(runePath.getName(), getImageFromName(runePath.getName(), "png", iconSize, iconSize));
@@ -56,42 +46,41 @@ public final class Images { // TODO make object oriented and provide static inst
 		return images;
 	}
 
-	private static Map<String, Image> getKeyStoneImages() {
+	private Map<String, Image> fetchKeyStoneImages() {
 		final Map<String, Image> images = new HashMap<>();
 		for (final RunePath runePath : RunePath.ALL) {
 			for (final Rune keyStone : runePath.getKeyStones()) {
 				images.put(keyStone.getName(),
-						getImageFromName(keyStone.getName(), "png", KEY_STONE_ICON_SIZE, KEY_STONE_ICON_SIZE));
+						getImageFromName(keyStone.getName(), "png", keyStoneRuneIconSize, keyStoneRuneIconSize));
 			}
 		}
 		return images;
 	}
 
-	private static Map<String, Image> getSlotRuneImages() {
+	private Map<String, Image> fetchSlotRuneImages() {
 		final Map<String, Image> images = new HashMap<>();
 		for (final RunePath runePath : RunePath.ALL) {
 			for (final List<Rune> slotRuneRow : runePath.getSlotRunes()) {
 				for (final Rune slotRune : slotRuneRow) {
 					images.put(slotRune.getName(),
-							getImageFromName(slotRune.getName(), "png", SLOT_RUNE_ICON_SIZE, SLOT_RUNE_ICON_SIZE));
+							getImageFromName(slotRune.getName(), "png", slotRuneIconSize, slotRuneIconSize));
 				}
 			}
 		}
 		return images;
 	}
 
-	private static Map<String, Image> getShardImages() {
+	private Map<String, Image> fetchShardImages() {
 		final Map<String, Image> images = new HashMap<>();
 		for (final List<Rune> shardRow : Shards.ALL) {
 			for (final Rune shard : shardRow) {
-				images.put(shard.getName(), getImageFromName(shard.getName(), "png", SHARD_ICON_SIZE, SHARD_ICON_SIZE));
+				images.put(shard.getName(), getImageFromName(shard.getName(), "png", shardIconSize, shardIconSize));
 			}
 		}
 		return images;
 	}
 
-	private static Image getImageFromName(final String name, final String imageType, final int width,
-			final int height) {
+	private Image getImageFromName(final String name, final String imageType, final int width, final int height) {
 		try {
 			final String imageFileName = name.replaceAll("[^A-Za-z0-9]", "") + "." + imageType;
 			final Image image = ImageIO.read(Images.class.getResourceAsStream("/" + imageFileName));
@@ -104,7 +93,7 @@ public final class Images { // TODO make object oriented and provide static inst
 		}
 	}
 
-	private static Map<String, Image> getGrayImages(final Map<String, Image> images) {
+	private Map<String, Image> getGrayImages(final Map<String, Image> images) {
 		final Map<String, Image> grayImages = new HashMap<>();
 		for (final String imageKey : images.keySet()) {
 			final Image image = images.get(imageKey);
@@ -113,14 +102,54 @@ public final class Images { // TODO make object oriented and provide static inst
 		return grayImages;
 	}
 
-	private static Image getGrayScale(final Image image) {
+	private Image getGrayScale(final Image image) {
 		final BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-				BufferedImage.TYPE_BYTE_GRAY);
+				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D painter = bufferedImage.createGraphics();
-		painter.drawImage(image, 0, 0, UIManager.getColor("Panel.background"), null);
+		painter.drawImage(image, 0, 0, null);
 		painter.dispose();
 		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 		ColorConvertOp op = new ColorConvertOp(cs, null);
 		return op.filter(bufferedImage, null);
+	}
+
+	public Map<String, Image> getMainRunePathImages() {
+		return mainRunePathImages;
+	}
+
+	public Map<String, Image> getSecondRunePathImages() {
+		return secondRunePathImages;
+	}
+
+	public Map<String, Image> getMainRunePathGrayImages() {
+		return mainRunePathGrayImages;
+	}
+
+	public Map<String, Image> getSecondRunePathGrayImages() {
+		return secondRunePathGrayImages;
+	}
+
+	public Map<String, Image> getKeyStoneImages() {
+		return keyStoneImages;
+	}
+
+	public Map<String, Image> getKeyStoneGrayImages() {
+		return keyStoneGrayImages;
+	}
+
+	public Map<String, Image> getSlotRuneImages() {
+		return slotRuneImages;
+	}
+
+	public Map<String, Image> getSlotRuneGrayImages() {
+		return slotRuneGrayImages;
+	}
+
+	public Map<String, Image> getShardImages() {
+		return shardImages;
+	}
+
+	public Map<String, Image> getShardGrayImages() {
+		return shardGrayImages;
 	}
 }

@@ -42,26 +42,10 @@ public final class GraySelectionElement {
 	}
 
 	private MouseListener getClickActionMouseListener() {
-		return new MouseListener() {
+		return new EmptyMouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				onClickAction.run();
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
 			}
 		};
 	}

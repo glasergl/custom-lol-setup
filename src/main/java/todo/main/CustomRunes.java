@@ -20,6 +20,8 @@ import todo.view.MainFrameCreation;
  * Main class for this application.
  */
 public final class CustomRunes {
+	public static final Images IMAGES = new Images();
+
 	/**
 	 * Entry point of the application.
 	 * 
@@ -27,7 +29,6 @@ public final class CustomRunes {
 	 */
 	public static void main(final String[] commandLineArguments) {
 		Locale.setDefault(Locale.ENGLISH);
-		Images.loadImages();
 
 		final Image frameIcon;
 		try {
