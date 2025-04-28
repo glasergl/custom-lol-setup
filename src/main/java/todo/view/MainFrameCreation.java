@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
+import todo.fileIO.Images;
 import todo.fileIO.RunePageImportExport;
 import todo.model.RunePageSuite;
 
@@ -25,9 +26,11 @@ public final class MainFrameCreation {
 	private final JFrame jFrame;
 	private final String title = "Custom Runes";
 	private final RunePageSuite runePageSuite;
+	private final Images images;
 
-	public MainFrameCreation(final Image icon, final RunePageSuite runePageSuite) {
+	public MainFrameCreation(final Image icon, final RunePageSuite runePageSuite, final Images images) {
 		this.jFrame = new JFrame(title);
+		this.images = images;
 		this.runePageSuite = runePageSuite;
 		final Image scaledIcon = icon.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		jFrame.setIconImage(scaledIcon);
@@ -41,7 +44,7 @@ public final class MainFrameCreation {
 	}
 
 	private void createAndAddComponents() {
-		final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite);
+		final RunePageSuiteView runePageSuiteView = new RunePageSuiteView(runePageSuite, images);
 		final JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(click -> {
 			new SaveRunePages();

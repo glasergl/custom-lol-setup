@@ -20,8 +20,6 @@ import todo.view.MainFrameCreation;
  * Main class for this application.
  */
 public final class CustomRunes {
-	public static final Images IMAGES = new Images();
-
 	/**
 	 * Entry point of the application.
 	 * 
@@ -29,6 +27,7 @@ public final class CustomRunes {
 	 */
 	public static void main(final String[] commandLineArguments) {
 		Locale.setDefault(Locale.ENGLISH);
+		final Images images = new Images();
 
 		final Image frameIcon;
 		try {
@@ -48,7 +47,7 @@ public final class CustomRunes {
 		final RunePageSuite runePageSuite = new RunePageSuite(runePagesByGroup);
 
 		SwingUtilities.invokeLater(() -> {
-			new MainFrameCreation(frameIcon, runePageSuite);
+			new MainFrameCreation(frameIcon, runePageSuite, images);
 		});
 	}
 }

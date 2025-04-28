@@ -83,7 +83,7 @@ public final class Images {
 	private Image getImageFromName(final String name, final String imageType, final int width, final int height) {
 		try {
 			final String imageFileName = name.replaceAll("[^A-Za-z0-9]", "") + "." + imageType;
-			final Image image = ImageIO.read(Images.class.getResourceAsStream("/" + imageFileName));
+			final Image image = ImageIO.read(getClass().getResourceAsStream("/" + imageFileName));
 			if (image == null) {
 				throw new IllegalArgumentException();
 			}

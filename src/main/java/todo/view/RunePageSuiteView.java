@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import todo.fileIO.Images;
 import todo.model.RunePage;
 import todo.model.RunePageSuite;
 
@@ -20,6 +21,7 @@ import todo.model.RunePageSuite;
  */
 public final class RunePageSuiteView {
 	private final RunePageSuite runePageSuite;
+	private final Images images;
 	private final JPanel view = new JPanel();
 
 	/**
@@ -29,8 +31,9 @@ public final class RunePageSuiteView {
 	 * 
 	 * @param runePageSuite
 	 */
-	public RunePageSuiteView(final RunePageSuite runePageSuite) {
+	public RunePageSuiteView(final RunePageSuite runePageSuite, final Images images) {
 		this.runePageSuite = runePageSuite;
+		this.images = images;
 		view.setLayout(new BorderLayout());
 		updateView();
 	}
@@ -44,7 +47,7 @@ public final class RunePageSuiteView {
 
 		final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
 		if (currentRunePage.isPresent()) {
-			final RunePageView runePageView = new RunePageView(currentRunePage.get());
+			final RunePageView runePageView = new RunePageView(currentRunePage.get(), images);
 			final JPanel runePageViewWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 			runePageViewWrapper.add(runePageView.getView());
 			view.add(runePageViewWrapper, BorderLayout.CENTER);

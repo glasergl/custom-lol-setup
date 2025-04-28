@@ -12,7 +12,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import todo.main.CustomRunes;
+import todo.fileIO.Images;
 import todo.model.RunePage;
 import todo.model.RunePath;
 
@@ -22,6 +22,7 @@ import todo.model.RunePath;
  */
 public final class RunePageView {
 	private final RunePage runePage;
+	private final Images images;
 	private final JPanel view = new JPanel();
 
 	/**
@@ -31,8 +32,9 @@ public final class RunePageView {
 	 * @param runePage - initial visualization, may be an empty rune page, i.e.,
 	 *                 nothing selected
 	 */
-	public RunePageView(final RunePage runePage) {
+	public RunePageView(final RunePage runePage, final Images images) {
 		this.runePage = runePage;
+		this.images = images;
 		view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 		updateView();
 	}
@@ -70,8 +72,8 @@ public final class RunePageView {
 	private JPanel getMainRunePathSelectionView() {
 		return getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
 			final GraySelectionElement runePathSelection = new GraySelectionElement(
-					CustomRunes.IMAGES.getMainRunePathImages().get(runePathToCreateSelectorFor.getName()),
-					CustomRunes.IMAGES.getMainRunePathGrayImages().get(runePathToCreateSelectorFor.getName()), () -> {
+					images.getMainRunePathImages().get(runePathToCreateSelectorFor.getName()),
+					images.getMainRunePathGrayImages().get(runePathToCreateSelectorFor.getName()), () -> {
 						return runePathToCreateSelectorFor.equals(runePage.getMainRunePath());
 					}, () -> {
 						runePage.selectMainPath(runePathToCreateSelectorFor);
@@ -89,8 +91,8 @@ public final class RunePageView {
 	private JPanel getSecondPathSelectionView() {
 		return getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
 			final GraySelectionElement runePathSelection = new GraySelectionElement(
-					CustomRunes.IMAGES.getSecondRunePathImages().get(runePathToCreateSelectorFor.getName()),
-					CustomRunes.IMAGES.getSecondRunePathGrayImages().get(runePathToCreateSelectorFor.getName()), () -> {
+					images.getSecondRunePathImages().get(runePathToCreateSelectorFor.getName()),
+					images.getSecondRunePathGrayImages().get(runePathToCreateSelectorFor.getName()), () -> {
 						return runePathToCreateSelectorFor.equals(runePage.getSecondRunePath());
 					}, () -> {
 						runePage.selectSecondPath(runePathToCreateSelectorFor);
@@ -123,10 +125,10 @@ public final class RunePageView {
 	 */
 	private JPanel getMainRunePathView() {
 		final JPanel mainRunePath = new JPanel(new BorderLayout(0, 0));
-		mainRunePath.add(new SelectableRunesView(runePage.getKeyStones(), CustomRunes.IMAGES.getKeyStoneImages(),
-				CustomRunes.IMAGES.getKeyStoneGrayImages()).getView(), BorderLayout.NORTH);
-		mainRunePath.add(new SelectableRunesView(runePage.getSlotRunes(), CustomRunes.IMAGES.getSlotRuneImages(),
-				CustomRunes.IMAGES.getSlotRuneGrayImages()).getView(), BorderLayout.CENTER);
+		mainRunePath.add(new SelectableRunesView(runePage.getKeyStones(), images.getKeyStoneImages(),
+				images.getKeyStoneGrayImages()).getView(), BorderLayout.NORTH);
+		mainRunePath.add(new SelectableRunesView(runePage.getSlotRunes(), images.getSlotRuneImages(),
+				images.getSlotRuneGrayImages()).getView(), BorderLayout.CENTER);
 		return mainRunePath;
 	}
 
@@ -138,10 +140,10 @@ public final class RunePageView {
 	private JPanel getSecondRunePathAndShardsView() {
 		final JPanel secondRunePathAndShards = new JPanel(new BorderLayout(0, 0));
 		secondRunePathAndShards.add(new SelectableRunesView(runePage.getSecondPathSlotRunes(),
-				CustomRunes.IMAGES.getSlotRuneImages(), CustomRunes.IMAGES.getSlotRuneGrayImages()).getView(),
+				images.getSlotRuneImages(), images.getSlotRuneGrayImages()).getView(),
 				BorderLayout.NORTH);
-		secondRunePathAndShards.add(new SelectableRunesView(runePage.getShards(), CustomRunes.IMAGES.getShardImages(),
-				CustomRunes.IMAGES.getShardGrayImages()).getView(), BorderLayout.CENTER);
+		secondRunePathAndShards.add(new SelectableRunesView(runePage.getShards(), images.getShardImages(),
+				images.getShardGrayImages()).getView(), BorderLayout.CENTER);
 		return secondRunePathAndShards;
 	}
 

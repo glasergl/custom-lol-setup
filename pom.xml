@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>TODO</groupId>
+	<groupId>todo</groupId>
 	<artifactId>CustomRunes</artifactId>
 	<version>1.0.0</version>
 
@@ -11,6 +11,13 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<!-->for launch4j<-->
+	<organization>
+		<name>todo</name>
+	</organization>
+	<inceptionYear>2025</inceptionYear>
+	<description>Store many rune pages for League of Legends</description>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -28,4 +35,55 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>todo.main.CustomRunes</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<headerType>gui</headerType>
+					<jar>${project.build.directory}${file.separator}${project.build.finalName}-jar-with-dependencies.jar</jar>
+					<outfile>${project.build.directory}${file.separator}${project.artifactId}.exe</outfile>
+					<icon>${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}GatheringStorm.ico</icon>
+					<jre>
+						<minVersion>17</minVersion>
+						<path>%PATH%</path>
+					</jre>
+				</configuration>
+				<executions>
+					<execution>
+						<id>launch4j</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
