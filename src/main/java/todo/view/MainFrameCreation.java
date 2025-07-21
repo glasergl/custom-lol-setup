@@ -1,7 +1,6 @@
 package todo.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;

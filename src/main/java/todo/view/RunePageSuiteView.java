@@ -106,8 +106,11 @@ public final class RunePageSuiteView {
 		final JPanel adderController = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		adderController.add(groupNamePanel);
 		adderController.add(addEmptyRunePageButton);
-		adderController.add(deleteCurrentGroupButton);
-		adderController.add(deleteCurrentRunePageButton);
+		final JPanel deleteButtonsPanel = new JPanel();
+		deleteButtonsPanel.setLayout(new BorderLayout(5, 5));
+		deleteButtonsPanel.add(deleteCurrentRunePageButton, BorderLayout.NORTH);
+		deleteButtonsPanel.add(deleteCurrentGroupButton, BorderLayout.SOUTH);
+		adderController.add(deleteButtonsPanel);
 		return adderController;
 	}
 
