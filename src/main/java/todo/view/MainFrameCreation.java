@@ -1,6 +1,7 @@
 package todo.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -34,11 +35,11 @@ public final class MainFrameCreation {
 		this.runePageSuite = runePageSuite;
 		final Image scaledIcon = icon.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		jFrame.setIconImage(scaledIcon);
-		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // custom closing behavior with window listener
 		setupClosingBehaviour();
 
 		createAndAddComponents();
-		jFrame.setSize(1200, 700);
+		jFrame.setSize(1100, 600);
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
 	}

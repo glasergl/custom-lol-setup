@@ -1,5 +1,6 @@
 package todo.main;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import todo.fileIO.Images;
 import todo.fileIO.RunePageImportExport;
@@ -26,9 +28,11 @@ public final class CustomRunes {
 	 * @param commandLineArguments - unused.
 	 */
 	public static void main(final String[] commandLineArguments) {
+		UIManager.put("Button.font", new Font("Sans-Serif", Font.BOLD, 20));
+		UIManager.put("Label.font", new Font("Sans-Serif", Font.PLAIN, 14));
+		UIManager.put("TextField.font", new Font("Sans-Serif", Font.PLAIN, 14));
 		Locale.setDefault(Locale.ENGLISH);
 		final Images images = new Images();
-
 		final Image frameIcon;
 		try {
 			frameIcon = ImageIO.read(CustomRunes.class.getResource("/GatheringStorm.png"));

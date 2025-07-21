@@ -1,6 +1,7 @@
 package todo.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,7 @@ public final class RuneGroupsView {
 	private final RunePageSuite runePageSuite;
 	private final RunePageSuiteView runePageSuiteView;
 	private final JScrollPane view;
-	private final int runePageLabelLeftMargin = 25;
+	private final int runePageLabelLeftMargin = 20;
 
 	/**
 	 * Creates a view to select groups and rune pages by title.
@@ -48,11 +49,15 @@ public final class RuneGroupsView {
 		groupsView.setLayout(new BoxLayout(groupsView, BoxLayout.Y_AXIS));
 		for (final String groupName : sortedGroupNames) {
 			groupsView.add(getGroupSelectionLabel(groupName));
+			final JPanel runePagesLabelPanel = new JPanel();
+			runePagesLabelPanel.setLayout(new BoxLayout(runePagesLabelPanel, BoxLayout.Y_AXIS));
 			final List<RunePage> runePages = runePagesByGroupName.get(groupName);
 			for (int runePageIndex = 0; runePageIndex < runePages.size(); runePageIndex++) {
 				final RunePage runePage = runePages.get(runePageIndex);
-				groupsView.add(getRunePageSelectionLabel(groupName, runePageIndex, runePage));
+				runePagesLabelPanel.add(getRunePageSelectionLabel(groupName, runePageIndex, runePage));
 			}
+			runePagesLabelPanel.setBorder(new EmptyBorder(0, runePageLabelLeftMargin, 0, 0));
+			groupsView.add(runePagesLabelPanel);
 		}
 
 		this.view = new JScrollPane(groupsView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -89,10 +94,11 @@ public final class RuneGroupsView {
 	private JLabel getRunePageSelectionLabel(final String groupName, final int runePageIndexToSelect,
 			final RunePage runePage) {
 		final JLabel runePageTitle = new JLabel(runePage.getTitle());
+		runePageTitle.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		final Optional<RunePage> selectedRunePage = runePageSuite.getSelectedRunePage();
 		if (selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
 			runePageTitle.setOpaque(true);
-			runePageTitle.setBackground(Color.YELLOW);
+			runePageTitle.setBackground(new Color(152, 245, 249));
 		}
 		runePageTitle.addMouseListener(new EmptyMouseListener() {
 			@Override
@@ -101,7 +107,6 @@ public final class RuneGroupsView {
 				runePageSuiteView.updateView();
 			}
 		});
-		runePageTitle.setBorder(new EmptyBorder(0, runePageLabelLeftMargin, 0, 0));
 		return runePageTitle;
 	}
 
