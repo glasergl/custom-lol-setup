@@ -63,15 +63,8 @@ public final class MainFrameCreation {
 		jFrame.addWindowListener(new EmptyWindowListener() {
 			@Override
 			public void windowClosing(final WindowEvent windowEvent) {
-				final int response = JOptionPane.showConfirmDialog(jFrame,
-						"Save before closing? Any non-saved rune pages might be lost.", "Save?",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				if (response == JOptionPane.YES_OPTION) {
-					new SaveRunePages();
-					jFrame.dispose();
-				} else if (response == JOptionPane.NO_OPTION) {
-					jFrame.dispose();
-				}
+				new SaveRunePages();
+				jFrame.dispose();
 			}
 		});
 	}
