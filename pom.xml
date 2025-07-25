@@ -11,13 +11,6 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
-	<!-->for launch4j<-->
-	<organization>
-		<name>todo</name>
-	</organization>
-	<inceptionYear>2025</inceptionYear>
-	<description>Store many rune pages for League of Legends</description>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -35,7 +28,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -56,30 +49,6 @@
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.akathist.maven.plugins.launch4j</groupId>
-				<artifactId>launch4j-maven-plugin</artifactId>
-				<version>2.4.1</version>
-				<configuration>
-					<headerType>gui</headerType>
-					<jar>${project.build.directory}${file.separator}${project.build.finalName}-jar-with-dependencies.jar</jar>
-					<outfile>${project.build.directory}${file.separator}${project.artifactId}.exe</outfile>
-					<icon>${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}GatheringStorm.ico</icon>
-					<jre>
-						<minVersion>17</minVersion>
-						<path>%PATH%</path>
-					</jre>
-				</configuration>
-				<executions>
-					<execution>
-						<id>launch4j</id>
-						<phase>package</phase>
-						<goals>
-							<goal>launch4j</goal>
 						</goals>
 					</execution>
 				</executions>
