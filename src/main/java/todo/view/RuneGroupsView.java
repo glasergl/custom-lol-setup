@@ -59,7 +59,13 @@ public final class RuneGroupsView {
 			runePagesLabelPanel.setBorder(new EmptyBorder(0, runePageLabelLeftMargin, 0, 0));
 			groupsView.add(runePagesLabelPanel);
 		}
-
+		groupsView.addMouseListener(new EmptyMouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				runePageSuite.unselectGroup();
+				runePageSuiteView.updateView();
+			}
+		});
 		this.view = new JScrollPane(groupsView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		groupsView.setBorder(new EmptyBorder(5, 5, 5, 5));

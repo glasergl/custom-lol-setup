@@ -36,6 +36,15 @@ public final class RunePageSuite {
 		}
 		selectGroup(groupName);
 	}
+	
+	public void unselectGroup() {
+		selectedGroupName = Optional.empty();
+		selectedRunePageIndex = Optional.empty();
+	}
+	
+	public void unselectRunePage() {
+		selectedRunePageIndex = Optional.empty();
+	}
 
 	public void selectGroup(final String groupName) {
 		if (!containsGroup(groupName)) {

@@ -54,7 +54,7 @@ public final class RunePageSuiteView {
 		}
 		view.add(new RuneGroupsView(runePageSuite, this).getView(), BorderLayout.WEST);
 		view.add(getRunePageAdderController(), BorderLayout.SOUTH);
-
+		
 		view.revalidate();
 		view.repaint();
 	}
