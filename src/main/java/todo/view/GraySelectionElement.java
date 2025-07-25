@@ -30,6 +30,8 @@ public final class GraySelectionElement {
 		this.unselectedImage = unselectedImage;
 		icon.addMouseListener(getClickActionMouseListener());
 		icon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		icon.setBackground(CustomColors.BACKGROUND);
+		icon.setOpaque(true);
 		view.add(icon);
 	}
 

@@ -1,6 +1,5 @@
 package todo.view;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ public final class RuneGroupsView {
 		final Optional<RunePage> selectedRunePage = runePageSuite.getSelectedRunePage();
 		if (selectedRunePage.isPresent() && runePage.equals(selectedRunePage.get())) {
 			runePageTitle.setOpaque(true);
-			runePageTitle.setBackground(new Color(152, 245, 249));
+			runePageTitle.setBackground(CustomColors.HIGHLIGHT);
 		}
 		runePageTitle.addMouseListener(new EmptyMouseListener() {
 			@Override

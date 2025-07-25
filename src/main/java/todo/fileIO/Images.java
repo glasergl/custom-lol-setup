@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import todo.model.Rune;
 import todo.model.RunePath;
 import todo.model.Shards;
+import todo.view.CustomColors;
 
 /**
  * Loads all required images and transforms them to grayscale.
@@ -106,6 +107,8 @@ public final class Images {
 		final BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D painter = bufferedImage.createGraphics();
+		painter.setColor(CustomColors.BACKGROUND);
+		painter.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
 		painter.drawImage(image, 0, 0, null);
 		painter.dispose();
 		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
