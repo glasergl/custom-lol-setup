@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class RunePageSuite {
-	public static final String DEFAULT_RUNE_GROUP_NAME = "default";
+	public static final String DEFAULT_RUNE_GROUP_NAME = "-";
 	private static final String DEFAULT_EMPTY_RUNE_PAGE_TITLE = "New Rune Page";
 
 	private final Map<String, List<RunePage>> runePagesByGroupName;
