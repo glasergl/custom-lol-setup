@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 import todo.fileIO.Images;
@@ -23,6 +24,8 @@ import todo.model.RunePageSuite;
  * Generates the main frame for this application.
  */
 public final class MainFrameCreation {
+	private static final String LEGAL_BOILER_PLATE = "Custom Runes isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc."; 
+	
 	private final JFrame jFrame;
 	private final String title = "Custom Runes";
 	private final RunePageSuite runePageSuite;
@@ -57,6 +60,9 @@ public final class MainFrameCreation {
 		final JPanel saveButtonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		saveButtonWrapper.add(saveButton);
 		frameContentPane.add(saveButtonWrapper, BorderLayout.NORTH);
+		final JTextArea legalBoilerPlate = new JTextArea(LEGAL_BOILER_PLATE);
+		legalBoilerPlate.setLineWrap(true);
+		frameContentPane.add(legalBoilerPlate, BorderLayout.SOUTH);
 	}
 
 	private void setupClosingBehaviour() {

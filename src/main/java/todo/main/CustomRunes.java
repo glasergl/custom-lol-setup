@@ -1,6 +1,5 @@
 package todo.main;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
@@ -34,12 +33,14 @@ public final class CustomRunes {
 		UIManager.put("Button.font", new Font("Sans-Serif", Font.BOLD, 20));
 		UIManager.put("Label.font", new Font("Sans-Serif", Font.PLAIN, 18));
 		UIManager.put("TextField.font", new Font("Sans-Serif", Font.PLAIN, 18));
-		UIManager.put("Label.foreground", Color.WHITE);
+		UIManager.put("Label.foreground", CustomColors.TEXT);
 		UIManager.put("TextField.border", new EmptyBorder(3, 3, 3, 3));
 		UIManager.put("Panel.background", CustomColors.BACKGROUND);
-		UIManager.put("OptionPane.messageForeground", Color.WHITE);
+		UIManager.put("OptionPane.messageForeground", CustomColors.TEXT);
 		UIManager.put("OptionPane.background", CustomColors.BACKGROUND);
 		UIManager.put("ScrollBar.background", CustomColors.BACKGROUND);
+		UIManager.put("TextArea.background", CustomColors.BACKGROUND);
+		UIManager.put("TextArea.foreground", CustomColors.TEXT);
 		
 		Locale.setDefault(Locale.ENGLISH);
 		final Images images = new Images();
