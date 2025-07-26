@@ -2,6 +2,8 @@ package todo.model;
 
 import java.util.List;
 
+import todo.fileIO.RunePageJson;
+
 /**
  * Contains all components of a mutable runepage with methods to select runes.
  * The methods ensure no invalid runepage is reflected.
@@ -56,6 +58,10 @@ public final class RunePage {
 			secondRunePath = alternativeSecondRunePath;
 			selectableSecondPathSlotRunes = new SelectableSecondPathRunes(alternativeSecondRunePath.getSlotRunes());
 		}
+	}
+	
+	public RunePage getDeepCopy() {
+		return RunePageJson.getFromJson(RunePageJson.getJson(this));
 	}
 
 	public void selectSecondPath(final RunePath nextSecondRunePath) {

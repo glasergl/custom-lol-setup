@@ -36,12 +36,12 @@ public final class RunePageSuite {
 		}
 		selectGroup(groupName);
 	}
-	
+
 	public void unselectGroup() {
 		selectedGroupName = Optional.empty();
 		selectedRunePageIndex = Optional.empty();
 	}
-	
+
 	public void unselectRunePage() {
 		selectedRunePageIndex = Optional.empty();
 	}
@@ -75,6 +75,15 @@ public final class RunePageSuite {
 			final List<RunePage> runePagesOfGroup = runePagesByGroupName.get(selectedGroupName.get());
 			runePagesOfGroup.add(emptyRunePage);
 			selectedRunePageIndex = Optional.of(runePagesOfGroup.size() - 1);
+		}
+	}
+
+	public void copyRunePage() {
+		if (selectedRunePageIndex.isPresent()) {
+			final RunePage selectedRunePage = getSelectedRunePage().get();
+			final RunePage copy = selectedRunePage.getDeepCopy();
+			final List<RunePage> runePageList = runePagesByGroupName.get(getSelectedGroupName().get());
+			runePageList.add(copy);
 		}
 	}
 

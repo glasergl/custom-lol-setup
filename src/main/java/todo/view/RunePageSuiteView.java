@@ -71,8 +71,14 @@ public final class RunePageSuiteView {
 			runePageSuite.addEmptyRunePage();
 			updateView();
 		});
+		
+		final JButton copyRunePageButton = new JButton("Copy Rune Page");
+		copyRunePageButton.addActionListener(click -> {
+			runePageSuite.copyRunePage();
+			updateView();
+		});
 
-		final JButton deleteCurrentGroupButton = new JButton("Delete Current Group");
+		final JButton deleteCurrentGroupButton = new JButton("Delete Group");
 		deleteCurrentGroupButton.addActionListener(click -> {
 			final Optional<String> currentGroupName = runePageSuite.getSelectedGroupName();
 			if (currentGroupName.isPresent()) {
@@ -86,7 +92,7 @@ public final class RunePageSuiteView {
 			updateView();
 		});
 
-		final JButton deleteCurrentRunePageButton = new JButton("Delete Current Rune Page");
+		final JButton deleteCurrentRunePageButton = new JButton("Delete Rune Page");
 		deleteCurrentRunePageButton.addActionListener(click -> {
 			final Optional<String> currenGroupName = runePageSuite.getSelectedGroupName();
 			final Optional<RunePage> currentRunePage = runePageSuite.getSelectedRunePage();
@@ -105,7 +111,10 @@ public final class RunePageSuiteView {
 
 		final JPanel adderController = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		adderController.add(groupNamePanel);
-		adderController.add(addEmptyRunePageButton);
+		final JPanel runePageAdderPanel = new JPanel(new BorderLayout(5,5));
+		runePageAdderPanel.add(addEmptyRunePageButton, BorderLayout.NORTH);
+		runePageAdderPanel.add(copyRunePageButton, BorderLayout.SOUTH);
+		adderController.add(runePageAdderPanel);
 		final JPanel deleteButtonsPanel = new JPanel();
 		deleteButtonsPanel.setLayout(new BorderLayout(5, 5));
 		deleteButtonsPanel.add(deleteCurrentRunePageButton, BorderLayout.NORTH);
