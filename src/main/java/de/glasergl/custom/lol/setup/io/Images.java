@@ -140,7 +140,6 @@ public final class Images {
     private Image getGrayScale(final Image image) {
 	final BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 	final Graphics2D painter = bufferedImage.createGraphics();
-	painter.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
 	painter.drawImage(image, 0, 0, null);
 	painter.dispose();
 	ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);

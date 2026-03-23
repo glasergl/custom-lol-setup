@@ -19,4 +19,9 @@ public final class SelectableRune {
 	this.rune = rune;
 	this.isSelected = initiallySelected;
     }
+
+    @Override
+    public String toString() {
+	return rune.toString();
+    }
 }

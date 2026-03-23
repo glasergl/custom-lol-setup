@@ -2,13 +2,17 @@ package de.glasergl.custom.lol.setup.io.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.util.Set;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
-import de.glasergl.custom.lol.setup.model.entity.RunePath;
+import de.glasergl.custom.lol.setup.io.SetupFileIo;
+import de.glasergl.custom.lol.setup.model.entity.Setup;
 
 /**
  * Creates the GUI frame for this application.
@@ -20,38 +24,54 @@ public final class CreateFrame {
     private final String legalBoilerPlateText = title
 	    + " isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.";
 
-    public CreateFrame(final Images images) {
+    public CreateFrame(final Images images, final Set<Setup> initialSetups, final SetupFileIo setupFileIo) {
 	this.jFrame = new JFrame(title);
 	this.images = images;
 	jFrame.setIconImage(images.getFrameIcon());
 	jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-	createAndAddComponents();
+	createAndAddComponents(initialSetups);
 	jFrame.pack();
 	jFrame.setLocationRelativeTo(null);
 	jFrame.setVisible(true);
     }
 
-    private void createAndAddComponents() {
+    private void createAndAddComponents(final Set<Setup> initialSetups) {
 	final Container frameContentPane = jFrame.getContentPane();
 	frameContentPane.setLayout(new BorderLayout());
+
+	final SetupSelectionHandler setupSelectionHandler = new SetupSelectionHandler(initialSetups, images);
 	final ChampionSelectionUi meSelection = new ChampionSelectionUi(champion -> {
-	    // TODO
+	    setupSelectionHandler.setMe(champion);
 	}, images);
 	meSelection.getUi().setBorder(new TitledBorder("Me"));
 	final ChampionSelectionUi enemySelection = new ChampionSelectionUi(champion -> {
-	    // TODO
+	    setupSelectionHandler.setEnemy(champion);
 	}, images);
 	enemySelection.getUi().setBorder(new TitledBorder("Enemy"));
-	frameContentPane.add(meSelection.getUi(), BorderLayout.WEST);
-	frameContentPane.add(enemySelection.getUi(), BorderLayout.CENTER);
+	final JPanel setupSelection = new JPanel(new BorderLayout());
+	setupSelection.add(meSelection.getUi(), BorderLayout.WEST);
+	setupSelection.add(enemySelection.getUi(), BorderLayout.EAST);
+
+	final RoleSelectionUi roleSelectionUi = new RoleSelectionUi(images, role -> {
+	    setupSelectionHandler.setRole(role);
+	}, role -> {
+	    setupSelectionHandler.unsetRole();
+	});
+	setupSelection.add(roleSelectionUi.getUi(), BorderLayout.SOUTH);
+
+	frameContentPane.add(setupSelection, BorderLayout.WEST);
+
 	final JTextArea legalBoilerPlateComponent = new JTextArea(legalBoilerPlateText);
 	legalBoilerPlateComponent.setLineWrap(true);
 	legalBoilerPlateComponent.setEditable(false);
 	legalBoilerPlateComponent.setWrapStyleWord(true);
+	legalBoilerPlateComponent.setOpaque(false);
+	legalBoilerPlateComponent.setFocusable(false);
+	legalBoilerPlateComponent.setBorder(new EmptyBorder(3, 3, 3, 3));
 	frameContentPane.add(legalBoilerPlateComponent, BorderLayout.SOUTH);
-	frameContentPane.add(new RoleSelectionUi(images).getUi(), BorderLayout.NORTH);
-	frameContentPane.add(new RunePageBuilderView(new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY), images).getView(), BorderLayout.EAST);
+
+	frameContentPane.add(setupSelectionHandler.getUi(), BorderLayout.CENTER);
     }
 
     public JFrame getFrame() {

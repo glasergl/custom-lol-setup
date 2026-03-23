@@ -33,6 +33,10 @@ public final class RunePageBuilder {
 	this.selectableSecondPathSlotRunes = new SelectableSecondPathRunes(secondRunePath.slotRuneRows());
     }
 
+    public RunePageBuilder(final RunePage initialRunePage) {
+	this(initialRunePage.main(), initialRunePage.second());
+    }
+
     public void selectKeyStone(final int columnIndex) {
 	selectableKeyStones.select(0, columnIndex);
     }
@@ -52,7 +56,7 @@ public final class RunePageBuilder {
     public RunePage build() {
 	final Set<Rune> mainPathRunes = selectableKeyStones.getSelected();
 	mainPathRunes.addAll(selectableSlotRunes.getSelected());
-	return new RunePage(mainPathRunes, selectableSecondPathSlotRunes.getSelected(), selectableShards.getSelected());
+	return new RunePage(mainRunePath, secondRunePath, mainPathRunes, selectableSecondPathSlotRunes.getSelected(), selectableShards.getSelected());
     }
 
     public void selectMainPath(final RunePath nextMainRunePath) {
