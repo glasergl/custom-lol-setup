@@ -2,7 +2,6 @@ package de.glasergl.custom.lol.setup.io.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,7 +11,8 @@ import javax.swing.border.TitledBorder;
 
 import de.glasergl.custom.lol.setup.io.Images;
 import de.glasergl.custom.lol.setup.io.SetupFileIo;
-import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.io.ui.selection.ChampionSelectionUi;
+import de.glasergl.custom.lol.setup.io.ui.selection.RoleSelectionUi;
 
 /**
  * Creates the GUI frame for this application.
@@ -21,26 +21,28 @@ public final class CreateFrame {
     private final JFrame jFrame;
     private final String title = "Custom LoL Setup";
     private final Images images;
+    private final SetupFileIo setupFileIo;
     private final String legalBoilerPlateText = title
 	    + " isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.";
 
-    public CreateFrame(final Images images, final Set<Setup> initialSetups, final SetupFileIo setupFileIo) {
+    public CreateFrame(final Images images, final SetupFileIo setupFileIo) {
 	this.jFrame = new JFrame(title);
 	this.images = images;
+	this.setupFileIo = setupFileIo;
 	jFrame.setIconImage(images.getFrameIcon());
 	jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-	createAndAddComponents(initialSetups);
+	createAndAddComponents();
 	jFrame.pack();
 	jFrame.setLocationRelativeTo(null);
 	jFrame.setVisible(true);
     }
 
-    private void createAndAddComponents(final Set<Setup> initialSetups) {
+    private void createAndAddComponents() {
 	final Container frameContentPane = jFrame.getContentPane();
 	frameContentPane.setLayout(new BorderLayout());
 
-	final SetupSelectionHandler setupSelectionHandler = new SetupSelectionHandler(initialSetups, images);
+	final SetupSelectionHandler setupSelectionHandler = new SetupSelectionHandler(setupFileIo, images);
 	final ChampionSelectionUi meSelection = new ChampionSelectionUi(champion -> {
 	    setupSelectionHandler.setMe(champion);
 	}, images);

@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.io.ui.builder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import de.glasergl.custom.lol.setup.io.Images;
+import de.glasergl.custom.lol.setup.io.ui.SelectableRunesView;
+import de.glasergl.custom.lol.setup.io.ui.selection.GraySelectionElement;
 import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
 import de.glasergl.custom.lol.setup.model.entity.RunePage;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
@@ -48,7 +50,7 @@ public final class RunePageBuilderView {
 	runePathSelectionViews.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	runePathSelectionViews.add(getMainRunePathSelectionView());
 	runePathSelectionViews.add(getSecondPathSelectionView());
-	runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(84, 84, 84)));
+	runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(150, 150, 150)));
 	view.add(runePathSelectionViews);
 
 	final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -57,7 +59,7 @@ public final class RunePageBuilderView {
 	runesView.add(mainRunesView);
 	runesView.add(secondRunePathAndShardsView);
 	view.add(runesView);
-
+	
 	view.revalidate();
 	view.repaint();
     }

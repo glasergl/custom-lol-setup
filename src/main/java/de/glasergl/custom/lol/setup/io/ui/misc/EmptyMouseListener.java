@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.io.ui.misc;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

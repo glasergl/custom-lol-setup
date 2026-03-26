@@ -1,36 +1,49 @@
 package de.glasergl.custom.lol.setup.io.ui;
 
-import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.io.IOException;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
-import de.glasergl.custom.lol.setup.model.entity.RunePath;
-import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.io.SetupFileIo;
+import de.glasergl.custom.lol.setup.io.ui.builder.RunePageBuilderView;
+import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import lombok.Getter;
 
 public class SetupUi {
     private final RunePageBuilderView runePageBuilderView;
-    private final @Getter JPanel ui = new JPanel(new BorderLayout());
+    private final @Getter JPanel ui = new JPanel();
     private final JTextArea notes = new JTextArea(10, 30);
+    private final JButton storeButton = new JButton("Store");
 
-    private SetupUi(final Images images, final RunePageBuilder runePageBuilder) {
-	this.runePageBuilderView = new RunePageBuilderView(runePageBuilder, images);
-	ui.add(runePageBuilderView.getView(), BorderLayout.CENTER);
+    public SetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
+	this.runePageBuilderView = new RunePageBuilderView(setupBuilder.getRunePageBuilder(), images);
+	ui.setLayout(new BoxLayout(ui, BoxLayout.Y_AXIS));
+	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	buttonWrapper.add(storeButton);
+	storeButton.setFocusPainted(false);
+	storeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	storeButton.addActionListener(click -> {
+	    try {
+		setupFileIo.store(setupBuilder.build());
+	    } catch (final RuntimeException | IOException e) {
+		e.printStackTrace();
+		JOptionPane.showMessageDialog(SwingUtilities.windowForComponent(ui), String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()), "Store Failed with Exception", JOptionPane.ERROR_MESSAGE);
+	    }
+	});
+	ui.add(buttonWrapper);
+	ui.add(runePageBuilderView.getView());
 	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	scrollableNotes.setBorder(new TitledBorder("Notes"));
-	ui.add(scrollableNotes, BorderLayout.SOUTH);
-    }
-
-    public SetupUi(final Images images) {
-	this(images, new RunePageBuilder(RunePath.PRECISION, RunePath.RESOLVE));
-    }
-
-    public SetupUi(final Setup setup, final Images images) {
-	this(images, new RunePageBuilder(setup.runePage()));
+	ui.add(scrollableNotes);
     }
 }

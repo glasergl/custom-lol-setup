@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.io.ui.selection;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;
@@ -10,6 +10,8 @@ import java.util.function.Supplier;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import de.glasergl.custom.lol.setup.io.ui.misc.EmptyMouseListener;
 
 /**
  * Element which switches between two states, selected and unselected.

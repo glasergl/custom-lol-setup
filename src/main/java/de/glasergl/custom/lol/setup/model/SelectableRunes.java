@@ -21,6 +21,18 @@ public class SelectableRunes {
 	}
     }
 
+    public void select(final Set<Rune> runesToSelect) {
+	for (final Rune runeToSelect : runesToSelect) {
+	    for (final List<SelectableRune> row : runes) {
+		for (final SelectableRune rune : row) {
+		    if (rune.getRune().equals(runeToSelect)) {
+			rune.setSelected(true);
+		    }
+		}
+	    }
+	}
+    }
+
     public void select(final int rowIndex, final int columnIndex) {
 	if (rowIndex >= runes.size() || rowIndex < 0 || columnIndex < 0) {
 	    throw new IllegalArgumentException();

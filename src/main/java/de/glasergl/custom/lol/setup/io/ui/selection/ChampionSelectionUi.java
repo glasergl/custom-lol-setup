@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.io.ui.selection;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import de.glasergl.custom.lol.setup.io.Images;
+import de.glasergl.custom.lol.setup.io.ui.misc.EmptyMouseListener;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
 
 public final class ChampionSelectionUi {

@@ -35,6 +35,10 @@ public final class RunePageBuilder {
 
     public RunePageBuilder(final RunePage initialRunePage) {
 	this(initialRunePage.main(), initialRunePage.second());
+	selectableKeyStones.select(initialRunePage.mainPathRuneSelections());
+	selectableSlotRunes.select(initialRunePage.mainPathRuneSelections());
+	selectableSecondPathSlotRunes.select(initialRunePage.secondPathRuneSelections());
+	selectableShards.select(initialRunePage.selectedShards());
     }
 
     public void selectKeyStone(final int columnIndex) {
