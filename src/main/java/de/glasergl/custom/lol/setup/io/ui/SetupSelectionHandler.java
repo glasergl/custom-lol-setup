@@ -15,6 +15,7 @@ import de.glasergl.custom.lol.setup.model.entity.Champion;
 import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
 import lombok.Getter;
 
 public final class SetupSelectionHandler {
@@ -88,7 +89,9 @@ public final class SetupSelectionHandler {
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(knownSetup.runePage());
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder);
+	final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
+	final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell);
     }
 
     private SetupBuilder createEmptySetupBuilder() {
@@ -96,12 +99,12 @@ public final class SetupSelectionHandler {
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.RESOLVE);
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder);
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty());
     }
 
     private SetupBuilder createEmptySetupBuilderToGetUiSize() {
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.RESOLVE);
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
-	return new SetupBuilder(Champion.GWEN, Optional.empty(), Champion.AATROX, runePageBuilder, itemBuildBuilder);
+	return new SetupBuilder(Champion.GWEN, Optional.empty(), Champion.AATROX, runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty());
     }
 }

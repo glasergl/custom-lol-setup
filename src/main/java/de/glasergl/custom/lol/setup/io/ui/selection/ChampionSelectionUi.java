@@ -1,6 +1,7 @@
 package de.glasergl.custom.lol.setup.io.ui.selection;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
@@ -30,6 +31,7 @@ public final class ChampionSelectionUi {
 	    final JPanel championPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    championPanel.add(championIcon);
 	    championPanel.add(new JLabel(champion.toString()));
+	    championPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	    championPanel.addMouseListener(new EmptyMouseListener() {
 		@Override
 		public void mouseClicked(final MouseEvent click) {

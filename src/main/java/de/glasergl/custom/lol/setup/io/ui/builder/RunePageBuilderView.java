@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.ui.SelectableRunesView;
 import de.glasergl.custom.lol.setup.io.ui.selection.GraySelectionElement;
+import de.glasergl.custom.lol.setup.io.ui.selection.SelectableRunesView;
 import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
 import de.glasergl.custom.lol.setup.model.entity.RunePage;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
@@ -59,7 +59,7 @@ public final class RunePageBuilderView {
 	runesView.add(mainRunesView);
 	runesView.add(secondRunePathAndShardsView);
 	view.add(runesView);
-	
+
 	view.revalidate();
 	view.repaint();
     }

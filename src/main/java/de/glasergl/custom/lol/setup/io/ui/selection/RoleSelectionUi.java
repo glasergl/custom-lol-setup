@@ -2,6 +2,7 @@ package de.glasergl.custom.lol.setup.io.ui.selection;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -38,6 +39,7 @@ public final class RoleSelectionUi {
 		    }
 		}
 	    });
+	    roleLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	    ui.add(roleLabel);
 	}
     }

@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import de.glasergl.custom.lol.setup.io.Images;
 import de.glasergl.custom.lol.setup.io.SetupFileIo;
 import de.glasergl.custom.lol.setup.io.ui.builder.RunePageBuilderView;
+import de.glasergl.custom.lol.setup.io.ui.selection.SummonerSpellSelection;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import lombok.Getter;
 
@@ -41,6 +42,7 @@ public class SetupUi {
 	    }
 	});
 	ui.add(buttonWrapper);
+	ui.add(new SummonerSpellSelection(setupBuilder, images).getUi());
 	ui.add(runePageBuilderView.getView());
 	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	scrollableNotes.setBorder(new TitledBorder("Notes"));

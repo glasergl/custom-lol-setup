@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.io.ui.selection;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import de.glasergl.custom.lol.setup.io.ui.selection.GraySelectionElement;
 import de.glasergl.custom.lol.setup.model.SelectableRune;
 import de.glasergl.custom.lol.setup.model.SelectableRunes;
 import de.glasergl.custom.lol.setup.model.entity.Rune;

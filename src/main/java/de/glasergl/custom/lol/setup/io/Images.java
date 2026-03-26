@@ -17,6 +17,7 @@ import de.glasergl.custom.lol.setup.model.entity.Champion;
 import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.Rune;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
+import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
 import lombok.Getter;
 
 /**
@@ -47,6 +48,17 @@ public final class Images {
 
     private final @Getter Map<Role, Image> roleImages = fetchRoleIcons();
 
+    private final @Getter int summonerSpellIconSize = 50;
+    private final Map<SummonerSpell, Image> summonerSpellImages = fetchSummonerSpellImages();
+
+    private Map<SummonerSpell, Image> fetchSummonerSpellImages() {
+	final Map<SummonerSpell, Image> images = new HashMap<>();
+	for (final SummonerSpell summonerSpell : SummonerSpell.values()) {
+	    images.put(summonerSpell, getImageFromName("summoner-spells/" + summonerSpell.name(), "png", summonerSpellIconSize, summonerSpellIconSize));
+	}
+	return images;
+    }
+
     private Map<RunePath, Image> fetchRunePathImages(final int iconSize) {
 	final Map<RunePath, Image> images = new HashMap<>();
 	for (final RunePath runePath : RunePath.ALL) {
@@ -73,6 +85,10 @@ public final class Images {
 
     public Image getRoleImage(final Role role) {
 	return roleImages.get(role);
+    }
+
+    public Image getSummonerSpellImage(final SummonerSpell summonerSpell) {
+	return summonerSpellImages.get(summonerSpell);
     }
 
     private Map<Rune, Image> fetchKeyStoneImages() {

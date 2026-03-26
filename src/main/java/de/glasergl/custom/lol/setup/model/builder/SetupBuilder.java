@@ -7,6 +7,7 @@ import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
 import lombok.Getter;
+import lombok.Setter;
 
 public final class SetupBuilder {
     private final Champion me;
@@ -15,16 +16,18 @@ public final class SetupBuilder {
     private final @Getter RunePageBuilder runePageBuilder;
     private final @Getter ItemBuildBuilder itemBuildBuilder;
 
-    private Optional<SummonerSpell> firstSummonerSpell = Optional.empty();
-    private Optional<SummonerSpell> secondSummonerSpell = Optional.empty();
-    private String notes = "";
+    private @Getter @Setter Optional<SummonerSpell> firstSummonerSpell;
+    private @Getter @Setter Optional<SummonerSpell> secondSummonerSpell;
+    private @Getter @Setter String notes = "";
 
-    public SetupBuilder(final Champion me, final Optional<Role> role, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder) {
+    public SetupBuilder(final Champion me, final Optional<Role> role, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder, final Optional<SummonerSpell> firstSummonerSpell, final Optional<SummonerSpell> secondSummonerSpell) {
 	this.me = me;
 	this.role = role;
 	this.enemy = enemy;
 	this.runePageBuilder = runePageBuilder;
 	this.itemBuildBuilder = itemBuildBuilder;
+	this.firstSummonerSpell = firstSummonerSpell;
+	this.secondSummonerSpell = secondSummonerSpell;
     }
 
     public Setup build() {
