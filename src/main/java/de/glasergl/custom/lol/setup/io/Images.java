@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import de.glasergl.custom.lol.setup.Main;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
+import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.Rune;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
@@ -51,10 +52,25 @@ public final class Images {
     private final @Getter int summonerSpellIconSize = 50;
     private final Map<SummonerSpell, Image> summonerSpellImages = fetchSummonerSpellImages();
 
+    private final int itemIconSize = 50;
+    private final Map<Item, Image> itemImages = fetchItemImages();
+
     private Map<SummonerSpell, Image> fetchSummonerSpellImages() {
 	final Map<SummonerSpell, Image> images = new HashMap<>();
 	for (final SummonerSpell summonerSpell : SummonerSpell.values()) {
 	    images.put(summonerSpell, getImageFromName("summoner-spells/" + summonerSpell.name(), "png", summonerSpellIconSize, summonerSpellIconSize));
+	}
+	return images;
+    }
+
+    public Image get(final Item item) {
+	return itemImages.get(item);
+    }
+
+    private Map<Item, Image> fetchItemImages() {
+	final Map<Item, Image> images = new HashMap<>();
+	for (final Item item : Item.values()) {
+	    images.put(item, getImageFromName("items/" + item.name(), "png", itemIconSize, itemIconSize));
 	}
 	return images;
     }
