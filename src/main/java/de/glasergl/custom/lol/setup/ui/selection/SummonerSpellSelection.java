@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui.selection;
+package de.glasergl.custom.lol.setup.ui.selection;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,10 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
+import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
 import lombok.Getter;
 
 public final class SummonerSpellSelection {

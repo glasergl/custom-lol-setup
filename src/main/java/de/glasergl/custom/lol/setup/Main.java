@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.SetupFileIo;
-import de.glasergl.custom.lol.setup.io.ui.CreateFrame;
+import de.glasergl.custom.lol.setup.file.Images;
+import de.glasergl.custom.lol.setup.file.SetupFileIo;
+import de.glasergl.custom.lol.setup.ui.CreateFrame;
 
 /**
  * Main class for this application.

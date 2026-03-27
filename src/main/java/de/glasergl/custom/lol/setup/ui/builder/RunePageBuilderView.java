@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui.builder;
+package de.glasergl.custom.lol.setup.ui.builder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,12 +9,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.ui.selection.GraySelectionElement;
-import de.glasergl.custom.lol.setup.io.ui.selection.SelectableRunesView;
+import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
 import de.glasergl.custom.lol.setup.model.entity.RunePage;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
+import de.glasergl.custom.lol.setup.ui.selection.GraySelectionElement;
+import de.glasergl.custom.lol.setup.ui.selection.SelectableRunesView;
 
 /**
  * Creates view of a single rune page which updates itself based user clicks on

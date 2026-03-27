@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -9,10 +9,10 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.SetupFileIo;
-import de.glasergl.custom.lol.setup.io.ui.selection.ChampionSelectionUi;
-import de.glasergl.custom.lol.setup.io.ui.selection.RoleSelectionUi;
+import de.glasergl.custom.lol.setup.file.Images;
+import de.glasergl.custom.lol.setup.file.SetupFileIo;
+import de.glasergl.custom.lol.setup.ui.selection.ChampionSelectionUi;
+import de.glasergl.custom.lol.setup.ui.selection.RoleSelectionUi;
 
 /**
  * Creates the GUI frame for this application.

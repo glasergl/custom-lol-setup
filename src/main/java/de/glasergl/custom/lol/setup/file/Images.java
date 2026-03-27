@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io;
+package de.glasergl.custom.lol.setup.file;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

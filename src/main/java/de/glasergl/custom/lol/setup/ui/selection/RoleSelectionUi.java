@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui.selection;
+package de.glasergl.custom.lol.setup.ui.selection;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -12,9 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Role;
+import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
 import lombok.Getter;
 
 public final class RoleSelectionUi {

@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui.misc;
+package de.glasergl.custom.lol.setup.ui.misc;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

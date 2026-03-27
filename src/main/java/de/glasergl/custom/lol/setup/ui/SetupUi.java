@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;
@@ -13,11 +13,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.SetupFileIo;
-import de.glasergl.custom.lol.setup.io.ui.builder.RunePageBuilderView;
-import de.glasergl.custom.lol.setup.io.ui.selection.SummonerSpellSelection;
+import de.glasergl.custom.lol.setup.file.Images;
+import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
+import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderView;
+import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
 
 public class SetupUi {

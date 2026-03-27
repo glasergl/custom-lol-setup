@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui;
+package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.BorderLayout;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import javax.swing.JPanel;
 
-import de.glasergl.custom.lol.setup.io.Images;
-import de.glasergl.custom.lol.setup.io.SetupFileIo;
+import de.glasergl.custom.lol.setup.file.Images;
+import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.ItemBuildBuilder;
 import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;

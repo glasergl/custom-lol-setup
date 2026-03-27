@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.io.ui.selection;
+package de.glasergl.custom.lol.setup.ui.selection;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
