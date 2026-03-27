@@ -27,7 +27,9 @@ public final class ItemSelectionUi {
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
     private final Consumer<Item> selectionHandler;
     private final Images images;
-    private final JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    private final int margin = 8;
+    private final int numberOfItemsPerRow = 5;
+    private final JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, margin, margin));
 
     public ItemSelectionUi(final Images images, final Consumer<Item> selectionHandler) {
 	this.images = images;
@@ -36,7 +38,7 @@ public final class ItemSelectionUi {
 	final JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	wrapper.add(itemPanel);
 	final JScrollPane itemSelection = new JScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	itemSelection.setPreferredSize(new Dimension(300, 300));
+	itemSelection.setPreferredSize(new Dimension(325, 300));
 	final ItemPropertySelection itemPropertySelection = new ItemPropertySelection(selectedProperties -> renderItems(selectedProperties));
 	ui.add(itemSelection, BorderLayout.CENTER);
 	ui.add(itemPropertySelection.getUi(), BorderLayout.WEST);
@@ -49,6 +51,7 @@ public final class ItemSelectionUi {
 	for (final Item item : itemsWithProperties) {
 	    final JLabel itemLabel = new JLabel(new ImageIcon(images.get(item)));
 	    itemLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	    itemLabel.setToolTipText(item.toString());
 	    itemLabel.addMouseListener(new EmptyMouseListener() {
 		@Override
 		public void mouseClicked(final MouseEvent click) {
@@ -65,6 +68,6 @@ public final class ItemSelectionUi {
     private Dimension getPreferredSizeOfItemPanel(final Images images, final int numberOfItems) {
 	final JLabel itemLabel = new JLabel(new ImageIcon(images.get(Item.RABADONS_DEATHCAP)));
 	final Dimension preferredSizeOfSingleItemLabel = itemLabel.getPreferredSize();
-	return new Dimension(5 * (preferredSizeOfSingleItemLabel.width + 5), preferredSizeOfSingleItemLabel.height * (numberOfItems / 5 + 5));
+	return new Dimension(numberOfItemsPerRow * (preferredSizeOfSingleItemLabel.width + margin), preferredSizeOfSingleItemLabel.height * (numberOfItems / numberOfItemsPerRow + margin));
     }
 }

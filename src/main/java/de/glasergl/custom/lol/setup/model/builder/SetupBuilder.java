@@ -18,9 +18,9 @@ public final class SetupBuilder {
 
     private @Getter @Setter Optional<SummonerSpell> firstSummonerSpell;
     private @Getter @Setter Optional<SummonerSpell> secondSummonerSpell;
-    private @Getter @Setter String notes = "";
+    private @Getter @Setter String notes;
 
-    public SetupBuilder(final Champion me, final Optional<Role> role, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder, final Optional<SummonerSpell> firstSummonerSpell, final Optional<SummonerSpell> secondSummonerSpell) {
+    public SetupBuilder(final Champion me, final Optional<Role> role, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder, final Optional<SummonerSpell> firstSummonerSpell, final Optional<SummonerSpell> secondSummonerSpell, final String notes) {
 	this.me = me;
 	this.role = role;
 	this.enemy = enemy;
@@ -28,6 +28,7 @@ public final class SetupBuilder {
 	this.itemBuildBuilder = itemBuildBuilder;
 	this.firstSummonerSpell = firstSummonerSpell;
 	this.secondSummonerSpell = secondSummonerSpell;
+	this.notes = notes;
     }
 
     public Setup build() {

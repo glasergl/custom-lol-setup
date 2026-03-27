@@ -19,6 +19,7 @@ public final class ItemPropertySelection {
 	ui.setLayout(new BoxLayout(ui, BoxLayout.Y_AXIS));
 	for (final ItemProperty itemProperty : ItemProperty.values()) {
 	    final JCheckBox checkBox = new JCheckBox(itemProperty.toString());
+	    checkBox.setFocusPainted(false);
 	    checkBox.addChangeListener(change -> {
 		if (checkBox.isSelected()) {
 		    selectedProperties.add(itemProperty);

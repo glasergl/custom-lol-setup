@@ -1,10 +1,12 @@
 package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
@@ -30,7 +32,7 @@ public final class SetupSelectionHandler {
     public SetupSelectionHandler(final SetupFileIo setupFileIo, final Images images) {
 	this.setupFileIo = setupFileIo;
 	this.images = images;
-	ui.setPreferredSize(new SetupUi(images, createEmptySetupBuilderToGetUiSize(), setupFileIo).getUi().getPreferredSize());
+	ui.setBackground(Color.RED);
     }
 
     public void setMe(final Champion me) {
@@ -64,8 +66,9 @@ public final class SetupSelectionHandler {
 	    }
 	    ui.removeAll();
 	    ui.add(setupUi.getUi(), BorderLayout.SOUTH);
-	    ui.revalidate();
-	    ui.repaint();
+	    SwingUtilities.windowForComponent(ui).pack();
+	    SwingUtilities.windowForComponent(ui).pack(); // need to call twice for proper layout
+	    SwingUtilities.windowForComponent(ui).setLocationRelativeTo(null);
 	}
     }
 
@@ -91,20 +94,14 @@ public final class SetupSelectionHandler {
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
 	final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
 	final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell);
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, knownSetup.notes() != null ? knownSetup.notes() : "");
     }
 
     private SetupBuilder createEmptySetupBuilder() {
 	assert meSelection.isPresent() && enemySelection.isPresent();
 
-	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.RESOLVE);
+	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY);
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty());
-    }
-
-    private SetupBuilder createEmptySetupBuilderToGetUiSize() {
-	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.RESOLVE);
-	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
-	return new SetupBuilder(Champion.GWEN, Optional.empty(), Champion.AATROX, runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty());
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), "");
     }
 }

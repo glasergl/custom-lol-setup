@@ -18,7 +18,7 @@ import de.glasergl.custom.lol.setup.ui.selection.RoleSelectionUi;
  * Creates the GUI frame for this application.
  */
 public final class CreateFrame {
-    private final JFrame jFrame;
+    private final JFrame frame;
     private final String title = "Custom LoL Setup";
     private final Images images;
     private final SetupFileIo setupFileIo;
@@ -26,20 +26,21 @@ public final class CreateFrame {
 	    + " isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.";
 
     public CreateFrame(final Images images, final SetupFileIo setupFileIo) {
-	this.jFrame = new JFrame(title);
+	this.frame = new JFrame(title);
 	this.images = images;
 	this.setupFileIo = setupFileIo;
-	jFrame.setIconImage(images.getFrameIcon());
-	jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	frame.setIconImage(images.getFrameIcon());
+	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	createAndAddComponents();
-	jFrame.pack();
-	jFrame.setLocationRelativeTo(null);
-	jFrame.setVisible(true);
+	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	frame.pack();
+	frame.setLocationRelativeTo(null);
+	frame.setVisible(true);
     }
 
     private void createAndAddComponents() {
-	final Container frameContentPane = jFrame.getContentPane();
+	final Container frameContentPane = frame.getContentPane();
 	frameContentPane.setLayout(new BorderLayout());
 
 	final SetupSelectionHandler setupSelectionHandler = new SetupSelectionHandler(setupFileIo, images);
@@ -77,6 +78,6 @@ public final class CreateFrame {
     }
 
     public JFrame getFrame() {
-	return jFrame;
+	return frame;
     }
 }

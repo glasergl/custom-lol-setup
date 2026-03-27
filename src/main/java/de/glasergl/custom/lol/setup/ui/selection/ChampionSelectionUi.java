@@ -46,7 +46,7 @@ public final class ChampionSelectionUi {
 	    ui.add(championPanel);
 	}
 	this.ui = new JScrollPane(ui, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	this.ui.setPreferredSize(new Dimension(180, 700));
+	this.ui.setPreferredSize(new Dimension(180, 400));
     }
 
     public JScrollPane getUi() {
