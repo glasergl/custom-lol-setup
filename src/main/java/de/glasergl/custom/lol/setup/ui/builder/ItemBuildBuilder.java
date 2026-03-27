@@ -33,7 +33,7 @@ public final class ItemBuildBuilder {
 
     private JPanel addRow(final String note, final List<Item> items) {
 	notesTextFields.add(new JTextField(note));
-	items
+	return null;
     }
 
     public ItemBuild build() {

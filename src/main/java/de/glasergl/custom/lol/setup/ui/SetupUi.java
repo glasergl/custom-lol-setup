@@ -17,6 +17,7 @@ import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderView;
+import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
 
@@ -47,5 +48,7 @@ public class SetupUi {
 	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	scrollableNotes.setBorder(new TitledBorder("Notes"));
 	ui.add(scrollableNotes);
+	ui.add(new ItemSelectionUi(images, s -> {
+	}).getUi());
     }
 }
