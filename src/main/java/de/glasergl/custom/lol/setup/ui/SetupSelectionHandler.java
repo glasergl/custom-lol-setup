@@ -74,7 +74,7 @@ public final class SetupSelectionHandler {
 	final List<Setup> knownSetups;
 	if (roleSelection.isPresent()) {
 	    knownSetups = setupFileIo.getSetups().stream().filter(setup -> {
-		return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get()) && setup.role().equals(roleSelection.get());
+		return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get()) && setup.role() != null && setup.role().equals(roleSelection.get());
 	    }).toList();
 	} else {
 	    knownSetups = setupFileIo.getSetups().stream().filter(setup -> {
