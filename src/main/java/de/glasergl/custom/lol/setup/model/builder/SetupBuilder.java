@@ -6,6 +6,7 @@ import de.glasergl.custom.lol.setup.model.entity.Champion;
 import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
+import de.glasergl.custom.lol.setup.ui.builder.ItemBuildBuilder;
 import lombok.Getter;
 import lombok.Setter;
 

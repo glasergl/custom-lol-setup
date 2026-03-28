@@ -23,7 +23,7 @@ import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
 
-public class SetupUi {
+public final class SetupUi {
     private final RunePageBuilderView runePageBuilderView;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
     private final JTextArea notes = new JTextArea(10, 30);
@@ -35,26 +35,32 @@ public class SetupUi {
 	this.setupBuilder = setupBuilder;
 	this.setupFileIo = setupFileIo;
 	this.runePageBuilderView = new RunePageBuilderView(setupBuilder.getRunePageBuilder(), images);
+
 	notes.setText(setupBuilder.getNotes());
 	notes.setBorder(new EmptyBorder(2, 2, 2, 2));
-	final JPanel summonerSpellRunePageAndNotesPanel = new JPanel();
-	summonerSpellRunePageAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageAndNotesPanel, BoxLayout.Y_AXIS));
-	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	buttonWrapper.add(storeButton);
+	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
 	storeButton.setFocusPainted(false);
 	storeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	storeButton.addActionListener(click -> storeCurrentSetupState());
+	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	buttonWrapper.add(storeButton);
 	ui.add(buttonWrapper, BorderLayout.NORTH);
+
+	final JPanel summonerSpellRunePageAndNotesPanel = new JPanel();
+	summonerSpellRunePageAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageAndNotesPanel, BoxLayout.Y_AXIS));
 	summonerSpellRunePageAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
 	summonerSpellRunePageAndNotesPanel.add(runePageBuilderView.getView());
-	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	summonerSpellRunePageAndNotesPanel.add(scrollableNotes);
+	ui.add(summonerSpellRunePageAndNotesPanel, BorderLayout.CENTER);
+
 	final JPanel itemUi = new JPanel(new BorderLayout());
-	itemUi.add(new ItemSelectionUi(images, s -> {
-	}).getUi(), BorderLayout.EAST);
+	itemUi.add(new ItemSelectionUi(images, item -> {
+	    setupBuilder.getItemBuildBuilder().addItem(item);
+	}).getUi(), BorderLayout.CENTER);
+	itemUi.add(setupBuilder.getItemBuildBuilder().getUi(), BorderLayout.SOUTH);
 	itemUi.setBorder(new TitledBorder("Item Set"));
 	ui.add(itemUi, BorderLayout.EAST);
-	ui.add(summonerSpellRunePageAndNotesPanel, BorderLayout.CENTER);
     }
 
     private void storeCurrentSetupState() {

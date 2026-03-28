@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
-import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 
 public final class ChampionSelectionUi {
     private final JScrollPane ui;

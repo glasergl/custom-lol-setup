@@ -1,43 +1,242 @@
 package de.glasergl.custom.lol.setup.ui.builder;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
+import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.ItemBuild;
+import de.glasergl.custom.lol.setup.ui.EmptyFocusListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
 
 public final class ItemBuildBuilder {
-    private final List<JTextField> notesTextFields = new ArrayList<>();
-    private final List<List<Item>> items = new ArrayList<>();
-    private final @Getter JPanel ui = new JPanel();
-    
-    private JPanel selectedItemRow;
+    private static final String DEFAULT_ROW_TEXT = "New row";
 
-    public ItemBuildBuilder() {
-	this.ui.setLayout(new BoxLayout(ui, BoxLayout.Y_AXIS));
-	this.selectedItemRow = addRow("New Row", new ArrayList<>());
+    private final @Getter JPanel ui = new JPanel(new BorderLayout());
+    private final JPanel rowsUi = new JPanel();
+    private final List<ItemRow> itemRows = new ArrayList<>();
+    private final Images images;
+
+    public ItemBuildBuilder(final Images images, final ItemBuild itemBuild) {
+	if (itemBuild.notes().size() != itemBuild.items().size()) {
+	    throw new IllegalArgumentException();
+	}
+	this.images = images;
+
+	this.rowsUi.setLayout(new BoxLayout(rowsUi, BoxLayout.Y_AXIS));
+	initializeRowsWithExistingItemBuild(itemBuild);
     }
 
-    public ItemBuildBuilder(final ItemBuild itemBuild) {
-	
+    private void initializeRowsWithExistingItemBuild(final ItemBuild itemBuild) {
+	if (itemBuild.notes().isEmpty()) {
+	    itemRows.add(new ItemRow(DEFAULT_ROW_TEXT, List.of()));
+	} else {
+	    for (int i = 0; i < itemBuild.notes().size(); i++) {
+		itemRows.add(new ItemRow(itemBuild.notes().get(i), itemBuild.items().get(i)));
+	    }
+	}
+	final JPanel rowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	rowWrapper.add(rowsUi);
+	final JScrollPane rowsScrollPane = new JScrollPane(rowWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	rowsScrollPane.setPreferredSize(new Dimension(550, 300));
+	ui.add(rowsScrollPane, BorderLayout.CENTER);
+	createFooter(rowsScrollPane);
     }
 
-    public void addRow() {
-	addRow("", new ArrayList<>());
+    private void createFooter(final JScrollPane rowsScrollPaneToScrollDownWhenNewRowIsAdded) {
+	final JButton addRowButton = new JButton("Add Row");
+	addRowButton.addActionListener(click -> {
+	    itemRows.add(new ItemRow(DEFAULT_ROW_TEXT, List.of()));
+	    SwingUtilities.invokeLater(() -> {
+		final JScrollBar vertical = rowsScrollPaneToScrollDownWhenNewRowIsAdded.getVerticalScrollBar();
+		vertical.setValue(vertical.getMaximum());
+	    });
+	});
+	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	buttonWrapper.add(addRowButton);
+	buttonWrapper.add(new JButton("Pop Out"));
+	ui.add(buttonWrapper, BorderLayout.SOUTH);
     }
 
-    private JPanel addRow(final String note, final List<Item> items) {
-	notesTextFields.add(new JTextField(note));
-	return null;
+    public ItemBuildBuilder(final Images images) {
+	this(images, new ItemBuild(new ArrayList<>(List.of(DEFAULT_ROW_TEXT)), new ArrayList<>(List.of(new ArrayList<>()))));
     }
+
+    public void addItem(final Item item) {
+	assert !itemRows.isEmpty();
+	if (!anyRowSelected()) {
+	    itemRows.get(0).select();
+	}
+	for (final ItemRow row : itemRows) {
+	    if (row.isSelected) {
+		row.addItem(item);
+	    }
+	}
+    }
+
+    private boolean anyRowSelected() {
+	for (final ItemRow row : itemRows) {
+	    if (row.isSelected) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+//    public void swapItemRight(final int itemIndex) {
+//	final List<Item> itemRow = items.get(selectedRow);
+//	if (itemIndex < 0) {
+//	    throw new IllegalArgumentException();
+//	} else if (itemIndex < itemRow.size() - 1) {
+//	    Collections.swap(itemRow, itemIndex, itemIndex + 1);
+//	}
+//    }
+//
+//    public void swapItemLeft(final int itemIndex) {
+//	final List<Item> itemRow = items.get(selectedRow);
+//	if (itemIndex < 0) {
+//	    throw new IllegalArgumentException();
+//	} else if (itemIndex > 0) {
+//	    Collections.swap(itemRow, itemIndex, itemIndex + 1);
+//	}
+//    }
+
+//    public void swapUp() {
+//	if (selectedRow > 1) {
+//	    Collections.swap(notesTextFields, selectedRow, selectedRow - 1);
+//	    Collections.swap(items, selectedRow, selectedRow - 1);
+//	}
+//    }
+//
+//    public void swapDown() {
+//	if (selectedRow < notesTextFields.size() - 1) {
+//	    Collections.swap(notesTextFields, selectedRow, selectedRow + 1);
+//	    Collections.swap(items, selectedRow, selectedRow + 1);
+//	}
+//    }
 
     public ItemBuild build() {
-	final List<String> notes = this.notesTextFields.stream().map(JTextField::getText).toList();
-	return new ItemBuild(notes, items);
+	return new ItemBuild(itemRows.stream().map(ItemRow::getNoteTextField).map(JTextField::getText).toList(), itemRows.stream().map(ItemRow::getItems).toList());
+    }
+
+    private final class ItemRow {
+	private final JPanel ui = new JPanel(new BorderLayout());;
+	private final @Getter JTextField noteTextField = new JTextField(30);
+	private final @Getter List<Item> items;
+	private final JPanel itemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+	private boolean isSelected = false;
+
+	private ItemRow(final String note, final List<Item> items) {
+	    this.items = new ArrayList<>(items);
+
+	    itemsPanel.setPreferredSize(new Dimension(300, 80));
+	    itemsPanel.addMouseListener(new EmptyMouseListener() {
+		@Override
+		public void mouseClicked(final MouseEvent click) {
+		    select();
+		}
+	    });
+
+	    final JPanel rowHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    noteTextField.setText(note);
+	    noteTextField.addFocusListener(getFocusListenerThatSelectsOnFocus());
+	    rowHeader.add(noteTextField);
+	    final JButton upButton = new JButton("▲");
+	    final JButton downButton = new JButton("▼");
+	    final JButton deleteButton = new JButton("-");
+	    List.of(upButton, downButton, deleteButton).stream().forEach(button -> button.addFocusListener(getFocusListenerThatSelectsOnFocus()));
+	    rowHeader.add(upButton);
+	    rowHeader.add(downButton);
+	    rowHeader.add(deleteButton);
+
+	    ui.add(itemsPanel, BorderLayout.CENTER);
+	    ui.add(rowHeader, BorderLayout.NORTH);
+	    ui.setBorder(new EmptyBorder(2, 2, 2, 2));
+
+	    for (final Item item : items) {
+		addItem(item);
+	    }
+	    ItemBuildBuilder.this.rowsUi.add(ui);
+	    select();
+	    ItemBuildBuilder.this.rowsUi.revalidate();
+	    ItemBuildBuilder.this.rowsUi.repaint();
+	}
+
+	private void updateItemPanel() {
+	    itemsPanel.removeAll();
+	    for (int i = 0; i < items.size(); i++) {
+		addItem(items.get(i), i);
+		itemsPanel.revalidate();
+		itemsPanel.repaint();
+	    }
+	}
+
+	private void addItem(final Item item, final int i) {
+	    final JLabel itemIcon = new JLabel(new ImageIcon(images.get(item)));
+	    itemIcon.setToolTipText(item.toString());
+	    itemIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	    final int index = items.size();
+	    itemIcon.addMouseListener(new EmptyMouseListener() {
+		@Override
+		public void mouseClicked(final MouseEvent click) {
+		    if (click.getButton() == MouseEvent.BUTTON3) {
+			items.remove(index);
+			updateItemPanel();
+		    }
+		}
+	    });
+	    items.add(item);
+	    itemsPanel.add(itemIcon);
+	    itemsPanel.revalidate();
+	    itemsPanel.repaint();
+	}
+
+	private FocusListener getFocusListenerThatSelectsOnFocus() {
+	    return new EmptyFocusListener() {
+		@Override
+		public void focusGained(final FocusEvent focusGain) {
+		    select();
+		}
+	    };
+	}
+
+	private void addItem(final Item item) {
+	    addItem(item, items.size());
+	}
+
+	private void unselect() {
+	    isSelected = false;
+	    ui.setBorder(new EmptyBorder(2, 2, 2, 2));
+	}
+
+	private void select() {
+	    for (final ItemRow otherItemRow : itemRows) {
+		otherItemRow.unselect();
+	    }
+	    isSelected = true;
+	    ui.setBorder(new LineBorder(Color.CYAN, 2));
+	}
     }
 }

@@ -20,8 +20,6 @@ public final class Main {
     public static void main(final String[] commandLineArguments) throws IOException {
 	final Images images = new Images();
 	final SetupFileIo fileIo = new SetupFileIo();
-	SwingUtilities.invokeLater(() -> {
-	    new CreateFrame(images, fileIo);
-	});
+	SwingUtilities.invokeLater(() -> new CreateFrame(images, fileIo));
     }
 }

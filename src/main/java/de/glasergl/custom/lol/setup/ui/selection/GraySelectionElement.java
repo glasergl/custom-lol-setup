@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 
 /**
  * Element which switches between two states, selected and unselected.

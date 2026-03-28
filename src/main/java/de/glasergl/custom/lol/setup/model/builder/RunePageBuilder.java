@@ -10,9 +10,6 @@ import de.glasergl.custom.lol.setup.model.SelectableRunes;
 import de.glasergl.custom.lol.setup.model.SelectableSecondPathRunes;
 import de.glasergl.custom.lol.setup.model.entity.Rune;
 
-/**
- * Contains all components of a mutable runepage with methods to select runes.
- */
 public final class RunePageBuilder {
     private final @Getter SelectableRunes selectableShards = new SelectableRunes(RunePath.SHARDS);
 

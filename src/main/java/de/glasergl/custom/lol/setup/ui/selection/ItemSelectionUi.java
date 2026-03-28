@@ -16,11 +16,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.ItemProperty;
-import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
 
 public final class ItemSelectionUi {
@@ -29,14 +30,14 @@ public final class ItemSelectionUi {
     private final Images images;
     private final int margin = 8;
     private final int numberOfItemsPerRow = 5;
-    private final JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, margin, margin));
+    private final JPanel itemsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, margin, margin));
 
     public ItemSelectionUi(final Images images, final Consumer<Item> selectionHandler) {
 	this.images = images;
 	this.selectionHandler = selectionHandler;
 	renderItems(Collections.emptySet());
 	final JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	wrapper.add(itemPanel);
+	wrapper.add(itemsPanel);
 	final JScrollPane itemSelection = new JScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	itemSelection.setPreferredSize(new Dimension(325, 300));
 	final ItemPropertySelection itemPropertySelection = new ItemPropertySelection(selectedProperties -> renderItems(selectedProperties));
@@ -47,7 +48,7 @@ public final class ItemSelectionUi {
     private void renderItems(final Set<ItemProperty> propertiesItemsHaveToMatch) {
 	final List<Item> itemsWithProperties = new ArrayList<>(Arrays.stream(Item.values()).filter(item -> item.getProperties().containsAll(propertiesItemsHaveToMatch)).toList());
 	itemsWithProperties.sort((i1, i2) -> Integer.compare(i1.getCost(), i2.getCost()));
-	itemPanel.removeAll();
+	itemsPanel.removeAll();
 	for (final Item item : itemsWithProperties) {
 	    final JLabel itemLabel = new JLabel(new ImageIcon(images.get(item)));
 	    itemLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -58,16 +59,22 @@ public final class ItemSelectionUi {
 		    selectionHandler.accept(item);
 		}
 	    });
-	    itemPanel.add(itemLabel);
+	    final JLabel itemCostLabel = new JLabel(String.valueOf(item.getCost()));
+	    itemCostLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	    final JPanel itemWrapper = new JPanel(new BorderLayout());
+	    itemWrapper.add(itemLabel, BorderLayout.CENTER);
+	    itemWrapper.add(itemCostLabel, BorderLayout.SOUTH);
+	    itemsPanel.add(itemWrapper);
 	}
-	itemPanel.setPreferredSize(getPreferredSizeOfItemPanel(images, itemsWithProperties.size()));
-	itemPanel.revalidate();
-	itemPanel.repaint();
+	itemsPanel.setPreferredSize(getPreferredSizeOfItemPanel(images, itemsWithProperties.size()));
+	itemsPanel.revalidate();
+	itemsPanel.repaint();
     }
 
     private Dimension getPreferredSizeOfItemPanel(final Images images, final int numberOfItems) {
 	final JLabel itemLabel = new JLabel(new ImageIcon(images.get(Item.RABADONS_DEATHCAP)));
 	final Dimension preferredSizeOfSingleItemLabel = itemLabel.getPreferredSize();
-	return new Dimension(numberOfItemsPerRow * (preferredSizeOfSingleItemLabel.width + margin), preferredSizeOfSingleItemLabel.height * (numberOfItems / numberOfItemsPerRow + margin));
+	final int costLabelHeight = 15;
+	return new Dimension(numberOfItemsPerRow * (preferredSizeOfSingleItemLabel.width + margin), (preferredSizeOfSingleItemLabel.height + costLabelHeight) * (numberOfItems / numberOfItemsPerRow + margin));
     }
 }

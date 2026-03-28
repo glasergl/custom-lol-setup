@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
-import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
 
 public final class SummonerSpellSelection {

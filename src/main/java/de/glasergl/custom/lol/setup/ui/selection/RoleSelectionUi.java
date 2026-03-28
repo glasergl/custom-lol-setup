@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Role;
-import de.glasergl.custom.lol.setup.ui.misc.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
 
 public final class RoleSelectionUi {

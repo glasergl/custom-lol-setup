@@ -10,7 +10,6 @@ import javax.swing.SwingUtilities;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
-import de.glasergl.custom.lol.setup.model.builder.ItemBuildBuilder;
 import de.glasergl.custom.lol.setup.model.builder.RunePageBuilder;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
@@ -18,6 +17,7 @@ import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
+import de.glasergl.custom.lol.setup.ui.builder.ItemBuildBuilder;
 import lombok.Getter;
 
 public final class SetupSelectionHandler {
@@ -91,7 +91,7 @@ public final class SetupSelectionHandler {
 	assert meSelection.isPresent() && enemySelection.isPresent();
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(knownSetup.runePage());
-	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
+	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, knownSetup.build());
 	final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
 	final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
 	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, knownSetup.notes() != null ? knownSetup.notes() : "");
@@ -101,7 +101,7 @@ public final class SetupSelectionHandler {
 	assert meSelection.isPresent() && enemySelection.isPresent();
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY);
-	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder();
+	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images);
 	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), "");
     }
 }
