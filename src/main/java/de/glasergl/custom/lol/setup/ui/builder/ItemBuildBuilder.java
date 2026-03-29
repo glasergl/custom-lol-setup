@@ -242,7 +242,7 @@ public final class ItemBuildBuilder {
 
 	private void addItem(final Item item) {
 	    items.add(item);
-	    addItem(item, items.size(), true);
+	    addItem(item, items.size() - 1, true);
 	}
 
 	private void unselect() {
