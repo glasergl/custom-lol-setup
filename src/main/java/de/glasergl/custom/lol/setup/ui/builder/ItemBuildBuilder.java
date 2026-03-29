@@ -61,7 +61,7 @@ public final class ItemBuildBuilder {
 	final JPanel rowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	rowWrapper.add(rowsUi);
 	final JScrollPane rowsScrollPane = CustomSwingComponents.createScrollPane(rowWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	rowsScrollPane.setPreferredSize(new Dimension(550, 300));
+	rowsScrollPane.setPreferredSize(new Dimension(550, 450));
 	ui.add(rowsScrollPane, BorderLayout.CENTER);
 	createFooter(rowsScrollPane);
     }
@@ -130,7 +130,7 @@ public final class ItemBuildBuilder {
 	private ItemRow(final String note, final List<Item> items) {
 	    this.items = new ArrayList<>(items);
 
-	    itemsPanel.setPreferredSize(new Dimension(300, 80));
+	    itemsPanel.setPreferredSize(new Dimension(300, 60));
 	    itemsPanel.addMouseListener(new EmptyMouseListener() {
 		@Override
 		public void mouseClicked(final MouseEvent click) {
