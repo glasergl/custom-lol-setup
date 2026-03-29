@@ -100,6 +100,7 @@ public final class ChampionSelectionUi {
 
     private String buildChampionSearchQueryStringTextRegEx(final String championSearchQueryText) {
 	final StringBuilder regEx = new StringBuilder();
+	regEx.append(".*");
 	for (char character : championSearchQueryText.toCharArray()) {
 	    regEx.append(character);
 	    regEx.append(".*");

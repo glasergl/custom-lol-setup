@@ -1,5 +1,6 @@
 package de.glasergl.custom.lol.setup.ui.selection;
 
+import java.awt.event.ItemEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -13,20 +14,22 @@ import lombok.Getter;
 
 public final class ItemPropertySelection {
     private final @Getter JPanel ui = new JPanel();
-    private final Set<ItemProperty> selectedProperties = new HashSet<>();
+    private final @Getter Set<ItemProperty> selectedProperties = new HashSet<>();
 
     public ItemPropertySelection(final Consumer<Set<ItemProperty>> selectionHandler) {
 	ui.setLayout(new BoxLayout(ui, BoxLayout.Y_AXIS));
 	for (final ItemProperty itemProperty : ItemProperty.values()) {
 	    final JCheckBox checkBox = new JCheckBox(itemProperty.toString());
 	    checkBox.setFocusPainted(false);
-	    checkBox.addChangeListener(change -> {
-		if (checkBox.isSelected()) {
-		    selectedProperties.add(itemProperty);
-		} else {
-		    selectedProperties.remove(itemProperty);
+	    checkBox.addItemListener(change -> {
+		if (change.getStateChange() == ItemEvent.SELECTED) {
+		    if (checkBox.isSelected()) {
+			selectedProperties.add(itemProperty);
+		    } else {
+			selectedProperties.remove(itemProperty);
+		    }
+		    selectionHandler.accept(selectedProperties);
 		}
-		selectionHandler.accept(selectedProperties);
 	    });
 	    ui.add(checkBox);
 	}
