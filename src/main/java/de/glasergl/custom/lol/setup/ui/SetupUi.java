@@ -29,7 +29,7 @@ public final class SetupUi {
     private final RunePageBuilderView runePageBuilderView;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
     private final JTextArea notes = new JTextArea(10, 30);
-    private final JButton storeButton = new JButton("Store");
+    private final JButton storeButton = CustomSwingComponents.createButton("Store");
     private final SetupBuilder setupBuilder;
     private final SetupFileIo setupFileIo;
 
@@ -40,7 +40,7 @@ public final class SetupUi {
 
 	notes.setText(setupBuilder.getNotes());
 	notes.setBorder(new EmptyBorder(2, 2, 2, 2));
-	final JScrollPane scrollableNotes = new JScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	final JScrollPane scrollableNotes = CustomSwingComponents.createScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 	storeButton.setFocusPainted(false);
 	storeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));

@@ -23,6 +23,7 @@ import javax.swing.event.DocumentEvent;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
+import de.glasergl.custom.lol.setup.ui.CustomSwingComponents;
 import de.glasergl.custom.lol.setup.ui.DocumentChangeListener;
 import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public final class ChampionSelectionUi {
 
 	final JPanel championPanelsWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	championPanelsWrapper.add(championPanelsUi);
-	final JScrollPane scrollableChampionPane = new JScrollPane(championPanelsWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	final JScrollPane scrollableChampionPane = CustomSwingComponents.createScrollPane(championPanelsWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	scrollableChampionPane.setPreferredSize(new Dimension(170, 400));
 	this.ui.add(scrollableChampionPane, BorderLayout.CENTER);
 

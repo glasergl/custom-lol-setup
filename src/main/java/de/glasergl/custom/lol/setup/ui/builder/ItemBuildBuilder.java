@@ -27,6 +27,7 @@ import javax.swing.border.LineBorder;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.ItemBuild;
+import de.glasergl.custom.lol.setup.ui.CustomSwingComponents;
 import de.glasergl.custom.lol.setup.ui.EmptyFocusListener;
 import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
@@ -59,14 +60,14 @@ public final class ItemBuildBuilder {
 	}
 	final JPanel rowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	rowWrapper.add(rowsUi);
-	final JScrollPane rowsScrollPane = new JScrollPane(rowWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	final JScrollPane rowsScrollPane = CustomSwingComponents.createScrollPane(rowWrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	rowsScrollPane.setPreferredSize(new Dimension(550, 300));
 	ui.add(rowsScrollPane, BorderLayout.CENTER);
 	createFooter(rowsScrollPane);
     }
 
     private void createFooter(final JScrollPane rowsScrollPaneToScrollDownWhenNewRowIsAdded) {
-	final JButton addRowButton = new JButton("Add Row");
+	final JButton addRowButton = CustomSwingComponents.createButton("Add Row");
 	addRowButton.addActionListener(click -> {
 	    itemRows.add(new ItemRow(DEFAULT_ROW_TEXT, List.of()));
 	    SwingUtilities.invokeLater(() -> {
@@ -76,7 +77,7 @@ public final class ItemBuildBuilder {
 	});
 	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	buttonWrapper.add(addRowButton);
-	buttonWrapper.add(new JButton("Pop Out"));
+	buttonWrapper.add(CustomSwingComponents.createButton("Pop Out"));
 	ui.add(buttonWrapper, BorderLayout.SOUTH);
     }
 
@@ -164,7 +165,7 @@ public final class ItemBuildBuilder {
 	}
 
 	private JButton createUpButton() {
-	    final JButton upButton = new JButton("▲");
+	    final JButton upButton = CustomSwingComponents.createButton("▲");
 	    upButton.addActionListener(click -> {
 		final int i = itemRows.indexOf(this);
 		if (i > 0) {
@@ -176,7 +177,7 @@ public final class ItemBuildBuilder {
 	}
 
 	private JButton createDownButton() {
-	    final JButton downButton = new JButton("▼");
+	    final JButton downButton = CustomSwingComponents.createButton("▼");
 	    downButton.addActionListener(click -> {
 		final int i = itemRows.indexOf(this);
 		if (i < itemRows.size() - 1) {
@@ -188,7 +189,7 @@ public final class ItemBuildBuilder {
 	}
 
 	private JButton createDeleteButton() {
-	    final JButton deleteButton = new JButton("-");
+	    final JButton deleteButton = CustomSwingComponents.createButton("-");
 	    deleteButton.addActionListener(click -> {
 		itemRows.remove(itemRows.indexOf(this));
 		ItemBuildBuilder.this.updateItemRows();

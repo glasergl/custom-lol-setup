@@ -25,6 +25,7 @@ import javax.swing.event.DocumentEvent;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.ItemProperty;
+import de.glasergl.custom.lol.setup.ui.CustomSwingComponents;
 import de.glasergl.custom.lol.setup.ui.DocumentChangeListener;
 import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
@@ -45,7 +46,7 @@ public final class ItemSelectionUi {
 	renderItems(Collections.emptySet());
 	final JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	wrapper.add(itemsPanel);
-	final JScrollPane itemSelection = new JScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	final JScrollPane itemSelection = CustomSwingComponents.createScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	itemSelection.setPreferredSize(new Dimension(325, 300));
 	itemSearchTextField.getDocument().addDocumentListener(new DocumentChangeListener() {
 	    @Override
