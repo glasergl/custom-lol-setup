@@ -11,9 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 public final class SetupBuilder {
-    private final Champion me;
+    private final @Getter Champion me;
     private final Optional<Role> role;
-    private final Champion enemy;
+    private final @Getter Champion enemy;
     private final @Getter RunePageBuilder runePageBuilder;
     private final @Getter ItemBuildBuilder itemBuildBuilder;
 

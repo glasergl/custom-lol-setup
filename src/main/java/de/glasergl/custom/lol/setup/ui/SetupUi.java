@@ -3,10 +3,12 @@ package de.glasergl.custom.lol.setup.ui;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -47,8 +49,14 @@ public final class SetupUi {
 	buttonWrapper.add(storeButton);
 	ui.add(buttonWrapper, BorderLayout.NORTH);
 
+	final JPanel vsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	vsPanel.add(new JLabel(new ImageIcon(images.getBigChampionImages().get(setupBuilder.getMe()))));
+	vsPanel.add(new JLabel(new ImageIcon(images.getVsIcon())));
+	vsPanel.add(new JLabel(new ImageIcon(images.getBigChampionImages().get(setupBuilder.getEnemy()))));
+
 	final JPanel summonerSpellRunePageAndNotesPanel = new JPanel();
 	summonerSpellRunePageAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageAndNotesPanel, BoxLayout.Y_AXIS));
+	summonerSpellRunePageAndNotesPanel.add(vsPanel);
 	summonerSpellRunePageAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
 	summonerSpellRunePageAndNotesPanel.add(runePageBuilderView.getView());
 	summonerSpellRunePageAndNotesPanel.add(scrollableNotes);

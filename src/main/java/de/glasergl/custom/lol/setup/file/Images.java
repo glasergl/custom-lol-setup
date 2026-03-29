@@ -45,7 +45,11 @@ public final class Images {
 
     private final @Getter Map<Champion, Image> championImages = fetchChampionImages();
 
+    private final @Getter Map<Champion, Image> bigChampionImages = fetchBigChampionImages();
+
     private final @Getter Image frameIcon = fetchFrameIcon();
+
+    private final @Getter Image vsIcon = fetchVsIcon();
 
     private final @Getter Map<Role, Image> roleImages = fetchRoleIcons();
 
@@ -61,6 +65,14 @@ public final class Images {
 	    images.put(summonerSpell, getImageFromName("summoner-spells/" + summonerSpell.name(), "png", summonerSpellIconSize, summonerSpellIconSize));
 	}
 	return images;
+    }
+
+    private Image fetchVsIcon() {
+	try {
+	    return ImageIO.read(Main.class.getResource("/vs.png")).getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+	} catch (final IOException e) {
+	    throw new IllegalStateException(e);
+	}
     }
 
     public Image get(final Item item) {
@@ -143,6 +155,14 @@ public final class Images {
 	final Map<Champion, Image> images = new HashMap<>();
 	for (final Champion champion : Champion.values()) {
 	    images.put(champion, getImageFromName("champions/" + champion.toString(), "png", 40, 40));
+	}
+	return images;
+    }
+
+    private Map<Champion, Image> fetchBigChampionImages() {
+	final Map<Champion, Image> images = new HashMap<>();
+	for (final Champion champion : Champion.values()) {
+	    images.put(champion, getImageFromName("champions/" + champion.toString(), "png", 100, 100));
 	}
 	return images;
     }
