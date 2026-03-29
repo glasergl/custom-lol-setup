@@ -15,15 +15,16 @@ import de.glasergl.custom.lol.setup.model.entity.RunePage;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
 import de.glasergl.custom.lol.setup.ui.selection.GraySelectionElement;
 import de.glasergl.custom.lol.setup.ui.selection.SelectableRunesView;
+import lombok.Getter;
 
 /**
  * Creates view of a single rune page which updates itself based user clicks on
  * runes. An instance of this corresponds to one editable rune page.
  */
-public final class RunePageBuilderView {
+public final class RunePageBuilderUi {
     private final RunePageBuilder runePageBuilder;
     private final Images images;
-    private final JPanel view = new JPanel();
+    private final @Getter JPanel ui = new JPanel();
 
     /**
      * Creates view of a single rune page which updates itself based user clicks on
@@ -32,10 +33,10 @@ public final class RunePageBuilderView {
      * @param runePageBuilder - initial visualization, may be an empty rune page,
      *                        i.e., nothing selected
      */
-    public RunePageBuilderView(final RunePageBuilder runePageBuilder, final Images images) {
+    public RunePageBuilderUi(final RunePageBuilder runePageBuilder, final Images images) {
 	this.runePageBuilder = runePageBuilder;
 	this.images = images;
-	view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
+	ui.setLayout(new BoxLayout(ui, BoxLayout.Y_AXIS));
 	updateView();
     }
 
@@ -44,24 +45,24 @@ public final class RunePageBuilderView {
      * based on values of the referenced rune page instance.
      */
     private void updateView() {
-	view.removeAll();
+	ui.removeAll();
 
 	final JPanel runePathSelectionViews = new JPanel();
 	runePathSelectionViews.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 	runePathSelectionViews.add(getMainRunePathSelectionView());
 	runePathSelectionViews.add(getSecondPathSelectionView());
 	runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(150, 150, 150)));
-	view.add(runePathSelectionViews);
+	ui.add(runePathSelectionViews);
 
 	final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	final JPanel mainRunesView = getMainRunePathView();
 	final JPanel secondRunePathAndShardsView = getSecondRunePathAndShardsView();
 	runesView.add(mainRunesView);
 	runesView.add(secondRunePathAndShardsView);
-	view.add(runesView);
+	ui.add(runesView);
 
-	view.revalidate();
-	view.repaint();
+	ui.revalidate();
+	ui.repaint();
     }
 
     /**
@@ -137,9 +138,5 @@ public final class RunePageBuilderView {
 
     public RunePage getRunePage() {
 	return runePageBuilder.build();
-    }
-
-    public JPanel getView() {
-	return view;
     }
 }

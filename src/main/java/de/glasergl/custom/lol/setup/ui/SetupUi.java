@@ -20,13 +20,13 @@ import javax.swing.border.TitledBorder;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
-import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderView;
+import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderUi;
 import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
 
 public final class SetupUi {
-    private final RunePageBuilderView runePageBuilderView;
+    private final RunePageBuilderUi runePageBuilderUi;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
     private final JTextArea notes = new JTextArea(10, 30);
     private final JButton storeButton = CustomSwingComponents.createButton("Store");
@@ -36,7 +36,7 @@ public final class SetupUi {
     public SetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
 	this.setupBuilder = setupBuilder;
 	this.setupFileIo = setupFileIo;
-	this.runePageBuilderView = new RunePageBuilderView(setupBuilder.getRunePageBuilder(), images);
+	this.runePageBuilderUi = new RunePageBuilderUi(setupBuilder.getRunePageBuilder(), images);
 
 	notes.setText(setupBuilder.getNotes());
 	notes.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -58,7 +58,7 @@ public final class SetupUi {
 	summonerSpellRunePageAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageAndNotesPanel, BoxLayout.Y_AXIS));
 	summonerSpellRunePageAndNotesPanel.add(vsPanel);
 	summonerSpellRunePageAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
-	summonerSpellRunePageAndNotesPanel.add(runePageBuilderView.getView());
+	summonerSpellRunePageAndNotesPanel.add(runePageBuilderUi.getUi());
 	summonerSpellRunePageAndNotesPanel.add(scrollableNotes);
 	ui.add(summonerSpellRunePageAndNotesPanel, BorderLayout.CENTER);
 
