@@ -9,6 +9,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -104,37 +105,14 @@ public final class ItemBuildBuilder {
 	return false;
     }
 
-//    public void swapItemRight(final int itemIndex) {
-//	final List<Item> itemRow = items.get(selectedRow);
-//	if (itemIndex < 0) {
-//	    throw new IllegalArgumentException();
-//	} else if (itemIndex < itemRow.size() - 1) {
-//	    Collections.swap(itemRow, itemIndex, itemIndex + 1);
-//	}
-//    }
-//
-//    public void swapItemLeft(final int itemIndex) {
-//	final List<Item> itemRow = items.get(selectedRow);
-//	if (itemIndex < 0) {
-//	    throw new IllegalArgumentException();
-//	} else if (itemIndex > 0) {
-//	    Collections.swap(itemRow, itemIndex, itemIndex + 1);
-//	}
-//    }
-
-//    public void swapUp() {
-//	if (selectedRow > 1) {
-//	    Collections.swap(notesTextFields, selectedRow, selectedRow - 1);
-//	    Collections.swap(items, selectedRow, selectedRow - 1);
-//	}
-//    }
-//
-//    public void swapDown() {
-//	if (selectedRow < notesTextFields.size() - 1) {
-//	    Collections.swap(notesTextFields, selectedRow, selectedRow + 1);
-//	    Collections.swap(items, selectedRow, selectedRow + 1);
-//	}
-//    }
+    public void updateItemRows() {
+	rowsUi.removeAll();
+	for (final ItemRow itemRow : itemRows) {
+	    rowsUi.add(itemRow.ui);
+	}
+	rowsUi.revalidate();
+	rowsUi.repaint();
+    }
 
     public ItemBuild build() {
 	return new ItemBuild(itemRows.stream().map(ItemRow::getNoteTextField).map(JTextField::getText).toList(), itemRows.stream().map(ItemRow::getItems).toList());
@@ -158,15 +136,16 @@ public final class ItemBuildBuilder {
 		    select();
 		}
 	    });
+	    itemsPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 	    final JPanel rowHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    noteTextField.setText(note);
 	    noteTextField.addFocusListener(getFocusListenerThatSelectsOnFocus());
 	    rowHeader.add(noteTextField);
-	    final JButton upButton = new JButton("▲");
-	    final JButton downButton = new JButton("▼");
-	    final JButton deleteButton = new JButton("-");
-	    List.of(upButton, downButton, deleteButton).stream().forEach(button -> button.addFocusListener(getFocusListenerThatSelectsOnFocus()));
+	    final JButton upButton = createUpButton();
+	    final JButton downButton = createDownButton();
+	    final JButton deleteButton = createDeleteButton();
+	    List.of(upButton, downButton).stream().forEach(button -> button.addFocusListener(getFocusListenerThatSelectsOnFocus()));
 	    rowHeader.add(upButton);
 	    rowHeader.add(downButton);
 	    rowHeader.add(deleteButton);
@@ -184,33 +163,72 @@ public final class ItemBuildBuilder {
 	    ItemBuildBuilder.this.rowsUi.repaint();
 	}
 
+	private JButton createUpButton() {
+	    final JButton upButton = new JButton("▲");
+	    upButton.addActionListener(click -> {
+		final int i = itemRows.indexOf(this);
+		if (i > 0) {
+		    Collections.swap(itemRows, i, i - 1);
+		    ItemBuildBuilder.this.updateItemRows();
+		}
+	    });
+	    return upButton;
+	}
+
+	private JButton createDownButton() {
+	    final JButton downButton = new JButton("▼");
+	    downButton.addActionListener(click -> {
+		final int i = itemRows.indexOf(this);
+		if (i < itemRows.size() - 1) {
+		    Collections.swap(itemRows, i, i + 1);
+		    ItemBuildBuilder.this.updateItemRows();
+		}
+	    });
+	    return downButton;
+	}
+
+	private JButton createDeleteButton() {
+	    final JButton deleteButton = new JButton("-");
+	    deleteButton.addActionListener(click -> {
+		itemRows.remove(itemRows.indexOf(this));
+		ItemBuildBuilder.this.updateItemRows();
+	    });
+	    return deleteButton;
+	}
+
 	private void updateItemPanel() {
 	    itemsPanel.removeAll();
 	    for (int i = 0; i < items.size(); i++) {
-		addItem(items.get(i), i);
-		itemsPanel.revalidate();
-		itemsPanel.repaint();
+		addItem(items.get(i), i, false);
 	    }
+	    itemsPanel.revalidate();
+	    itemsPanel.repaint();
 	}
 
-	private void addItem(final Item item, final int i) {
+	private void addItem(final Item item, final int i, final boolean repaint) {
 	    final JLabel itemIcon = new JLabel(new ImageIcon(images.get(item)));
 	    itemIcon.setToolTipText(item.toString());
 	    itemIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    final int index = items.size();
 	    itemIcon.addMouseListener(new EmptyMouseListener() {
 		@Override
 		public void mouseClicked(final MouseEvent click) {
 		    if (click.getButton() == MouseEvent.BUTTON3) {
-			items.remove(index);
+			items.remove(i);
+			updateItemPanel();
+		    } else if (click.getButton() == MouseEvent.BUTTON1 && click.isControlDown() && i > 0) {
+			Collections.swap(items, i, i - 1);
+			updateItemPanel();
+		    } else if (click.getButton() == MouseEvent.BUTTON1 && !click.isControlDown() && i < items.size() - 1) {
+			Collections.swap(items, i, i + 1);
 			updateItemPanel();
 		    }
 		}
 	    });
-	    items.add(item);
 	    itemsPanel.add(itemIcon);
-	    itemsPanel.revalidate();
-	    itemsPanel.repaint();
+	    if (repaint) {
+		itemsPanel.revalidate();
+		itemsPanel.repaint();
+	    }
 	}
 
 	private FocusListener getFocusListenerThatSelectsOnFocus() {
@@ -223,7 +241,8 @@ public final class ItemBuildBuilder {
 	}
 
 	private void addItem(final Item item) {
-	    addItem(item, items.size());
+	    items.add(item);
+	    addItem(item, items.size(), true);
 	}
 
 	private void unselect() {
