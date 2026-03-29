@@ -22,7 +22,7 @@ public final class ItemPropertySelection {
 	    final JCheckBox checkBox = new JCheckBox(itemProperty.toString());
 	    checkBox.setFocusPainted(false);
 	    checkBox.addItemListener(change -> {
-		if (change.getStateChange() == ItemEvent.SELECTED) {
+		if (Set.of(ItemEvent.SELECTED, ItemEvent.DESELECTED).contains(change.getStateChange())) {
 		    if (checkBox.isSelected()) {
 			selectedProperties.add(itemProperty);
 		    } else {
