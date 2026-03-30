@@ -18,7 +18,7 @@ import de.glasergl.custom.lol.setup.model.entity.Setup;
 import lombok.Getter;
 
 public final class SetupFileIo {
-    private final Path outputFilePath = Path.of("lol-setup.json");
+    private final Path outputFilePath = getPathOfOutputFile();
     private final Gson gson = new Gson();
     private final Type serializationType = new TypeToken<Set<Setup>>() {
     }.getType();
@@ -26,6 +26,11 @@ public final class SetupFileIo {
 
     public SetupFileIo() throws IOException {
 	setups = fetchSetups();
+    }
+
+    private Path getPathOfOutputFile() {
+	final String pathFromEnvironmentVariable = System.getenv("LOL_SETUP_FILE_PATH");
+	return Path.of(pathFromEnvironmentVariable != null && !pathFromEnvironmentVariable.isBlank() ? pathFromEnvironmentVariable : "lol-setup.json");
     }
 
     private Set<Setup> fetchSetups() throws IOException {
