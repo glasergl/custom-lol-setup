@@ -64,7 +64,7 @@ public final class SetupSelectionHandler {
 		setupUi = new SetupUi(images, createEmptySetupBuilder(), setupFileIo);
 	    }
 	    ui.removeAll();
-	    ui.add(setupUi.getUi(), BorderLayout.SOUTH);
+	    ui.add(setupUi.getUi(), BorderLayout.CENTER);
 	    SwingUtilities.windowForComponent(ui).pack();
 	    SwingUtilities.windowForComponent(ui).pack(); // need to call twice for proper layout
 	    SwingUtilities.windowForComponent(ui).setLocationRelativeTo(null);
@@ -75,11 +75,11 @@ public final class SetupSelectionHandler {
 	assert meSelection.isPresent() && enemySelection.isPresent();
 	final List<Setup> knownSetups;
 	if (roleSelection.isPresent()) {
-	    knownSetups = setupFileIo.getSetups().stream().filter(setup -> {
+	    knownSetups = setupFileIo.getSetups().setups().stream().filter(setup -> {
 		return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get()) && setup.role() != null && setup.role().equals(roleSelection.get());
 	    }).toList();
 	} else {
-	    knownSetups = setupFileIo.getSetups().stream().filter(setup -> {
+	    knownSetups = setupFileIo.getSetups().setups().stream().filter(setup -> {
 		return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get());
 	    }).toList();
 	}

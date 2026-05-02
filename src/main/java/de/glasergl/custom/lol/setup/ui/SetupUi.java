@@ -29,19 +29,23 @@ import lombok.Getter;
 public final class SetupUi {
     private final RunePageBuilderUi runePageBuilderUi;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
-    private final JTextArea notes = new JTextArea(10, 30);
+    private final JTextArea notes = new JTextArea(3, 25);
     private final JButton storeButton = CustomSwingComponents.createButton("Store");
     private final SetupBuilder setupBuilder;
     private final SetupFileIo setupFileIo;
+    private final JTextArea championSpecificNotesTextArea = new JTextArea(4, 35);
 
     public SetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
 	this.setupBuilder = setupBuilder;
 	this.setupFileIo = setupFileIo;
 	this.runePageBuilderUi = new RunePageBuilderUi(setupBuilder.getRunePageBuilder(), images);
 
+	championSpecificNotesTextArea.setText(setupFileIo.getSetups().championSpecificNotes().get(setupBuilder.getMe()));
+
 	notes.setText(setupBuilder.getNotes());
 	notes.setBorder(new EmptyBorder(2, 2, 2, 2));
 	final JScrollPane scrollableNotes = CustomSwingComponents.createScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	scrollableNotes.setBorder(new TitledBorder("Match-Up Notes"));
 
 	storeButton.setFocusPainted(false);
 	storeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -58,6 +62,9 @@ public final class SetupUi {
 	final JPanel summonerSpellRunePageStartSpellAndNotesPanel = new JPanel();
 	summonerSpellRunePageStartSpellAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellAndNotesPanel, BoxLayout.Y_AXIS));
 	summonerSpellRunePageStartSpellAndNotesPanel.add(vsPanel);
+	final JScrollPane scrollableChampionSpecificNotesTextArea = CustomSwingComponents.createScrollPane(championSpecificNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	scrollableChampionSpecificNotesTextArea.setBorder(new TitledBorder("Champion Notes"));
+	summonerSpellRunePageStartSpellAndNotesPanel.add(scrollableChampionSpecificNotesTextArea);
 	summonerSpellRunePageStartSpellAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
 	summonerSpellRunePageStartSpellAndNotesPanel.add(runePageBuilderUi.getUi());
 	summonerSpellRunePageStartSpellAndNotesPanel.add(new StartSpellSelectionUi(setupBuilder).getUi());
@@ -76,6 +83,7 @@ public final class SetupUi {
     private void storeCurrentSetupState() {
 	setupBuilder.setNotes(notes.getText());
 	try {
+	    setupFileIo.getSetups().championSpecificNotes().put(setupBuilder.getMe(), championSpecificNotesTextArea.getText());
 	    setupFileIo.store(setupBuilder.build());
 	} catch (final RuntimeException | IOException e) {
 	    e.printStackTrace();

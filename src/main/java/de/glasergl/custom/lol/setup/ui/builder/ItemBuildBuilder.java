@@ -116,7 +116,9 @@ public final class ItemBuildBuilder {
     }
 
     public ItemBuild build() {
-	return new ItemBuild(itemRows.stream().map(ItemRow::getNoteTextField).map(JTextField::getText).toList(), itemRows.stream().map(ItemRow::getItems).toList());
+	final List<String> rowNotes = itemRows.stream().map(ItemRow::getNoteTextField).map(JTextField::getText).toList();
+	final List<List<Item>> items = itemRows.stream().map(ItemRow::getItems).toList();
+	return new ItemBuild(rowNotes, items);
     }
 
     private final class ItemRow {
@@ -128,7 +130,7 @@ public final class ItemBuildBuilder {
 	private boolean isSelected = false;
 
 	private ItemRow(final String note, final List<Item> items) {
-	    this.items = new ArrayList<>(items);
+	    this.items = new ArrayList<>();
 
 	    itemsPanel.setPreferredSize(new Dimension(300, 60));
 	    itemsPanel.addMouseListener(new EmptyMouseListener() {
