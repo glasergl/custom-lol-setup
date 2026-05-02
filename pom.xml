@@ -39,6 +39,12 @@
 			<version>5.12.2</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>de.glasergl</groupId>
+			<artifactId>jlatex</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -61,6 +61,9 @@ public final class SetupUi {
 	    new SetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentSetup, setupFileIo.getSetups());
 	});
 	buttonWrapper.add(popOutButton);
+	final JButton exportPdfButton = CustomSwingComponents.createButton("Export PDF");
+	exportPdfButton.addActionListener(click -> new PdfExport(setupFileIo.getSetups()));
+	buttonWrapper.add(exportPdfButton);
 	ui.add(buttonWrapper, BorderLayout.NORTH);
 
 	final JPanel vsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

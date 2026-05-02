@@ -3,3 +3,10 @@ target/
 .classpath
 .project
 lol-setup.json
+/champions/
+/items/
+/roles/
+/runes/
+/summoner-spells/
+vs.png
+generated-document.pdf
