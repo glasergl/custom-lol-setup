@@ -77,7 +77,6 @@ public final class ItemBuildBuilder {
 	});
 	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	buttonWrapper.add(addRowButton);
-	buttonWrapper.add(CustomSwingComponents.createButton("Pop Out"));
 	ui.add(buttonWrapper, BorderLayout.SOUTH);
     }
 

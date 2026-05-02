@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import javax.swing.border.TitledBorder;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
+import de.glasergl.custom.lol.setup.model.entity.Setup;
 import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderUi;
 import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.StartSpellSelectionUi;
@@ -52,6 +54,12 @@ public final class SetupUi {
 	storeButton.addActionListener(click -> storeCurrentSetupState());
 	final JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	buttonWrapper.add(storeButton);
+	final JButton popOutButton = CustomSwingComponents.createButton("Pop Out");
+	popOutButton.addActionListener(click -> {
+	    final Setup currentSetup = setupBuilder.build();
+	    new SetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentSetup, setupFileIo.getSetups());
+	});
+	buttonWrapper.add(popOutButton);
 	ui.add(buttonWrapper, BorderLayout.NORTH);
 
 	final JPanel vsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
