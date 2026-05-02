@@ -22,6 +22,7 @@ import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderUi;
 import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
+import de.glasergl.custom.lol.setup.ui.selection.StartSpellSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
 
@@ -54,13 +55,14 @@ public final class SetupUi {
 	vsPanel.add(new JLabel(new ImageIcon(images.getVsIcon())));
 	vsPanel.add(new JLabel(new ImageIcon(images.getBigChampionImages().get(setupBuilder.getEnemy()))));
 
-	final JPanel summonerSpellRunePageAndNotesPanel = new JPanel();
-	summonerSpellRunePageAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageAndNotesPanel, BoxLayout.Y_AXIS));
-	summonerSpellRunePageAndNotesPanel.add(vsPanel);
-	summonerSpellRunePageAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
-	summonerSpellRunePageAndNotesPanel.add(runePageBuilderUi.getUi());
-	summonerSpellRunePageAndNotesPanel.add(scrollableNotes);
-	ui.add(summonerSpellRunePageAndNotesPanel, BorderLayout.CENTER);
+	final JPanel summonerSpellRunePageStartSpellAndNotesPanel = new JPanel();
+	summonerSpellRunePageStartSpellAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellAndNotesPanel, BoxLayout.Y_AXIS));
+	summonerSpellRunePageStartSpellAndNotesPanel.add(vsPanel);
+	summonerSpellRunePageStartSpellAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
+	summonerSpellRunePageStartSpellAndNotesPanel.add(runePageBuilderUi.getUi());
+	summonerSpellRunePageStartSpellAndNotesPanel.add(new StartSpellSelectionUi(setupBuilder).getUi());
+	summonerSpellRunePageStartSpellAndNotesPanel.add(scrollableNotes);
+	ui.add(summonerSpellRunePageStartSpellAndNotesPanel, BorderLayout.CENTER);
 
 	final JPanel itemUi = new JPanel(new BorderLayout());
 	itemUi.add(new ItemSelectionUi(images, item -> {

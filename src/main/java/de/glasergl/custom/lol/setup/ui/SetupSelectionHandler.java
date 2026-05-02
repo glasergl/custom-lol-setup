@@ -1,7 +1,6 @@
 package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +15,7 @@ import de.glasergl.custom.lol.setup.model.entity.Champion;
 import de.glasergl.custom.lol.setup.model.entity.Role;
 import de.glasergl.custom.lol.setup.model.entity.RunePath;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.model.entity.Spell;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
 import de.glasergl.custom.lol.setup.ui.builder.ItemBuildBuilder;
 import lombok.Getter;
@@ -32,7 +32,6 @@ public final class SetupSelectionHandler {
     public SetupSelectionHandler(final SetupFileIo setupFileIo, final Images images) {
 	this.setupFileIo = setupFileIo;
 	this.images = images;
-	ui.setBackground(Color.RED);
     }
 
     public void setMe(final Champion me) {
@@ -94,7 +93,8 @@ public final class SetupSelectionHandler {
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, knownSetup.build());
 	final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
 	final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, knownSetup.notes() != null ? knownSetup.notes() : "");
+	final Optional<Spell> startSpell = knownSetup.startSpell() != null ? Optional.of(knownSetup.startSpell()) : Optional.empty();
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, startSpell, knownSetup.notes() != null ? knownSetup.notes() : "");
     }
 
     private SetupBuilder createEmptySetupBuilder() {
@@ -102,6 +102,6 @@ public final class SetupSelectionHandler {
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY);
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images);
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), "");
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), Optional.empty(), "");
     }
 }
