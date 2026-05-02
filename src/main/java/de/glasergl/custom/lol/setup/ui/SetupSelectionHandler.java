@@ -1,6 +1,7 @@
 package de.glasergl.custom.lol.setup.ui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,7 +95,8 @@ public final class SetupSelectionHandler {
 	final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
 	final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
 	final Optional<Spell> startSpell = knownSetup.startSpell() != null ? Optional.of(knownSetup.startSpell()) : Optional.empty();
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, startSpell, knownSetup.notes() != null ? knownSetup.notes() : "");
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, startSpell,
+		knownSetup.spellMaxOrder() != null ? knownSetup.spellMaxOrder() : new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), knownSetup.notes() != null ? knownSetup.notes() : "");
     }
 
     private SetupBuilder createEmptySetupBuilder() {
@@ -102,6 +104,6 @@ public final class SetupSelectionHandler {
 
 	final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY);
 	final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images);
-	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), Optional.empty(), "");
+	return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), Optional.empty(), new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), "");
     }
 }

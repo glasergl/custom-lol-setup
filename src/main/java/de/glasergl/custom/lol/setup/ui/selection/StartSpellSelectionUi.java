@@ -11,6 +11,7 @@ import java.util.Optional;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.model.entity.Spell;
@@ -18,16 +19,14 @@ import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 import lombok.Getter;
 
 public final class StartSpellSelectionUi {
-    private final @Getter JPanel ui = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 30));
+    private final @Getter JPanel ui = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 5));
 
     public StartSpellSelectionUi(final SetupBuilder setupBuilder) {
-	final JLabel label = new JLabel("Start Spell:");
-	label.setFont(label.getFont().deriveFont(18.0f));
-	ui.add(label);
+	ui.setBorder(new TitledBorder("Start Spell"));
 	for (final Spell startSpell : List.of(Spell.Q, Spell.W, Spell.E, Spell.R)) {
 	    final JLabel spellLabel = new JLabel(startSpell.toString());
 	    spellLabel.setBorder(new EmptyBorder(0, 5, 0, 5));
-	    spellLabel.setFont(spellLabel.getFont().deriveFont(50.0f));
+	    spellLabel.setFont(spellLabel.getFont().deriveFont(40.0f));
 	    spellLabel.setOpaque(true);
 	    spellLabel.addMouseListener(new EmptyMouseListener() {
 		@Override

@@ -33,7 +33,7 @@ public final class CreateFrame {
 	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	createAndAddComponents();
-	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	frame.setResizable(false);
 	frame.pack();
 	frame.setLocationRelativeTo(null);
 	frame.setVisible(true);

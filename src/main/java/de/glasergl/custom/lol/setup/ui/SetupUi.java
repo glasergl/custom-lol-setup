@@ -24,6 +24,7 @@ import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
 import de.glasergl.custom.lol.setup.model.entity.Setup;
 import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderUi;
 import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
+import de.glasergl.custom.lol.setup.ui.selection.SpellMaxOrderUi;
 import de.glasergl.custom.lol.setup.ui.selection.StartSpellSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SummonerSpellSelection;
 import lombok.Getter;
@@ -67,17 +68,18 @@ public final class SetupUi {
 	vsPanel.add(new JLabel(new ImageIcon(images.getVsIcon())));
 	vsPanel.add(new JLabel(new ImageIcon(images.getBigChampionImages().get(setupBuilder.getEnemy()))));
 
-	final JPanel summonerSpellRunePageStartSpellAndNotesPanel = new JPanel();
-	summonerSpellRunePageStartSpellAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellAndNotesPanel, BoxLayout.Y_AXIS));
-	summonerSpellRunePageStartSpellAndNotesPanel.add(vsPanel);
+	final JPanel summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel = new JPanel();
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel, BoxLayout.Y_AXIS));
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(vsPanel);
 	final JScrollPane scrollableChampionSpecificNotesTextArea = CustomSwingComponents.createScrollPane(championSpecificNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	scrollableChampionSpecificNotesTextArea.setBorder(new TitledBorder("Champion Notes"));
-	summonerSpellRunePageStartSpellAndNotesPanel.add(scrollableChampionSpecificNotesTextArea);
-	summonerSpellRunePageStartSpellAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
-	summonerSpellRunePageStartSpellAndNotesPanel.add(runePageBuilderUi.getUi());
-	summonerSpellRunePageStartSpellAndNotesPanel.add(new StartSpellSelectionUi(setupBuilder).getUi());
-	summonerSpellRunePageStartSpellAndNotesPanel.add(scrollableNotes);
-	ui.add(summonerSpellRunePageStartSpellAndNotesPanel, BorderLayout.CENTER);
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableChampionSpecificNotesTextArea);
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(runePageBuilderUi.getUi());
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new StartSpellSelectionUi(setupBuilder).getUi());
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new SpellMaxOrderUi(setupBuilder).getUi());
+	summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableNotes);
+	ui.add(summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel, BorderLayout.CENTER);
 
 	final JPanel itemUi = new JPanel(new BorderLayout());
 	itemUi.add(new ItemSelectionUi(images, item -> {

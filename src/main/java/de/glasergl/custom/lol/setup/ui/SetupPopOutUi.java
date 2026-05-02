@@ -22,8 +22,11 @@ import de.glasergl.custom.lol.setup.model.entity.Setups;
 public class SetupPopOutUi {
     public SetupPopOutUi(final JFrame referenceFrame, final Images images, final Setup setupToVisualize, final Setups allSetups) {
 	final JLabel startSpellLabel = new JLabel("Start Spell: %s".formatted(setupToVisualize.startSpell() != null ? setupToVisualize.startSpell().toString() : ""));
-	startSpellLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
+	startSpellLabel.setFont(startSpellLabel.getFont().deriveFont(20.0f));
+	final JLabel maxSpellOrderLabel = new JLabel(
+		"Spell Max Order: %s > %s > %s > %s".formatted(setupToVisualize.spellMaxOrder().get(0).toString(), setupToVisualize.spellMaxOrder().get(1).toString(), setupToVisualize.spellMaxOrder().get(2).toString(), setupToVisualize.spellMaxOrder().get(3).toString()));
+	maxSpellOrderLabel.setFont(maxSpellOrderLabel.getFont().deriveFont(20.0f));
+	
 	final JTextArea matchupNotesTextArea = new JTextArea(setupToVisualize.notes());
 	matchupNotesTextArea.setLineWrap(true);
 	matchupNotesTextArea.setEditable(false);
@@ -61,14 +64,18 @@ public class SetupPopOutUi {
 	ui.setBorder(new EmptyBorder(3, 3, 3, 3));
 	final JPanel startSpellWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	startSpellWrapper.add(startSpellLabel);
-	ui.add(startSpellWrapper);
+
+	final JPanel maxSpellOrderWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	maxSpellOrderWrapper.add(maxSpellOrderLabel);
 	ui.add(championNotesTextArea);
+	ui.add(startSpellWrapper);
+	ui.add(maxSpellOrderWrapper);
 	ui.add(matchupNotesTextArea);
-	ui.add(itemBuildPanel);
 
 	final JDialog dialog = new JDialog(referenceFrame, "gl hf", true);
 	dialog.setLayout(new BorderLayout());
 	dialog.add(ui, BorderLayout.CENTER);
+	dialog.add(itemBuildPanel, BorderLayout.EAST);
 	dialog.pack();
 	dialog.setLocationRelativeTo(null);
 	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
