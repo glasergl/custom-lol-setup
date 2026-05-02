@@ -9,7 +9,7 @@ public record RunePath(String name, List<Rune> keyStones, List<List<Rune>> slotR
     public static final RunePath DOMINATION = new RunePath("DOMINATION", List.of(Rune.ELECTROCUTE, Rune.DARK_HARVEST, Rune.HAIL_OF_BLADES),
 	    List.of(List.of(Rune.CHEAP_SHOT, Rune.TASTE_OF_BLOOD, Rune.SUDDEN_IMPACT), List.of(Rune.SIXTH_SENSE, Rune.GRISLY_MEMENTOS, Rune.DEEP_WARD), List.of(Rune.TREASURE_HUNTER, Rune.RELENTLESS_HUNTER, Rune.ULTIMATE_HUNTER)));
 
-    public static final RunePath SORCERY = new RunePath("SORCERY", List.of(Rune.SUMMON_AERY, Rune.ARCANE_COMET, Rune.PHASE_RUSH),
+    public static final RunePath SORCERY = new RunePath("SORCERY", List.of(Rune.SUMMON_AERY, Rune.ARCANE_COMET, Rune.STORMRAIDERS_SURGE, Rune.DEATHFIRE_TOUCH),
 	    List.of(List.of(Rune.AXIOM_ARCANIST, Rune.MANAFLOW_BAND, Rune.NIMBUS_CLOAK), List.of(Rune.TRANSCENDENCE, Rune.CELERITY, Rune.ABSOLUTE_FOCUS), List.of(Rune.SCORCH, Rune.WATERWALKING, Rune.GATHERING_STORM)));
 
     public static final RunePath RESOLVE = new RunePath("RESOLVE", List.of(Rune.GRASP_OF_THE_UNDYING, Rune.AFTERSHOCK, Rune.GUARDIAN),
