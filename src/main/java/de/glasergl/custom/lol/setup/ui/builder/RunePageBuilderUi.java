@@ -25,6 +25,7 @@ public final class RunePageBuilderUi {
     private final RunePageBuilder runePageBuilder;
     private final Images images;
     private final @Getter JPanel ui = new JPanel();
+    private @Getter JPanel runesView;
 
     /**
      * Creates view of a single rune page which updates itself based user clicks on
@@ -54,7 +55,7 @@ public final class RunePageBuilderUi {
 	runePathSelectionViews.setBorder(new MatteBorder(0, 0, 2, 0, new Color(150, 150, 150)));
 	ui.add(runePathSelectionViews);
 
-	final JPanel runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	runesView = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	final JPanel mainRunesView = getMainRunePathView();
 	final JPanel secondRunePathAndShardsView = getSecondRunePathAndShardsView();
 	runesView.add(mainRunesView);
