@@ -5,10 +5,10 @@ import java.awt.event.FocusListener;
 
 public interface EmptyFocusListener extends FocusListener {
     @Override
-    public default void focusGained(final FocusEvent focusGain) {
+    default void focusGained(final FocusEvent focusGain) {
     }
 
     @Override
-    public default void focusLost(final FocusEvent focusGain) {
+    default void focusLost(final FocusEvent focusGain) {
     }
 }

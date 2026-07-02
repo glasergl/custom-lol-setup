@@ -1,17 +1,12 @@
 package de.glasergl.custom.lol.setup.ui.selection;
 
-import java.awt.Cursor;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.function.Supplier;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
 
 /**
  * Element which switches between two states, selected and unselected.
@@ -25,34 +20,34 @@ public final class GraySelectionElement {
     private final Image unselectedImage;
 
     public GraySelectionElement(final Image selectedImage, final Image unselectedImage, final Supplier<Boolean> shouldBeSelectedCheck, final Runnable onClickAction) {
-	this.shouldBeSelectedCheck = shouldBeSelectedCheck;
-	this.onClickAction = onClickAction;
-	this.selectedImage = selectedImage;
-	this.unselectedImage = unselectedImage;
-	icon.addMouseListener(getClickActionMouseListener());
-	icon.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	icon.setOpaque(true);
-	view.add(icon);
+        this.shouldBeSelectedCheck = shouldBeSelectedCheck;
+        this.onClickAction = onClickAction;
+        this.selectedImage = selectedImage;
+        this.unselectedImage = unselectedImage;
+        icon.addMouseListener(getClickActionMouseListener());
+        icon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        icon.setOpaque(true);
+        view.add(icon);
     }
 
     public void updateSelectionState() {
-	icon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? selectedImage : unselectedImage));
+        icon.setIcon(new ImageIcon(shouldBeSelectedCheck.get() ? selectedImage : unselectedImage));
     }
 
     public JLabel getIconLabel() {
-	return icon;
+        return icon;
     }
 
     private MouseListener getClickActionMouseListener() {
-	return new EmptyMouseListener() {
-	    @Override
-	    public void mouseClicked(MouseEvent e) {
-		onClickAction.run();
-	    }
-	};
+        return new EmptyMouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onClickAction.run();
+            }
+        };
     }
 
     public JPanel getView() {
-	return view;
+        return view;
     }
 }

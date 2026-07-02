@@ -7,17 +7,17 @@ public interface DocumentChangeListener extends DocumentListener {
     void onChange(DocumentEvent e);
 
     @Override
-    public default void insertUpdate(DocumentEvent e) {
-	onChange(e);
+    default void insertUpdate(DocumentEvent e) {
+        onChange(e);
     }
 
     @Override
-    public default void removeUpdate(DocumentEvent e) {
-	onChange(e);
+    default void removeUpdate(DocumentEvent e) {
+        onChange(e);
     }
 
     @Override
-    public default void changedUpdate(DocumentEvent e) {
-	onChange(e);
+    default void changedUpdate(DocumentEvent e) {
+        onChange(e);
     }
 }

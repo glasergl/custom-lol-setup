@@ -1,11 +1,11 @@
 package de.glasergl.custom.lol.setup.model.entity;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import lombok.Getter;
 
 import static de.glasergl.custom.lol.setup.model.entity.ItemProperty.*;
 
@@ -61,11 +61,11 @@ public enum Item {
     private final @Getter int cost;
     private final @Getter Set<ItemProperty> properties;
 
-    private Item(final int cost, final ItemProperty... properties) {
-	if (cost < 0) {
-	    throw new IllegalArgumentException();
-	}
-	this.cost = cost;
-	this.properties = Collections.unmodifiableSet(new HashSet<>(List.of(properties)));
+    Item(final int cost, final ItemProperty... properties) {
+        if (cost < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.cost = cost;
+        this.properties = Collections.unmodifiableSet(new HashSet<>(List.of(properties)));
     }
 }

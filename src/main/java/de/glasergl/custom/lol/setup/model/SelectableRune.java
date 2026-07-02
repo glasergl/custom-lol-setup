@@ -16,12 +16,12 @@ public final class SelectableRune {
     private boolean isSelected;
 
     public SelectableRune(final Rune rune, final boolean initiallySelected) {
-	this.rune = rune;
-	this.isSelected = initiallySelected;
+        this.rune = rune;
+        this.isSelected = initiallySelected;
     }
 
     @Override
     public String toString() {
-	return rune.toString();
+        return rune.toString();
     }
 }
