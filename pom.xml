@@ -12,12 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <organization>
-        <name>Gabriel Glaser</name>
-    </organization>
-    <inceptionYear>2026</inceptionYear>
-    <description>Custom LoL Setup</description>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -38,12 +32,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.12.2</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>de.glasergl</groupId>
-            <artifactId>jlatex</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
@@ -81,37 +69,6 @@
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                <artifactId>launch4j-maven-plugin</artifactId>
-                <version>2.7.0</version>
-                <configuration>
-                    <headerType>gui</headerType>
-                    <jar>
-                        ${project.build.directory}${file.separator}${project.build.finalName}-jar-with-dependencies.jar
-                    </jar>
-                    <outfile>${project.build.directory}${file.separator}${project.artifactId}.exe</outfile>
-                    <icon>
-                        ${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}runes${file.separator}GATHERING_STORM.ico
-                    </icon>
-                    <jre>
-                        <minVersion>21</minVersion>
-                        <path>%PATH%</path>
-                    </jre>
-                    <manifest>
-                        ${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}launch4j.manifest
-                    </manifest>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>launch4j</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>launch4j</goal>
                         </goals>
                     </execution>
                 </executions>
