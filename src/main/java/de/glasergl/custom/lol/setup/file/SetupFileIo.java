@@ -1,7 +1,7 @@
 package de.glasergl.custom.lol.setup.file;
 
 import com.google.gson.Gson;
-import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.model.entity.MatchUp;
 import de.glasergl.custom.lol.setup.model.entity.Setups;
 import lombok.Getter;
 
@@ -42,13 +42,13 @@ public final class SetupFileIo {
         }
     }
 
-    public void store(final Setup setupToStore) throws IOException {
-        final List<Setup> existingMatchingSetup = setups.setups().stream().filter(storedSetup -> {
-            final boolean roleMatches = setupToStore.role() == null || storedSetup.role() == null || setupToStore.role().equals(storedSetup.role());
-            return storedSetup.me().equals(setupToStore.me()) && storedSetup.enemy().equals(setupToStore.enemy()) && roleMatches;
+    public void store(final MatchUp matchUpToStore) throws IOException {
+        final List<MatchUp> existingMatchingMatchUp = setups.matchUps().stream().filter(storedSetup -> {
+            final boolean roleMatches = matchUpToStore.role() == null || storedSetup.role() == null || matchUpToStore.role().equals(storedSetup.role());
+            return storedSetup.me().equals(matchUpToStore.me()) && storedSetup.enemy().equals(matchUpToStore.enemy()) && roleMatches;
         }).toList();
-        setups.setups().removeAll(existingMatchingSetup);
-        setups.setups().add(setupToStore);
+        setups.matchUps().removeAll(existingMatchingMatchUp);
+        setups.matchUps().add(matchUpToStore);
 
         try (final Writer writer = Files.newBufferedWriter(outputFilePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             gson.toJson(setups, writer);

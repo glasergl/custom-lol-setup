@@ -50,7 +50,7 @@ public final class SetupSelectionHandler {
 
     private void updateView() {
         if (meSelection.isPresent() && enemySelection.isPresent()) {
-            final Optional<Setup> knownSetup = getSetupFromKnownSetups();
+            final Optional<MatchUp> knownSetup = getSetupFromKnownSetups();
             final SetupUi setupUi;
             if (knownSetup.isPresent()) {
                 setupUi = new SetupUi(images, createSetupBuilderFromKnownSetup(knownSetup.get()), setupFileIo);
@@ -65,31 +65,31 @@ public final class SetupSelectionHandler {
         }
     }
 
-    private Optional<Setup> getSetupFromKnownSetups() {
+    private Optional<MatchUp> getSetupFromKnownSetups() {
         assert meSelection.isPresent() && enemySelection.isPresent();
-        final List<Setup> knownSetups;
+        final List<MatchUp> knownMatchUps;
         if (roleSelection.isPresent()) {
-            knownSetups = setupFileIo.getSetups().setups().stream().filter(setup -> {
+            knownMatchUps = setupFileIo.getSetups().matchUps().stream().filter(setup -> {
                 return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get()) && setup.role() != null && setup.role().equals(roleSelection.get());
             }).toList();
         } else {
-            knownSetups = setupFileIo.getSetups().setups().stream().filter(setup -> {
+            knownMatchUps = setupFileIo.getSetups().matchUps().stream().filter(setup -> {
                 return setup.me().equals(meSelection.get()) && setup.enemy().equals(enemySelection.get());
             }).toList();
         }
-        return knownSetups.isEmpty() ? Optional.empty() : Optional.of(knownSetups.get(0));
+        return knownMatchUps.isEmpty() ? Optional.empty() : Optional.of(knownMatchUps.get(0));
     }
 
-    private SetupBuilder createSetupBuilderFromKnownSetup(final Setup knownSetup) {
+    private SetupBuilder createSetupBuilderFromKnownSetup(final MatchUp knownMatchUp) {
         assert meSelection.isPresent() && enemySelection.isPresent();
 
-        final RunePageBuilder runePageBuilder = new RunePageBuilder(knownSetup.runePage());
-        final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, knownSetup.build());
-        final Optional<SummonerSpell> firstSummonerSpell = knownSetup.first() != null ? Optional.of(knownSetup.first()) : Optional.empty();
-        final Optional<SummonerSpell> secondSummonerSpell = knownSetup.second() != null ? Optional.of(knownSetup.second()) : Optional.empty();
-        final Optional<Spell> startSpell = knownSetup.startSpell() != null ? Optional.of(knownSetup.startSpell()) : Optional.empty();
+        final RunePageBuilder runePageBuilder = new RunePageBuilder(knownMatchUp.runePage());
+        final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, knownMatchUp.build());
+        final Optional<SummonerSpell> firstSummonerSpell = knownMatchUp.first() != null ? Optional.of(knownMatchUp.first()) : Optional.empty();
+        final Optional<SummonerSpell> secondSummonerSpell = knownMatchUp.second() != null ? Optional.of(knownMatchUp.second()) : Optional.empty();
+        final Optional<Spell> startSpell = knownMatchUp.startSpell() != null ? Optional.of(knownMatchUp.startSpell()) : Optional.empty();
         return new SetupBuilder(meSelection.get(), roleSelection, enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, startSpell,
-                knownSetup.spellMaxOrder() != null ? knownSetup.spellMaxOrder() : new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), knownSetup.notes() != null ? knownSetup.notes() : "");
+                knownMatchUp.spellMaxOrder() != null ? knownMatchUp.spellMaxOrder() : new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), knownMatchUp.notes() != null ? knownMatchUp.notes() : "");
     }
 
     private SetupBuilder createEmptySetupBuilder() {

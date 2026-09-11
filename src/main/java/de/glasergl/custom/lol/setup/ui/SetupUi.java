@@ -3,7 +3,7 @@ package de.glasergl.custom.lol.setup.ui;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.file.SetupFileIo;
 import de.glasergl.custom.lol.setup.model.builder.SetupBuilder;
-import de.glasergl.custom.lol.setup.model.entity.Setup;
+import de.glasergl.custom.lol.setup.model.entity.MatchUp;
 import de.glasergl.custom.lol.setup.ui.builder.RunePageBuilderUi;
 import de.glasergl.custom.lol.setup.ui.selection.ItemSelectionUi;
 import de.glasergl.custom.lol.setup.ui.selection.SpellMaxOrderUi;
@@ -45,8 +45,8 @@ public final class SetupUi {
         buttonWrapper.add(storeButton);
         final JButton popOutButton = CustomSwingComponents.createButton("Pop Out");
         popOutButton.addActionListener(click -> {
-            final Setup currentSetup = setupBuilder.build();
-            new SetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentSetup, setupFileIo.getSetups());
+            final MatchUp currentMatchUp = setupBuilder.build();
+            new SetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentMatchUp, setupFileIo.getSetups());
         });
         buttonWrapper.add(popOutButton);
         ui.add(buttonWrapper, BorderLayout.NORTH);

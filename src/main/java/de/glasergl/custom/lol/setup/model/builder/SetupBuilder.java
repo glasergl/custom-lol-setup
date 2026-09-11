@@ -39,7 +39,7 @@ public final class SetupBuilder {
         this.notes = notes;
     }
 
-    public Setup build() {
-        return new Setup(me, role.orElse(null), enemy, runePageBuilder.build(), firstSummonerSpell.orElse(null), secondSummonerSpell.orElse(null), startSpell.orElse(null), spellMaxOrder, itemBuildBuilder.build(), notes);
+    public MatchUp build() {
+        return new MatchUp(me, role.orElse(null), enemy, runePageBuilder.build(), firstSummonerSpell.orElse(null), secondSummonerSpell.orElse(null), startSpell.orElse(null), spellMaxOrder, itemBuildBuilder.build(), notes);
     }
 }
