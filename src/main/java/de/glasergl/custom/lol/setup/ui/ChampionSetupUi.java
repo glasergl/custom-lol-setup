@@ -34,7 +34,7 @@ public final class ChampionSetupUi {
         championNotesTextArea.setText(setupBuilder.getChampionNotes());
         championNotesTextArea.setBorder(new EmptyBorder(2, 2, 2, 2));
         final JScrollPane scrollableChampionNotes = CustomSwingComponents.createScrollPane(championNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableChampionNotes.setBorder(new TitledBorder("Champion Notes"));
+        scrollableChampionNotes.setBorder(new TitledBorder("Champion+Role Notes"));
 
         matchUpNotesTextArea.setText(setupBuilder.getMatchUpNotes());
         matchUpNotesTextArea.setBorder(new EmptyBorder(2, 2, 2, 2));
