@@ -59,7 +59,7 @@ public final class SetupFileIo {
 
     private Set<ChampionSetup> fetchSetups() throws IOException {
         try (final Stream<Path> subPaths = Files.walk(setupsDirectoryPath)) {
-            final Set<Path> setupFiles = subPaths.filter(path -> Files.isRegularFile(path) && path.endsWith(".json"))
+            final Set<Path> setupFiles = subPaths.filter(path -> Files.isRegularFile(path) && path.toString().endsWith(".json"))
                     .collect(Collectors.toSet());
             final Set<ChampionSetup> championSetups = new HashSet<>();
             for (final Path setupFile : setupFiles) {
