@@ -31,6 +31,7 @@ public final class RoleSelectionUi {
                 }
             });
             roleLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            roleLabel.setToolTipText(role.toString());
             ui.add(roleLabel);
         }
     }

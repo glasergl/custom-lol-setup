@@ -1,6 +1,9 @@
 package de.glasergl.custom.lol.setup.ui.selection;
 
 import de.glasergl.custom.lol.setup.file.Images;
+
+import static de.glasergl.custom.lol.setup.model.entity.SummonerSpell.*;
+
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
 import de.glasergl.custom.lol.setup.ui.helper.EmptyMouseListener;
 import lombok.Getter;
@@ -17,8 +20,8 @@ public final class SummonerSpellSelectionDialog extends JDialog {
     public SummonerSpellSelectionDialog(final Images images, final Frame parent, final JComponent relative) {
         super(parent, "Summoner Spell", true);
         setLayout(new BorderLayout());
-        final JPanel content = new JPanel(new GridLayout(3, 3, 8, 8));
-        for (final SummonerSpell summonerSpell : SummonerSpell.values()) {
+        final JPanel content = new JPanel(new GridLayout(3, 4, 8, 8));
+        for (final SummonerSpell summonerSpell : java.util.List.of(CLEANSE, EXHAUST, FLASH, GHOST, HEAL, SMITE, TELEPORT, IGNITE, BARRIER)) {
             final JLabel summonerSpellIcon = new JLabel(new ImageIcon(images.getSummonerSpellImage(summonerSpell)));
             summonerSpellIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
             content.add(summonerSpellIcon);
@@ -29,6 +32,9 @@ public final class SummonerSpellSelectionDialog extends JDialog {
                     dispose();
                 }
             });
+        }
+        for (int i = 0; i < 3; i++) {
+            content.add(new JPanel());
         }
         content.setBorder(new EmptyBorder(5, 5, 5, 5));
         add(content, BorderLayout.CENTER);
