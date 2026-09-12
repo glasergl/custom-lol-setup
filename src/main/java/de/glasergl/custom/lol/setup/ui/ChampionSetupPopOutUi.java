@@ -20,17 +20,13 @@ public class ChampionSetupPopOutUi {
         maxSpellOrderLabel.setFont(maxSpellOrderLabel.getFont().deriveFont(20.0f));
 
         final JTextArea matchupNotesTextArea = new JTextArea(matchUpToVisualize.notes());
-        matchupNotesTextArea.setLineWrap(true);
         matchupNotesTextArea.setEditable(false);
-        matchupNotesTextArea.setWrapStyleWord(true);
         matchupNotesTextArea.setOpaque(false);
         matchupNotesTextArea.setFocusable(false);
         matchupNotesTextArea.setBorder(new TitledBorder("Match-Up Notes"));
 
         final JTextArea championNotesTextArea = new JTextArea(championNotes);
-        championNotesTextArea.setLineWrap(true);
         championNotesTextArea.setEditable(false);
-        championNotesTextArea.setWrapStyleWord(true);
         championNotesTextArea.setOpaque(false);
         championNotesTextArea.setFocusable(false);
         championNotesTextArea.setBorder(new TitledBorder("Champion Notes"));
@@ -66,8 +62,9 @@ public class ChampionSetupPopOutUi {
 
         final JDialog dialog = new JDialog(referenceFrame, "gl hf", true);
         dialog.setLayout(new BorderLayout());
-        dialog.add(ui, BorderLayout.CENTER);
-        dialog.add(itemBuildPanel, BorderLayout.EAST);
+        dialog.add(itemBuildPanel, BorderLayout.CENTER);
+        dialog.add(ui, BorderLayout.EAST);
+        dialog.pack();
         dialog.pack();
         dialog.setLocationRelativeTo(referenceFrame);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
