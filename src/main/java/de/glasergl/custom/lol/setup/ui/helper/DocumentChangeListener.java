@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.ui;
+package de.glasergl.custom.lol.setup.ui.helper;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

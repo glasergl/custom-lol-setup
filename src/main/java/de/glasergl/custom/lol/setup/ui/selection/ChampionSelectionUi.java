@@ -3,18 +3,16 @@ package de.glasergl.custom.lol.setup.ui.selection;
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Champion;
 import de.glasergl.custom.lol.setup.ui.CustomSwingComponents;
-import de.glasergl.custom.lol.setup.ui.DocumentChangeListener;
-import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.helper.DocumentChangeListener;
+import de.glasergl.custom.lol.setup.ui.helper.EmptyMouseListener;
 import lombok.Getter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -52,9 +50,7 @@ public final class ChampionSelectionUi {
     private void visualizeChampions(final List<Champion> champions) {
         championPanels.clear();
         championPanelsUi.removeAll();
-        champions.sort((c1, c2) -> {
-            return c1.toString().compareTo(c2.toString());
-        });
+        champions.sort(Comparator.comparing(Enum::toString));
         for (final Champion champion : champions) {
             final JLabel championIcon = new JLabel(new ImageIcon(images.getImage(champion)));
             final JPanel championPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

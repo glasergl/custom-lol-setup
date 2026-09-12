@@ -1,4 +1,4 @@
-package de.glasergl.custom.lol.setup.ui;
+package de.glasergl.custom.lol.setup.ui.helper;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;

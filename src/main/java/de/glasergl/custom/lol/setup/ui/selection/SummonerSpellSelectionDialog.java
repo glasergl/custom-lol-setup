@@ -2,7 +2,7 @@ package de.glasergl.custom.lol.setup.ui.selection;
 
 import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.SummonerSpell;
-import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.helper.EmptyMouseListener;
 import lombok.Getter;
 
 import javax.swing.*;

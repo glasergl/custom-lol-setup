@@ -17,25 +17,25 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.IOException;
 
-public final class SetupUi {
+public final class ChampionSetupUi {
     private final RunePageBuilderUi runePageBuilderUi;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
-    private final JTextArea notes = new JTextArea(3, 25);
+    private final JTextArea championNotesTextArea = new JTextArea(3, 25);
     private final JButton storeButton = CustomSwingComponents.createButton("Store");
     private final SetupBuilder setupBuilder;
     private final SetupFileIo setupFileIo;
-    private final JTextArea championSpecificNotesTextArea = new JTextArea(4, 35);
+    private final JTextArea matchUpNotesTextArea = new JTextArea(4, 35);
 
-    public SetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
+    public ChampionSetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
         this.setupBuilder = setupBuilder;
         this.setupFileIo = setupFileIo;
         this.runePageBuilderUi = new RunePageBuilderUi(setupBuilder.getRunePageBuilder(), images);
 
-        championSpecificNotesTextArea.setText(setupFileIo.getSetups().championSpecificNotes().get(setupBuilder.getMe()));
+        matchUpNotesTextArea.setText(setupBuilder.getChampionNotes());
 
-        notes.setText(setupBuilder.getNotes());
-        notes.setBorder(new EmptyBorder(2, 2, 2, 2));
-        final JScrollPane scrollableNotes = CustomSwingComponents.createScrollPane(notes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        championNotesTextArea.setText(setupBuilder.getMatchUpNotes());
+        championNotesTextArea.setBorder(new EmptyBorder(2, 2, 2, 2));
+        final JScrollPane scrollableNotes = CustomSwingComponents.createScrollPane(championNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollableNotes.setBorder(new TitledBorder("Match-Up Notes"));
 
         storeButton.setFocusPainted(false);
@@ -46,7 +46,7 @@ public final class SetupUi {
         final JButton popOutButton = CustomSwingComponents.createButton("Pop Out");
         popOutButton.addActionListener(click -> {
             final MatchUp currentMatchUp = setupBuilder.build();
-            new SetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentMatchUp, setupFileIo.getSetups());
+            new ChampionSetupPopOutUi((JFrame) SwingUtilities.windowForComponent(ui), images, currentMatchUp, setupBuilder.getChampionNotes());
         });
         buttonWrapper.add(popOutButton);
         ui.add(buttonWrapper, BorderLayout.NORTH);
@@ -59,7 +59,7 @@ public final class SetupUi {
         final JPanel summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel = new JPanel();
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel, BoxLayout.Y_AXIS));
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(vsPanel);
-        final JScrollPane scrollableChampionSpecificNotesTextArea = CustomSwingComponents.createScrollPane(championSpecificNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        final JScrollPane scrollableChampionSpecificNotesTextArea = CustomSwingComponents.createScrollPane(matchUpNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollableChampionSpecificNotesTextArea.setBorder(new TitledBorder("Champion Notes"));
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableChampionSpecificNotesTextArea);
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
@@ -79,10 +79,11 @@ public final class SetupUi {
     }
 
     private void storeCurrentSetupState() {
-        setupBuilder.setNotes(notes.getText());
+        setupBuilder.setChampionNotes(championNotesTextArea.getText());
+        setupBuilder.setMatchUpNotes(matchUpNotesTextArea.getText());
         try {
-            setupFileIo.getSetups().championSpecificNotes().put(setupBuilder.getMe(), championSpecificNotesTextArea.getText());
-            setupFileIo.store(setupBuilder.build());
+            final MatchUp matchUp = setupBuilder.build();
+            setupFileIo.store(setupBuilder.getMe(), setupBuilder.getRole(), setupBuilder.getChampionNotes(), matchUp);
         } catch (final RuntimeException | IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(SwingUtilities.windowForComponent(ui), String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()), "Store Failed with Exception", JOptionPane.ERROR_MESSAGE);

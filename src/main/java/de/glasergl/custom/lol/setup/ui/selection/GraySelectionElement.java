@@ -1,6 +1,6 @@
 package de.glasergl.custom.lol.setup.ui.selection;
 
-import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.helper.EmptyMouseListener;
 
 import javax.swing.*;
 import java.awt.*;

@@ -39,13 +39,13 @@ public final class CreateFrame {
         final Container frameContentPane = frame.getContentPane();
         frameContentPane.setLayout(new BorderLayout());
 
-        final SetupSelectionHandler setupSelectionHandler = new SetupSelectionHandler(setupFileIo, images);
+        final ChampionSetupSelectionHandler championSetupSelectionHandler = new ChampionSetupSelectionHandler(setupFileIo, images);
         final ChampionSelectionUi meSelection = new ChampionSelectionUi(champion -> {
-            setupSelectionHandler.setMe(champion);
+            championSetupSelectionHandler.setMe(champion);
         }, images);
         meSelection.getUi().setBorder(new TitledBorder("Me"));
         final ChampionSelectionUi enemySelection = new ChampionSelectionUi(champion -> {
-            setupSelectionHandler.setEnemy(champion);
+            championSetupSelectionHandler.setEnemy(champion);
         }, images);
         enemySelection.getUi().setBorder(new TitledBorder("Enemy"));
         final JPanel setupSelection = new JPanel(new BorderLayout());
@@ -53,9 +53,9 @@ public final class CreateFrame {
         setupSelection.add(enemySelection.getUi(), BorderLayout.EAST);
 
         final RoleSelectionUi roleSelectionUi = new RoleSelectionUi(images, role -> {
-            setupSelectionHandler.setRole(role);
+            championSetupSelectionHandler.setRole(role);
         }, role -> {
-            setupSelectionHandler.unsetRole();
+            championSetupSelectionHandler.unsetRole();
         });
         setupSelection.add(roleSelectionUi.getUi(), BorderLayout.SOUTH);
 
@@ -70,7 +70,7 @@ public final class CreateFrame {
         legalBoilerPlateComponent.setBorder(new EmptyBorder(3, 3, 3, 3));
         frameContentPane.add(legalBoilerPlateComponent, BorderLayout.SOUTH);
 
-        frameContentPane.add(setupSelectionHandler.getUi(), BorderLayout.CENTER);
+        frameContentPane.add(championSetupSelectionHandler.getUi(), BorderLayout.CENTER);
     }
 
     public JFrame getFrame() {

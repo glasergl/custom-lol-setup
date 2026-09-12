@@ -10,12 +10,14 @@ import java.util.Optional;
 
 public final class SetupBuilder {
     private final @Getter Champion me;
-    private final Optional<Role> role;
+    private final @Getter Role role;
     private final @Getter Champion enemy;
     private final @Getter RunePageBuilder runePageBuilder;
     private final @Getter ItemBuildBuilder itemBuildBuilder;
     private final @Getter List<Spell> spellMaxOrder;
 
+    private @Getter
+    @Setter String championNotes;
     private @Getter
     @Setter Optional<SummonerSpell> firstSummonerSpell;
     private @Getter
@@ -23,12 +25,13 @@ public final class SetupBuilder {
     private @Getter
     @Setter Optional<Spell> startSpell;
     private @Getter
-    @Setter String notes;
+    @Setter String matchUpNotes;
 
-    public SetupBuilder(final Champion me, final Optional<Role> role, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder, final Optional<SummonerSpell> firstSummonerSpell, final Optional<SummonerSpell> secondSummonerSpell,
-                        final Optional<Spell> startSpell, final List<Spell> spellMaxOrder, final String notes) {
+    public SetupBuilder(final Champion me, final Role role, final String championNotes, final Champion enemy, final RunePageBuilder runePageBuilder, final ItemBuildBuilder itemBuildBuilder, final Optional<SummonerSpell> firstSummonerSpell, final Optional<SummonerSpell> secondSummonerSpell,
+                        final Optional<Spell> startSpell, final List<Spell> spellMaxOrder, final String matchUpNotes) {
         this.me = me;
         this.role = role;
+        this.championNotes = championNotes;
         this.enemy = enemy;
         this.runePageBuilder = runePageBuilder;
         this.itemBuildBuilder = itemBuildBuilder;
@@ -36,10 +39,11 @@ public final class SetupBuilder {
         this.secondSummonerSpell = secondSummonerSpell;
         this.startSpell = startSpell;
         this.spellMaxOrder = spellMaxOrder;
-        this.notes = notes;
+        this.matchUpNotes = matchUpNotes;
     }
 
     public MatchUp build() {
-        return new MatchUp(me, role.orElse(null), enemy, runePageBuilder.build(), firstSummonerSpell.orElse(null), secondSummonerSpell.orElse(null), startSpell.orElse(null), spellMaxOrder, itemBuildBuilder.build(), notes);
+        final Build build = new Build(runePageBuilder.build(), firstSummonerSpell.orElse(null), secondSummonerSpell.orElse(null), startSpell.orElse(null), spellMaxOrder, itemBuildBuilder.build());
+        return new MatchUp(enemy, matchUpNotes, build);
     }
 }

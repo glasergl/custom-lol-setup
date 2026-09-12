@@ -4,8 +4,8 @@ import de.glasergl.custom.lol.setup.file.Images;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.ItemBuild;
 import de.glasergl.custom.lol.setup.ui.CustomSwingComponents;
-import de.glasergl.custom.lol.setup.ui.EmptyFocusListener;
-import de.glasergl.custom.lol.setup.ui.EmptyMouseListener;
+import de.glasergl.custom.lol.setup.ui.helper.EmptyFocusListener;
+import de.glasergl.custom.lol.setup.ui.helper.EmptyMouseListener;
 import lombok.Getter;
 
 import javax.swing.*;

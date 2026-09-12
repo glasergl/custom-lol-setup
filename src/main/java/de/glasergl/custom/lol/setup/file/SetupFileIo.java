@@ -1,57 +1,97 @@
 package de.glasergl.custom.lol.setup.file;
 
 import com.google.gson.Gson;
+import de.glasergl.custom.lol.setup.model.entity.Champion;
+import de.glasergl.custom.lol.setup.model.entity.ChampionSetup;
 import de.glasergl.custom.lol.setup.model.entity.MatchUp;
-import de.glasergl.custom.lol.setup.model.entity.Setups;
-import lombok.Getter;
+import de.glasergl.custom.lol.setup.model.entity.Role;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@Slf4j
 public final class SetupFileIo {
-    private final Path outputFilePath = getPathOfOutputFile();
+    private final String setupFileEnvironmentVariableName = "LOL_SETUP_FILE_PATH";
+    private final Path defaultSetupsDirectoryPath = Path.of("./champs/");
+    private final Path setupsDirectoryPath = getSetupsDirectoryPath();
     private final Gson gson = new Gson();
-    private final @Getter Setups setups;
+    private final Set<ChampionSetup> setups;
 
     public SetupFileIo() throws IOException {
-        setups = fetchSetups();
+        log.debug("Resolved setup directory path to '{}'", setupsDirectoryPath);
+        this.setups = fetchSetups();
     }
 
-    private Path getPathOfOutputFile() {
-        final String pathFromEnvironmentVariable = System.getenv("LOL_SETUP_FILE_PATH");
-        return Path.of(pathFromEnvironmentVariable != null && !pathFromEnvironmentVariable.isBlank() ? pathFromEnvironmentVariable : "lol-setup.json");
-    }
-
-    private Setups fetchSetups() throws IOException {
-        if (!Files.exists(outputFilePath)) {
-            final Setups setups = new Setups(new HashMap<>(), new HashSet<>());
-            try (final Writer writer = Files.newBufferedWriter(outputFilePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-                gson.toJson(setups, writer);
+    public Optional<ChampionSetup> getSetup(final Champion me, final Role role) {
+        for (final ChampionSetup setup : setups) {
+            if (setup.me().equals(me) && setup.role().equals(role)) {
+                return Optional.of(setup);
             }
         }
-        try (final Reader reader = Files.newBufferedReader(outputFilePath, StandardCharsets.UTF_8)) {
-            return gson.fromJson(reader, Setups.class);
+        return Optional.empty();
+    }
+
+    public Optional<MatchUp> getMatchUp(final Optional<ChampionSetup> setup, final Champion enemy) {
+        if (setup.isEmpty()) {
+            return Optional.empty();
+        }
+        for (final MatchUp matchUp : setup.get().matchUps()) {
+            if (matchUp.enemy().equals(enemy)) {
+                return Optional.of(matchUp);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Path getSetupsDirectoryPath() {
+        final String pathFromEnvironmentVariable = System.getenv(setupFileEnvironmentVariableName);
+        return pathFromEnvironmentVariable != null && !pathFromEnvironmentVariable.isBlank() ? Paths.get(pathFromEnvironmentVariable) : defaultSetupsDirectoryPath;
+    }
+
+    private Set<ChampionSetup> fetchSetups() throws IOException {
+        try (final Stream<Path> subPaths = Files.walk(setupsDirectoryPath)) {
+            final Set<Path> setupFiles = subPaths.filter(path -> Files.isRegularFile(path) && path.endsWith(".json"))
+                    .collect(Collectors.toSet());
+            final Set<ChampionSetup> championSetups = new HashSet<>();
+            for (final Path setupFile : setupFiles) {
+                championSetups.add(gson.fromJson(Files.readString(setupFile), ChampionSetup.class));
+            }
+            return championSetups;
         }
     }
 
-    public void store(final MatchUp matchUpToStore) throws IOException {
-        final List<MatchUp> existingMatchingMatchUp = setups.matchUps().stream().filter(storedSetup -> {
-            final boolean roleMatches = matchUpToStore.role() == null || storedSetup.role() == null || matchUpToStore.role().equals(storedSetup.role());
-            return storedSetup.me().equals(matchUpToStore.me()) && storedSetup.enemy().equals(matchUpToStore.enemy()) && roleMatches;
-        }).toList();
-        setups.matchUps().removeAll(existingMatchingMatchUp);
-        setups.matchUps().add(matchUpToStore);
-
-        try (final Writer writer = Files.newBufferedWriter(outputFilePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-            gson.toJson(setups, writer);
+    public void store(final Champion me, final Role role, final String notes, final MatchUp matchUpToStore) throws IOException {
+        final Optional<ChampionSetup> existingSetup = getSetup(me, role);
+        existingSetup.ifPresent(setups::remove);
+        final ChampionSetup updatedSetup = existingSetup.isPresent() ? replaceMatchUp(existingSetup.get(), matchUpToStore, notes) : new ChampionSetup(me, role, notes, Set.of(matchUpToStore));
+        final String fileName = String.format("%s_%s.json", role.toString(), me.toString());
+        final Path setupFilePath = Path.of(setupsDirectoryPath.toString(), fileName);
+        try (final Writer writer = Files.newBufferedWriter(setupFilePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+            gson.toJson(updatedSetup, writer);
         }
+        setups.add(updatedSetup);
+    }
+
+    private ChampionSetup replaceMatchUp(final ChampionSetup setup, final MatchUp matchUpToStore, final String notes) {
+        final Set<MatchUp> updatedMatchUps = new HashSet<>(setup.matchUps());
+        final Iterator<MatchUp> matchUpIterator = updatedMatchUps.iterator();
+        MatchUp nextMatchUp;
+        while (matchUpIterator.hasNext()) {
+            nextMatchUp = matchUpIterator.next();
+            if (nextMatchUp.enemy().equals(matchUpToStore.enemy())) {
+                matchUpIterator.remove();
+            }
+        }
+        updatedMatchUps.add(matchUpToStore);
+        return new ChampionSetup(setup.me(), setup.role(), notes, updatedMatchUps);
     }
 }

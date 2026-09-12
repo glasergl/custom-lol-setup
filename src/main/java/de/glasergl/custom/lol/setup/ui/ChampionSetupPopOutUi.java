@@ -1,21 +1,22 @@
 package de.glasergl.custom.lol.setup.ui;
 
 import de.glasergl.custom.lol.setup.file.Images;
+import de.glasergl.custom.lol.setup.model.entity.Build;
 import de.glasergl.custom.lol.setup.model.entity.Item;
 import de.glasergl.custom.lol.setup.model.entity.MatchUp;
-import de.glasergl.custom.lol.setup.model.entity.Setups;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class SetupPopOutUi {
-    public SetupPopOutUi(final JFrame referenceFrame, final Images images, final MatchUp matchUpToVisualize, final Setups allSetups) {
-        final JLabel startSpellLabel = new JLabel("Start Spell: %s".formatted(matchUpToVisualize.startSpell() != null ? matchUpToVisualize.startSpell().toString() : ""));
+public class ChampionSetupPopOutUi {
+    public ChampionSetupPopOutUi(final JFrame referenceFrame, final Images images, final MatchUp matchUpToVisualize, final String championNotes) {
+        final Build build = matchUpToVisualize.build();
+        final JLabel startSpellLabel = new JLabel("Start Spell: %s".formatted(build.startSpell() != null ? build.startSpell().toString() : ""));
         startSpellLabel.setFont(startSpellLabel.getFont().deriveFont(20.0f));
         final JLabel maxSpellOrderLabel = new JLabel(
-                "Spell Max Order: %s > %s > %s > %s".formatted(matchUpToVisualize.spellMaxOrder().get(0).toString(), matchUpToVisualize.spellMaxOrder().get(1).toString(), matchUpToVisualize.spellMaxOrder().get(2).toString(), matchUpToVisualize.spellMaxOrder().get(3).toString()));
+                "Spell Max Order: %s > %s > %s > %s".formatted(build.spellMaxOrder().get(0).toString(), build.spellMaxOrder().get(1).toString(), build.spellMaxOrder().get(2).toString(), build.spellMaxOrder().get(3).toString()));
         maxSpellOrderLabel.setFont(maxSpellOrderLabel.getFont().deriveFont(20.0f));
 
         final JTextArea matchupNotesTextArea = new JTextArea(matchUpToVisualize.notes());
@@ -26,7 +27,7 @@ public class SetupPopOutUi {
         matchupNotesTextArea.setFocusable(false);
         matchupNotesTextArea.setBorder(new TitledBorder("Match-Up Notes"));
 
-        final JTextArea championNotesTextArea = new JTextArea(allSetups.championSpecificNotes().get(matchUpToVisualize.me()));
+        final JTextArea championNotesTextArea = new JTextArea(championNotes);
         championNotesTextArea.setLineWrap(true);
         championNotesTextArea.setEditable(false);
         championNotesTextArea.setWrapStyleWord(true);
@@ -37,11 +38,11 @@ public class SetupPopOutUi {
         final JPanel itemBuildPanel = new JPanel();
         itemBuildPanel.setBorder(new TitledBorder("Item Build"));
         itemBuildPanel.setLayout(new BoxLayout(itemBuildPanel, BoxLayout.Y_AXIS));
-        for (int i = 0; i < matchUpToVisualize.build().notes().size(); i++) {
-            final JLabel note = new JLabel(matchUpToVisualize.build().notes().get(i));
+        for (int i = 0; i < build.build().notes().size(); i++) {
+            final JLabel note = new JLabel(build.build().notes().get(i));
             note.setAlignmentX(Component.LEFT_ALIGNMENT);
             final JPanel itemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            for (final Item item : matchUpToVisualize.build().items().get(i)) {
+            for (final Item item : build.build().items().get(i)) {
                 itemsPanel.add(new JLabel(new ImageIcon(images.get(item))));
             }
             final JPanel noteWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
