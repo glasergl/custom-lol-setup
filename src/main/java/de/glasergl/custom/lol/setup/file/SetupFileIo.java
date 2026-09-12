@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @Slf4j
 public final class SetupFileIo {
     private final String setupFileEnvironmentVariableName = "LOL_SETUP_FILE_PATH";
-    private final Path defaultSetupsDirectoryPath = Path.of("./champs/");
+    private final Path defaultSetupsDirectoryPath = Path.of("./custom-lol-setups/");
     private final Path setupsDirectoryPath = getSetupsDirectoryPath();
     private final Gson gson = new Gson();
     private final Set<ChampionSetup> setups;
