@@ -38,11 +38,11 @@ public class ChampionSetupPopOutUi {
         final JPanel itemBuildPanel = new JPanel();
         itemBuildPanel.setBorder(new TitledBorder("Item Build"));
         itemBuildPanel.setLayout(new BoxLayout(itemBuildPanel, BoxLayout.Y_AXIS));
-        for (int i = 0; i < build.build().notes().size(); i++) {
-            final JLabel note = new JLabel(build.build().notes().get(i));
+        for (int i = 0; i < build.items().notes().size(); i++) {
+            final JLabel note = new JLabel(build.items().notes().get(i));
             note.setAlignmentX(Component.LEFT_ALIGNMENT);
             final JPanel itemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            for (final Item item : build.build().items().get(i)) {
+            for (final Item item : build.items().items().get(i)) {
                 itemsPanel.add(new JLabel(new ImageIcon(images.get(item))));
             }
             final JPanel noteWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));

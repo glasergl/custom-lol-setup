@@ -80,7 +80,7 @@ public final class RunePageBuilderUi {
     }
 
     /**
-     * @return View to select the second rune path.
+     * @return View to select the secondSpell rune path.
      */
     private JPanel getSecondPathSelectionView() {
         return getSingleRunePathSelectionView(runePathToCreateSelectorFor -> {
@@ -123,8 +123,8 @@ public final class RunePageBuilderUi {
 
     /**
      *
-     * @return View to select runes of the second rune path (consisting of slot
-     * runes of the second rune path), as well as shards.
+     * @return View to select runes of the secondSpell rune path (consisting of slot
+     * runes of the secondSpell rune path), as well as shards.
      */
     private JPanel getSecondRunePathAndShardsView() {
         final JPanel secondRunePathAndShards = new JPanel(new BorderLayout(0, 0));

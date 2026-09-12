@@ -71,9 +71,9 @@ public final class ChampionSetupSelectionHandler {
 
         final Build build = matchUp.build();
         final RunePageBuilder runePageBuilder = new RunePageBuilder(build.runePage());
-        final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, build.build());
-        final Optional<SummonerSpell> firstSummonerSpell = build.first() != null ? Optional.of(build.first()) : Optional.empty();
-        final Optional<SummonerSpell> secondSummonerSpell = build.second() != null ? Optional.of(build.second()) : Optional.empty();
+        final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images, build.items());
+        final Optional<SummonerSpell> firstSummonerSpell = build.firstSpell() != null ? Optional.of(build.firstSpell()) : Optional.empty();
+        final Optional<SummonerSpell> secondSummonerSpell = build.secondSpell() != null ? Optional.of(build.secondSpell()) : Optional.empty();
         final Optional<Spell> startSpell = build.startSpell() != null ? Optional.of(build.startSpell()) : Optional.empty();
         return new SetupBuilder(meSelection.get(), roleSelection.get(), setup.notes(), enemySelection.get(), runePageBuilder, itemBuildBuilder, firstSummonerSpell, secondSummonerSpell, startSpell,
                 build.spellMaxOrder() != null ? build.spellMaxOrder() : new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), matchUp.notes() != null ? matchUp.notes() : "");
