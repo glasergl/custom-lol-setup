@@ -20,23 +20,26 @@ import java.io.IOException;
 public final class ChampionSetupUi {
     private final RunePageBuilderUi runePageBuilderUi;
     private final @Getter JPanel ui = new JPanel(new BorderLayout());
-    private final JTextArea championNotesTextArea = new JTextArea(3, 25);
+    private final JTextArea championNotesTextArea = new JTextArea(4, 35);
     private final JButton storeButton = CustomSwingComponents.createButton("Store");
     private final SetupBuilder setupBuilder;
     private final SetupFileIo setupFileIo;
-    private final JTextArea matchUpNotesTextArea = new JTextArea(4, 35);
+    private final JTextArea matchUpNotesTextArea = new JTextArea(3, 25);
 
     public ChampionSetupUi(final Images images, final SetupBuilder setupBuilder, final SetupFileIo setupFileIo) {
         this.setupBuilder = setupBuilder;
         this.setupFileIo = setupFileIo;
         this.runePageBuilderUi = new RunePageBuilderUi(setupBuilder.getRunePageBuilder(), images);
 
-        matchUpNotesTextArea.setText(setupBuilder.getChampionNotes());
-
-        championNotesTextArea.setText(setupBuilder.getMatchUpNotes());
+        championNotesTextArea.setText(setupBuilder.getChampionNotes());
         championNotesTextArea.setBorder(new EmptyBorder(2, 2, 2, 2));
-        final JScrollPane scrollableNotes = CustomSwingComponents.createScrollPane(championNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableNotes.setBorder(new TitledBorder("Match-Up Notes"));
+        final JScrollPane scrollableChampionNotes = CustomSwingComponents.createScrollPane(championNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollableChampionNotes.setBorder(new TitledBorder("Champion Notes"));
+
+        matchUpNotesTextArea.setText(setupBuilder.getMatchUpNotes());
+        matchUpNotesTextArea.setBorder(new EmptyBorder(2, 2, 2, 2));
+        final JScrollPane scrollableMatchUpNotesTextArea = CustomSwingComponents.createScrollPane(matchUpNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollableMatchUpNotesTextArea.setBorder(new TitledBorder("Match-Up Notes"));
 
         storeButton.setFocusPainted(false);
         storeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -59,14 +62,12 @@ public final class ChampionSetupUi {
         final JPanel summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel = new JPanel();
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.setLayout(new BoxLayout(summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel, BoxLayout.Y_AXIS));
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(vsPanel);
-        final JScrollPane scrollableChampionSpecificNotesTextArea = CustomSwingComponents.createScrollPane(matchUpNotesTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableChampionSpecificNotesTextArea.setBorder(new TitledBorder("Champion Notes"));
-        summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableChampionSpecificNotesTextArea);
+        summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableChampionNotes);
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new SummonerSpellSelection(setupBuilder, images).getUi());
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(runePageBuilderUi.getUi());
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new StartSpellSelectionUi(setupBuilder).getUi());
         summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(new SpellMaxOrderUi(setupBuilder).getUi());
-        summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableNotes);
+        summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel.add(scrollableMatchUpNotesTextArea);
         ui.add(summonerSpellRunePageStartSpellSpellMaxOrderAndNotesPanel, BorderLayout.CENTER);
 
         final JPanel itemUi = new JPanel(new BorderLayout());

@@ -51,7 +51,7 @@ public final class ChampionSetupSelectionHandler {
             if (knownSetup.isPresent() && knownMatchUp.isPresent()) {
                 championSetupUi = new ChampionSetupUi(images, createSetupBuilderFromKnownSetup(knownSetup.get(), knownMatchUp.get()), setupFileIo);
             } else {
-                championSetupUi = new ChampionSetupUi(images, createEmptySetupBuilder(), setupFileIo);
+                championSetupUi = new ChampionSetupUi(images, createEmptySetupBuilder(knownSetup), setupFileIo);
             }
             ui.removeAll();
             ui.add(championSetupUi.getUi(), BorderLayout.CENTER);
@@ -74,11 +74,11 @@ public final class ChampionSetupSelectionHandler {
                 build.spellMaxOrder() != null ? build.spellMaxOrder() : new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), matchUp.notes() != null ? matchUp.notes() : "");
     }
 
-    private SetupBuilder createEmptySetupBuilder() {
+    private SetupBuilder createEmptySetupBuilder(final Optional<ChampionSetup> knownSetup) {
         assert meSelection.isPresent() && roleSelection.isPresent() && enemySelection.isPresent();
 
         final RunePageBuilder runePageBuilder = new RunePageBuilder(RunePath.PRECISION, RunePath.SORCERY);
         final ItemBuildBuilder itemBuildBuilder = new ItemBuildBuilder(images);
-        return new SetupBuilder(meSelection.get(), roleSelection.get(),"", enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), Optional.empty(), new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), "");
+        return new SetupBuilder(meSelection.get(), roleSelection.get(), knownSetup.isPresent() ? knownSetup.get().notes() : "", enemySelection.get(), runePageBuilder, itemBuildBuilder, Optional.empty(), Optional.empty(), Optional.empty(), new ArrayList<>(List.of(Spell.R, Spell.Q, Spell.E, Spell.W)), "");
     }
 }
