@@ -43,11 +43,6 @@ public final class ChampionSetupSelectionHandler {
         updateView();
     }
 
-    public void unsetRole() {
-        roleSelection = Optional.empty();
-        updateView();
-    }
-
     private void updateView() {
         if (meSelection.isPresent() && enemySelection.isPresent() && roleSelection.isPresent()) {
             final Optional<ChampionSetup> knownSetup = setupFileIo.getSetup(meSelection.get(), roleSelection.get());

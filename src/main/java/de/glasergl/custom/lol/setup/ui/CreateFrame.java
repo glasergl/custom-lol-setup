@@ -40,23 +40,15 @@ public final class CreateFrame {
         frameContentPane.setLayout(new BorderLayout());
 
         final ChampionSetupSelectionHandler championSetupSelectionHandler = new ChampionSetupSelectionHandler(setupFileIo, images);
-        final ChampionSelectionUi meSelection = new ChampionSelectionUi(champion -> {
-            championSetupSelectionHandler.setMe(champion);
-        }, images);
+        final ChampionSelectionUi meSelection = new ChampionSelectionUi(championSetupSelectionHandler::setMe, images);
         meSelection.getUi().setBorder(new TitledBorder("Me"));
-        final ChampionSelectionUi enemySelection = new ChampionSelectionUi(champion -> {
-            championSetupSelectionHandler.setEnemy(champion);
-        }, images);
+        final ChampionSelectionUi enemySelection = new ChampionSelectionUi(championSetupSelectionHandler::setEnemy, images);
         enemySelection.getUi().setBorder(new TitledBorder("Enemy"));
         final JPanel setupSelection = new JPanel(new BorderLayout());
         setupSelection.add(meSelection.getUi(), BorderLayout.WEST);
         setupSelection.add(enemySelection.getUi(), BorderLayout.EAST);
 
-        final RoleSelectionUi roleSelectionUi = new RoleSelectionUi(images, role -> {
-            championSetupSelectionHandler.setRole(role);
-        }, role -> {
-            championSetupSelectionHandler.unsetRole();
-        });
+        final RoleSelectionUi roleSelectionUi = new RoleSelectionUi(images, championSetupSelectionHandler::setRole);
         setupSelection.add(roleSelectionUi.getUi(), BorderLayout.SOUTH);
 
         frameContentPane.add(setupSelection, BorderLayout.WEST);

@@ -69,7 +69,7 @@ public class ChampionSetupPopOutUi {
         dialog.add(ui, BorderLayout.CENTER);
         dialog.add(itemBuildPanel, BorderLayout.EAST);
         dialog.pack();
-        dialog.setLocationRelativeTo(null);
+        dialog.setLocationRelativeTo(referenceFrame);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
     }

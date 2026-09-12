@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class RoleSelectionUi {
     private final @Getter JPanel ui = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    public RoleSelectionUi(final Images images, final Consumer<Role> selectHandler, final Consumer<Role> unselectHandler) {
+    public RoleSelectionUi(final Images images, final Consumer<Role> selectHandler) {
         for (final Role role : List.of(Role.TOP, Role.JUNGLE, Role.MID, Role.BOT, Role.SUPPORT)) {
             final JLabel roleLabel = new JLabel(new ImageIcon(images.getRoleImage(role)));
             roleLabel.setOpaque(true);
@@ -27,9 +27,6 @@ public final class RoleSelectionUi {
                         }
                         roleLabel.setBackground(Color.CYAN);
                         selectHandler.accept(role);
-                    } else {
-                        roleLabel.setBackground(null);
-                        unselectHandler.accept(role);
                     }
                 }
             });
